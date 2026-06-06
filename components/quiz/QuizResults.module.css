@@ -1,0 +1,80 @@
+.panel {
+  width: min(100%, 36rem);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background: #1e293b;
+  border: 1px solid #334155;
+}
+
+.heading {
+  margin: 0 0 1rem;
+  font-size: 1.35rem;
+}
+
+.rankings {
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rankRow {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.5rem;
+  background: #0f172a;
+}
+
+.place {
+  color: #a5b4fc;
+  font-weight: 600;
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.score {
+  color: #94a3b8;
+  font-variant-numeric: tabular-nums;
+}
+
+.review {
+  margin-bottom: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid #334155;
+}
+
+.subheading {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  color: #cbd5e1;
+}
+
+.reviewItem {
+  margin-bottom: 0.75rem;
+}
+
+.reviewQuestion {
+  margin: 0 0 0.25rem;
+  font-size: 0.95rem;
+}
+
+.correct {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #86efac;
+}
+
+.hint {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}

@@ -1,0 +1,79 @@
+[
+  {
+    "id": "geo-1",
+    "text": "What is the capital of France?",
+    "options": ["London", "Berlin", "Paris", "Madrid"],
+    "correctIndex": 2
+  },
+  {
+    "id": "geo-2",
+    "text": "Which planet is known as the Red Planet?",
+    "options": ["Venus", "Mars", "Jupiter", "Saturn"],
+    "correctIndex": 1
+  },
+  {
+    "id": "sci-1",
+    "text": "What gas do plants absorb from the atmosphere?",
+    "options": ["Oxygen", "Nitrogen", "Carbon dioxide", "Hydrogen"],
+    "correctIndex": 2
+  },
+  {
+    "id": "sci-2",
+    "text": "How many continents are there on Earth?",
+    "options": ["5", "6", "7", "8"],
+    "correctIndex": 2
+  },
+  {
+    "id": "hist-1",
+    "text": "In which year did World War II end?",
+    "options": ["1943", "1944", "1945", "1946"],
+    "correctIndex": 2
+  },
+  {
+    "id": "hist-2",
+    "text": "Who was the first president of the United States?",
+    "options": ["Thomas Jefferson", "George Washington", "John Adams", "Benjamin Franklin"],
+    "correctIndex": 1
+  },
+  {
+    "id": "tech-1",
+    "text": "What does HTML stand for?",
+    "options": [
+      "Hyper Text Markup Language",
+      "High Tech Modern Language",
+      "Home Tool Markup Language",
+      "Hyper Transfer Mark Language"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": "tech-2",
+    "text": "Which company created the JavaScript language?",
+    "options": ["Microsoft", "Netscape", "Google", "Apple"],
+    "correctIndex": 1
+  },
+  {
+    "id": "sport-1",
+    "text": "How many players are on a standard soccer team on the field?",
+    "options": ["9", "10", "11", "12"],
+    "correctIndex": 2
+  },
+  {
+    "id": "sport-2",
+    "text": "Which country hosted the 2016 Summer Olympics?",
+    "options": ["China", "United Kingdom", "Brazil", "Russia"],
+    "correctIndex": 2
+  },
+  {
+    "id": "art-1",
+    "text": "Who painted the Mona Lisa?",
+    "options": ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
+    "correctIndex": 2
+  },
+  {
+    "id": "art-2",
+    "text": "Which instrument has 88 keys?",
+    "options": ["Guitar", "Violin", "Piano", "Flute"],
+    "correctIndex": 2
+  }
+]
