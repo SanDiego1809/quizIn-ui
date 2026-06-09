@@ -25,7 +25,13 @@ export default function QuizWaitingRoom({ room, isHost, onStart, onReset }) {
       </ul>
 
       {inLobby && isHost ? (
-        <Button onClick={() => onStart()}>Start quiz (4 questions)</Button>
+        <Button
+          onClick={() =>
+            onStart({ questionsPerGame: 4, questionTimeSeconds: 30 })
+          }
+        >
+          Start quiz (4 questions)
+        </Button>
       ) : null}
 
       {!inLobby && isHost ? (

@@ -2,16 +2,27 @@ const { DEFAULT_SETTINGS } = require("../config");
 const QUESTION_BANK = require("../data/questions.json");
 const { shuffle } = require("./utils");
 
+function toBoundedNumber(value, fallback, min, max) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(max, Math.max(min, n));
+}
+
 function sanitizeSettings(input = {}) {
-  const questionTimeSeconds = Math.min(
-    300,
-    Math.max(0, Number(input.questionTimeSeconds) ?? DEFAULT_SETTINGS.questionTimeSeconds)
-  );
-  const questionsPerGame = Math.min(
-    10,
-    Math.max(1, Number(input.questionsPerGame) ?? DEFAULT_SETTINGS.questionsPerGame)
-  );
-  return { questionTimeSeconds, questionsPerGame };
+  return {
+    questionTimeSeconds: toBoundedNumber(
+      input.questionTimeSeconds,
+      DEFAULT_SETTINGS.questionTimeSeconds,
+      0,
+      300
+    ),
+    questionsPerGame: toBoundedNumber(
+      input.questionsPerGame,
+      DEFAULT_SETTINGS.questionsPerGame,
+      1,
+      10
+    ),
+  };
 }
 
 function clearRoomTimer(room) {
