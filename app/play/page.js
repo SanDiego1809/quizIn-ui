@@ -3,9 +3,7 @@
 import Link from "next/link";
 import Title from "@/components/title/Title";
 import QuizLobby from "@/components/quiz/QuizLobby";
-import QuizWaitingRoom from "@/components/quiz/QuizWaitingRoom";
-import QuizQuestion from "@/components/quiz/QuizQuestion";
-import QuizResults from "@/components/quiz/QuizResults";
+import ModeView from "@/components/quiz/modes/ModeView";
 import { useQuizRoom } from "@/hooks/useQuizRoom";
 import classes from "./page.module.css";
 
@@ -19,14 +17,16 @@ export default function PlayPage() {
     createRoom,
     joinRoom,
     startGame,
+    updateRoomConfig,
     submitAnswer,
+    sendGameAction,
     resetGame,
     clearError,
   } = useQuizRoom();
 
   return (
     <main>
-      <Title subtitle="Answer 4 questions — fastest correct answers win bragging rights.">
+      <Title subtitle="Answer questions — fastest correct answers win bragging rights.">
         Quiz room
       </Title>
 
@@ -46,24 +46,17 @@ export default function PlayPage() {
           onCreate={createRoom}
           onJoin={joinRoom}
         />
-      ) : null}
-
-      {room?.phase === "lobby" ? (
-        <QuizWaitingRoom
+      ) : (
+        <ModeView
           room={room}
           isHost={isHost}
           onStart={startGame}
           onReset={resetGame}
+          onSubmit={submitAnswer}
+          onAction={sendGameAction}
+          onUpdateConfig={updateRoomConfig}
         />
-      ) : null}
-
-      {room?.phase === "playing" ? (
-        <QuizQuestion room={room} onSubmit={submitAnswer} />
-      ) : null}
-
-      {room?.phase === "final_results" ? (
-        <QuizResults room={room} isHost={isHost} onReset={resetGame} />
-      ) : null}
+      )}
 
       <Link href="/" className={classes.backLink}>
         ← Back home

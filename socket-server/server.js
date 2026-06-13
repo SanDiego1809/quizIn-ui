@@ -6,10 +6,6 @@ const {
   createRoomEmitter,
   removeSocketFromAllRooms,
 } = require("./lib/roomLifecycle");
-const {
-  advanceQuestion,
-  scheduleQuestionTimer,
-} = require("./lib/gameLogic");
 const { registerSocketHandlers } = require("./handlers");
 
 const server = http.createServer((req, res) => {
@@ -36,18 +32,7 @@ const ctx = {
   emitRoom,
   removeSocketFromAllRooms: (socket, options) =>
     removeSocketFromAllRooms(socket, { io, rooms, emitRoom, ...options }),
-  advanceQuestion: (roomCode) =>
-    advanceQuestion(roomCode, { rooms, scheduleQuestionTimer: bindSchedule, emitRoom }),
-  scheduleQuestionTimer: bindSchedule,
 };
-
-function bindSchedule(roomCode) {
-  scheduleQuestionTimer(roomCode, {
-    rooms,
-    advanceQuestion: ctx.advanceQuestion,
-    emitRoom,
-  });
-}
 
 registerSocketHandlers(io, ctx);
 

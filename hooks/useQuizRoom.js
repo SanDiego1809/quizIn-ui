@@ -63,12 +63,31 @@ export function useQuizRoom() {
     getQuizSocket()?.emit("quiz:room_join", { roomCode, name });
   }, []);
 
-  const startGame = useCallback(
-    (settings) => {
+  const updateRoomConfig = useCallback(
+    ({ mode, settings }) => {
       if (!room?.roomCode) return;
-      getQuizSocket()?.emit("quiz:game_start", {
+      getQuizSocket()?.emit("quiz:room_config", {
         roomCode: room.roomCode,
+        mode,
         settings,
+      });
+    },
+    [room?.roomCode]
+  );
+
+  const startGame = useCallback(() => {
+    if (!room?.roomCode) return;
+    getQuizSocket()?.emit("quiz:game_start", {
+      roomCode: room.roomCode,
+    });
+  }, [room?.roomCode]);
+
+  const sendGameAction = useCallback(
+    (action) => {
+      if (!room?.roomCode) return;
+      getQuizSocket()?.emit("quiz:game_action", {
+        roomCode: room.roomCode,
+        action,
       });
     },
     [room?.roomCode]
@@ -76,13 +95,9 @@ export function useQuizRoom() {
 
   const submitAnswer = useCallback(
     (optionIndex) => {
-      if (!room?.roomCode) return;
-      getQuizSocket()?.emit("quiz:answer_submit", {
-        roomCode: room.roomCode,
-        optionIndex,
-      });
+      sendGameAction({ type: "submit_answer", optionIndex });
     },
-    [room?.roomCode]
+    [sendGameAction]
   );
 
   const resetGame = useCallback(() => {
@@ -101,7 +116,9 @@ export function useQuizRoom() {
     createRoom,
     joinRoom,
     startGame,
+    updateRoomConfig,
     submitAnswer,
+    sendGameAction,
     resetGame,
     clearError: () => setError(null),
   };

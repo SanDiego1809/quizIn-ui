@@ -1,5 +1,5 @@
-const { clearRoomTimer, resetToLobby } = require("./gameLogic");
-const { roomPayloadForPlayer } = require("./roomPayload");
+const { clearRoomTimer } = require("./timers");
+const { buildRoomPayload, getMode } = require("../modes");
 
 function createRoomEmitter(io, rooms) {
   function emitRoom(roomCode) {
@@ -8,7 +8,7 @@ function createRoomEmitter(io, rooms) {
     for (const player of room.players) {
       io.to(player.socketId).emit(
         "quiz:room_state",
-        roomPayloadForPlayer(room, player.id)
+        buildRoomPayload(room, player.id)
       );
     }
   }
@@ -62,6 +62,10 @@ function cleanupRoom(rooms, roomCode) {
   }
 }
 
+function resetRoomToLobby(room) {
+  getMode(room.mode).reset(room);
+}
+
 function removeSocketFromAllRooms(socket, { rooms, emitRoom, leaveSocketRooms = true }) {
   const socketId = socket.id;
 
@@ -98,5 +102,5 @@ module.exports = {
   bindSocketToPlayer,
   cleanupRoom,
   removeSocketFromAllRooms,
-  resetToLobby,
+  resetRoomToLobby,
 };

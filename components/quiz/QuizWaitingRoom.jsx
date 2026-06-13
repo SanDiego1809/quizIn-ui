@@ -1,7 +1,18 @@
+"use client";
+
 import classes from "./QuizWaitingRoom.module.css";
 import Button from "@/components/button/Button";
+import QuizRoomSettings, {
+  formatRoomSettingsSummary,
+} from "@/components/quiz/QuizRoomSettings";
 
-export default function QuizWaitingRoom({ room, isHost, onStart, onReset }) {
+export default function QuizWaitingRoom({
+  room,
+  isHost,
+  onStart,
+  onReset,
+  onUpdateConfig,
+}) {
   const inLobby = room.phase === "lobby";
 
   return (
@@ -24,13 +35,17 @@ export default function QuizWaitingRoom({ room, isHost, onStart, onReset }) {
         ))}
       </ul>
 
+      {inLobby ? (
+        <QuizRoomSettings
+          room={room}
+          isHost={isHost}
+          onUpdateConfig={onUpdateConfig}
+        />
+      ) : null}
+
       {inLobby && isHost ? (
-        <Button
-          onClick={() =>
-            onStart({ questionsPerGame: 4, questionTimeSeconds: 30 })
-          }
-        >
-          Start quiz (4 questions)
+        <Button onClick={() => onStart()}>
+          Start {formatRoomSettingsSummary(room)}
         </Button>
       ) : null}
 

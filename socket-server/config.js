@@ -1,9 +1,3 @@
-const DEFAULT_SETTINGS = {
-  /** Seconds per question; 0 = no timer */
-  questionTimeSeconds: 30,
-  questionsPerGame: 4,
-};
-
 function parsePort() {
   const v = process.env.QUIZIN_SOCKET_PORT;
   return Number(v) || 4000;
@@ -56,7 +50,6 @@ function parseCorsOrigins() {
 }
 
 module.exports = {
-  DEFAULT_SETTINGS,
   PORT: parsePort(),
   HOST: parseHost(),
   SOCKET_IDLE_MS: parseSocketIdleMs(),

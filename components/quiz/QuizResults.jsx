@@ -2,7 +2,7 @@ import classes from "./QuizResults.module.css";
 import Button from "@/components/button/Button";
 
 export default function QuizResults({ room, isHost, onReset }) {
-  const { result, questionReview } = room;
+  const { result, questionReview, yourPlayerId } = room;
 
   return (
     <section className={classes.panel}>
@@ -23,16 +23,30 @@ export default function QuizResults({ room, isHost, onReset }) {
       {questionReview?.length ? (
         <div className={classes.review}>
           <h3 className={classes.subheading}>Answer key</h3>
-          {questionReview.map((q, index) => (
-            <article key={q.id} className={classes.reviewItem}>
-              <p className={classes.reviewQuestion}>
-                {index + 1}. {q.text}
-              </p>
-              <p className={classes.correct}>
-                Correct: {q.options[q.correctIndex]}
-              </p>
-            </article>
-          ))}
+          {questionReview.map((q, index) => {
+            const yourIndex = q.answers?.[yourPlayerId];
+            const correctText = q.options[q.correctIndex];
+            const pickedWrong =
+              yourIndex != null && yourIndex >= 0 && yourIndex !== q.correctIndex;
+            const missed = yourIndex === -1 || yourIndex === undefined;
+
+            return (
+              <article key={q.id} className={classes.reviewItem}>
+                <p className={classes.reviewQuestion}>
+                  {index + 1}. {q.text}
+                </p>
+                <div className={classes.answerCompare}>
+                  <span className={classes.correct}>✅ {correctText}</span>
+                  {pickedWrong ? (
+                    <span className={classes.wrong}>❌ {q.options[yourIndex]}</span>
+                  ) : null}
+                  {missed ? (
+                    <span className={classes.wrong}>❌ No answer</span>
+                  ) : null}
+                </div>
+              </article>
+            );
+          })}
         </div>
       ) : null}
 

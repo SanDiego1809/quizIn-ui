@@ -4,16 +4,18 @@ const {
   sanitizeName,
   normalizeRoomCode,
 } = require("../lib/utils");
+const { DEFAULT_MODE_ID, getMode, applyRoomConfig } = require("../modes");
 const { createEmptyRoom, setRoom } = require("../lib/roomStore");
 const {
   bindSocketToPlayer,
   removeSocketFromAllRooms,
+  isHostSocket,
 } = require("../lib/roomLifecycle");
 
 function registerRoomHandlers(socket, ctx) {
   const { io, rooms, emitRoom } = ctx;
 
-  socket.on("quiz:room_create", ({ name }) => {
+  socket.on("quiz:room_create", ({ name, mode = DEFAULT_MODE_ID }) => {
     const safeName = sanitizeName(name);
     if (!safeName) {
       socket.emit("quiz:error", { message: "Name is required." });
@@ -22,6 +24,13 @@ function registerRoomHandlers(socket, ctx) {
 
     removeSocketFromAllRooms(socket, ctx);
 
+    try {
+      getMode(mode);
+    } catch {
+      socket.emit("quiz:error", { message: "Unknown game mode." });
+      return;
+    }
+
     const roomCode = uniqueRoomCode(rooms);
     const playerId = randomPlayerId();
     const room = createEmptyRoom({
@@ -29,6 +38,7 @@ function registerRoomHandlers(socket, ctx) {
       hostId: playerId,
       hostName: safeName,
       hostSocketId: socket.id,
+      mode,
     });
 
     setRoom(roomCode, room);
@@ -71,6 +81,40 @@ function registerRoomHandlers(socket, ctx) {
 
     socket.join(code);
     bindSocketToPlayer(socket, code, playerId);
+    emitRoom(code);
+  });
+
+  socket.on("quiz:room_config", ({ roomCode, mode, settings }) => {
+    const code = normalizeRoomCode(roomCode);
+    const room = rooms.get(code);
+
+    if (!room) {
+      socket.emit("quiz:error", { message: "Room not found." });
+      return;
+    }
+    if (room.phase !== "lobby") {
+      socket.emit("quiz:error", {
+        message: "Settings can only be changed before the game starts.",
+      });
+      return;
+    }
+    if (!isHostSocket(room, socket)) {
+      socket.emit("quiz:error", {
+        message: "Only the host can change room settings.",
+      });
+      return;
+    }
+
+    if (mode) {
+      try {
+        getMode(mode);
+      } catch {
+        socket.emit("quiz:error", { message: "Unknown game mode." });
+        return;
+      }
+    }
+
+    applyRoomConfig(room, { mode, settings });
     emitRoom(code);
   });
 }

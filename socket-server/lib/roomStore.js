@@ -1,12 +1,21 @@
-const { DEFAULT_SETTINGS } = require("../config");
+const { getMode, DEFAULT_MODE_ID } = require("../modes");
 
 /** @type {Map<string, object>} */
 const rooms = new Map();
 
-function createEmptyRoom({ code, hostId, hostName, hostSocketId }) {
+function createEmptyRoom({
+  code,
+  hostId,
+  hostName,
+  hostSocketId,
+  mode = DEFAULT_MODE_ID,
+}) {
+  const gameMode = getMode(mode);
+
   return {
     code,
     hostId,
+    mode,
     phase: "lobby",
     players: [
       {
@@ -16,14 +25,10 @@ function createEmptyRoom({ code, hostId, hostName, hostSocketId }) {
         isHost: true,
       },
     ],
-    settings: { ...DEFAULT_SETTINGS },
-    questions: [],
-    currentQuestionIndex: 0,
-    answersByQuestion: [],
-    scores: {},
+    settings: { ...gameMode.defaultSettings },
+    state: gameMode.createInitialState(),
     phaseDeadline: null,
     phaseTimeoutId: null,
-    result: null,
   };
 }
 
