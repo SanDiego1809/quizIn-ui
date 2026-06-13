@@ -29,8 +29,13 @@ export default function QuizWaitingRoom({
       <ul className={classes.playerList}>
         {room.players.map((player) => (
           <li key={player.id} className={classes.player}>
-            {player.name}
-            {player.isHost ? " (host)" : ""}
+            <span className={classes.playerName}>
+              {player.name}
+              {player.isHost ? " (host)" : ""}
+            </span>
+            {player.animation ? (
+              <span className={classes.playerAnimation}>{player.animation}</span>
+            ) : null}
           </li>
         ))}
       </ul>

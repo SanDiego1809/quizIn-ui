@@ -1,5 +1,5 @@
 .panel {
-  width: min(100%, 28rem);
+  width: min(100%, 36rem);
   padding: 1.5rem;
   border-radius: 1rem;
   background: #1e293b;
@@ -67,4 +67,15 @@
   text-align: center;
   color: #64748b;
   font-size: 0.875rem;
+}
+
+.avatarLoading {
+  margin-bottom: 1.25rem;
+  padding: 3rem 1rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.875rem;
+  background: #0f172a;
+  border: 1px solid #334155;
 }

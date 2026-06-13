@@ -8,6 +8,7 @@ function createEmptyRoom({
   hostId,
   hostName,
   hostSocketId,
+  hostAnimation = "Idle",
   mode = DEFAULT_MODE_ID,
 }) {
   const gameMode = getMode(mode);
@@ -21,6 +22,7 @@ function createEmptyRoom({
       {
         id: hostId,
         name: hostName,
+        animation: hostAnimation,
         socketId: hostSocketId,
         isHost: true,
       },

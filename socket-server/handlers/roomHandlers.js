@@ -11,11 +11,12 @@ const {
   removeSocketFromAllRooms,
   isHostSocket,
 } = require("../lib/roomLifecycle");
+const { sanitizeAnimation } = require("../lib/animations");
 
 function registerRoomHandlers(socket, ctx) {
   const { io, rooms, emitRoom } = ctx;
 
-  socket.on("quiz:room_create", ({ name, mode = DEFAULT_MODE_ID }) => {
+  socket.on("quiz:room_create", ({ name, mode = DEFAULT_MODE_ID, animation }) => {
     const safeName = sanitizeName(name);
     if (!safeName) {
       socket.emit("quiz:error", { message: "Name is required." });
@@ -38,6 +39,7 @@ function registerRoomHandlers(socket, ctx) {
       hostId: playerId,
       hostName: safeName,
       hostSocketId: socket.id,
+      hostAnimation: sanitizeAnimation(animation),
       mode,
     });
 
@@ -47,7 +49,7 @@ function registerRoomHandlers(socket, ctx) {
     emitRoom(roomCode);
   });
 
-  socket.on("quiz:room_join", ({ roomCode, name }) => {
+  socket.on("quiz:room_join", ({ roomCode, name, animation }) => {
     const code = normalizeRoomCode(roomCode);
     const safeName = sanitizeName(name);
     const room = rooms.get(code);
@@ -75,6 +77,7 @@ function registerRoomHandlers(socket, ctx) {
     room.players.push({
       id: playerId,
       name: safeName,
+      animation: sanitizeAnimation(animation),
       socketId: socket.id,
       isHost: false,
     });

@@ -1,5 +1,17 @@
+"use client";
+
+import { useState } from "react";
+import dynamic from "next/dynamic";
 import classes from "./QuizLobby.module.css";
 import Button from "@/components/button/Button";
+import { DEFAULT_ANIMATION } from "@/lib/quiz/animations";
+
+const AvatarPicker = dynamic(() => import("@/components/avatar/AvatarPicker"), {
+  ssr: false,
+  loading: () => (
+    <div className={classes.avatarLoading}>Loading avatar preview…</div>
+  ),
+});
 
 export default function QuizLobby({
   onCreate,
@@ -7,6 +19,8 @@ export default function QuizLobby({
   connected,
   connectionError,
 }) {
+  const [animation, setAnimation] = useState(DEFAULT_ANIMATION);
+
   return (
     <section className={classes.panel}>
       <h2 className={classes.heading}>Join a quiz room</h2>
@@ -20,12 +34,14 @@ export default function QuizLobby({
         <p className={classes.hint}>Connecting to game server…</p>
       )}
 
+      <AvatarPicker value={animation} onChange={setAnimation} />
+
       <form
         className={classes.form}
         onSubmit={(e) => {
           e.preventDefault();
           const data = new FormData(e.currentTarget);
-          onCreate(String(data.get("name") || ""));
+          onCreate(String(data.get("name") || ""), animation);
         }}
       >
         <label className={classes.label}>
@@ -52,7 +68,8 @@ export default function QuizLobby({
           const data = new FormData(e.currentTarget);
           onJoin(
             String(data.get("roomCode") || ""),
-            String(data.get("name") || "")
+            String(data.get("name") || ""),
+            animation
           );
         }}
       >

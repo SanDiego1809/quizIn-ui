@@ -58,7 +58,12 @@ function buildRoomPayload(room, playerId) {
     modeDescription: mode.description ?? null,
     roomCode: room.code,
     phase: room.phase,
-    players: room.players.map(({ id, name, isHost }) => ({ id, name, isHost })),
+    players: room.players.map(({ id, name, isHost, animation }) => ({
+      id,
+      name,
+      isHost,
+      animation,
+    })),
     hostId: room.hostId,
     settings: room.settings,
     yourPlayerId: playerId,

@@ -55,12 +55,12 @@ export function useQuizRoom() {
     };
   }, []);
 
-  const createRoom = useCallback((name) => {
-    getQuizSocket()?.emit("quiz:room_create", { name });
+  const createRoom = useCallback((name, animation) => {
+    getQuizSocket()?.emit("quiz:room_create", { name, animation });
   }, []);
 
-  const joinRoom = useCallback((roomCode, name) => {
-    getQuizSocket()?.emit("quiz:room_join", { roomCode, name });
+  const joinRoom = useCallback((roomCode, name, animation) => {
+    getQuizSocket()?.emit("quiz:room_join", { roomCode, name, animation });
   }, []);
 
   const updateRoomConfig = useCallback(
