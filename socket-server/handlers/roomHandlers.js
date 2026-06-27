@@ -10,6 +10,7 @@ const {
   bindSocketToPlayer,
   removeSocketFromAllRooms,
   isHostSocket,
+  getPlayerIdForSocket,
 } = require("../lib/roomLifecycle");
 const { sanitizeAnimation } = require("../lib/animations");
 
@@ -118,6 +119,30 @@ function registerRoomHandlers(socket, ctx) {
     }
 
     applyRoomConfig(room, { mode, settings });
+    emitRoom(code);
+  });
+
+  socket.on("quiz:player_animation", ({ roomCode, animation }) => {
+    const code = normalizeRoomCode(roomCode);
+    const room = rooms.get(code);
+
+    if (!room) {
+      socket.emit("quiz:error", { message: "Room not found." });
+      return;
+    }
+
+    const playerId = getPlayerIdForSocket(room, socket);
+    if (!playerId) {
+      socket.emit("quiz:error", {
+        message: "Your session is not in this room. Rejoin with the room code.",
+      });
+      return;
+    }
+
+    const player = room.players.find((entry) => entry.id === playerId);
+    if (!player) return;
+
+    player.animation = sanitizeAnimation(animation);
     emitRoom(code);
   });
 }

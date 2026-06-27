@@ -1,16 +1,93 @@
-.panel {
-  width: min(100%, 36rem);
-  padding: 1.5rem;
-  border-radius: 1rem;
-  background: #1e293b;
+.stage {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  min-height: 100dvh;
+  background: #0f172a;
+}
+
+.sceneArea {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+}
+
+.room {
+  position: relative;
+  width: 100%;
+  height: clamp(18rem, 48vh, 32rem);
+}
+
+.roomCanvas {
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+}
+
+.animationPicker {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.5rem;
+  background: rgb(15 23 42 / 0.88);
   border: 1px solid #334155;
+  backdrop-filter: blur(6px);
+}
+
+.animationLabel {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.animationSelect {
+  min-width: 10rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: 0.4rem;
+  border: 1px solid #475569;
+  background: #0f172a;
+  color: #f8fafc;
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.animationSelect:focus {
+  outline: 2px solid #6366f1;
+  outline-offset: 1px;
+}
+
+.animationSelect option {
+  background: #1e293b;
+  color: #f8fafc;
+}
+
+.questionBar {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 1.25rem;
+  background: linear-gradient(180deg, #1e293b 0%, #172033 100%);
+  border-top: 1px solid #334155;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .progress {
@@ -25,20 +102,34 @@
 }
 
 .question {
-  margin: 0 0 1.25rem;
-  font-size: 1.35rem;
+  margin: 0 0 1rem;
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
   line-height: 1.4;
 }
 
 .options {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.option {
+  width: 100%;
+  justify-content: flex-start;
+  text-align: left;
+  min-height: 3rem;
+  white-space: normal;
 }
 
 .hint {
-  margin: 1rem 0 0;
+  margin: 0.85rem 0 0;
   color: #94a3b8;
   font-size: 0.9rem;
   text-align: center;
+}
+
+@media (max-width: 640px) {
+  .options {
+    grid-template-columns: 1fr;
+  }
 }

@@ -24,11 +24,15 @@ export default function PlayPage() {
     clearError,
   } = useQuizRoom();
 
+  const isPlaying = room?.phase === "playing";
+
   return (
-    <main>
-      <Title subtitle="Answer questions — fastest correct answers win bragging rights.">
-        Quiz room
-      </Title>
+    <main className={isPlaying ? classes.playingMain : undefined}>
+      {!isPlaying ? (
+        <Title subtitle="Answer questions — fastest correct answers win bragging rights.">
+          Quiz room
+        </Title>
+      ) : null}
 
       {error ? (
         <div className={classes.error} role="alert">
@@ -58,9 +62,11 @@ export default function PlayPage() {
         />
       )}
 
-      <Link href="/" className={classes.backLink}>
-        ← Back home
-      </Link>
+      {!isPlaying ? (
+        <Link href="/" className={classes.backLink}>
+          ← Back home
+        </Link>
+      ) : null}
     </main>
   );
 }

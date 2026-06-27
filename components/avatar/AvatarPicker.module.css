@@ -11,29 +11,22 @@
   height: 14rem;
   border-radius: 0.75rem;
   overflow: hidden;
-  background: #0f172a;
   border: 1px solid #334155;
 }
 
-.loading,
-.error {
-  position: absolute;
-  inset: 0;
+.previewLoading {
+  width: 100%;
+  height: 14rem;
+  margin-bottom: 0;
+  border-radius: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  color: #94a3b8;
   font-size: 0.875rem;
   background: #0f172a;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.loading {
-  color: #94a3b8;
-}
-
-.error {
-  color: #fecaca;
+  border: 1px solid #334155;
 }
 
 .label {

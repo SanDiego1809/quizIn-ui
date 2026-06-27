@@ -23,6 +23,8 @@ function buildPayload(room, playerId) {
     question: room.phase === "playing" ? questionForClient(question) : null,
     hasAnswered:
       room.phase === "playing" ? answersForCurrent[playerId] !== undefined : false,
+    answeredPlayerIds:
+      room.phase === "playing" ? Object.keys(answersForCurrent) : [],
     answeredCount:
       room.phase === "playing" ? Object.keys(answersForCurrent).length : 0,
     result: state.result,

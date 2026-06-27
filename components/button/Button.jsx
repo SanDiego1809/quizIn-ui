@@ -6,11 +6,12 @@ export default function Button({
   type = "button",
   variant = "primary",
   disabled = false,
+  className = "",
 }) {
   return (
     <button
       type={type}
-      className={`${classes.button} ${classes[variant]}`}
+      className={`${classes.button} ${classes[variant]} ${className}`.trim()}
       onClick={onClick}
       disabled={disabled}
     >

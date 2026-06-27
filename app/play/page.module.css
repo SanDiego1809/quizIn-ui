@@ -34,3 +34,11 @@
 .backLink:hover {
   color: #e2e8f0;
 }
+
+.playingMain {
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: 0;
+  gap: 0;
+  min-height: 100dvh;
+}
