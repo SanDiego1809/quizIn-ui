@@ -29,7 +29,8 @@ const SETTINGS_FIELDS = [
 const classicMode = {
   id: "classic",
   label: "Classic Quiz",
-  description: "Everyone answers the same questions. Highest score wins.",
+  description:
+    "Everyone answers the same questions. Fastest correct answers earn the most points.",
   defaultSettings: DEFAULT_SETTINGS,
   settingsFields: SETTINGS_FIELDS,
   createInitialState: logic.createInitialState,

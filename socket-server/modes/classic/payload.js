@@ -1,3 +1,9 @@
+function getOptionIndex(answer) {
+  if (answer == null) return undefined;
+  if (typeof answer === "object") return answer.optionIndex;
+  return answer;
+}
+
 function questionForClient(question) {
   if (!question) return null;
   return {
@@ -31,13 +37,22 @@ function buildPayload(room, playerId) {
   };
 
   if (room.phase === "final_results" && state.questions.length) {
-    payload.questionReview = state.questions.map((q, index) => ({
-      id: q.id,
-      text: q.text,
-      options: q.options,
-      correctIndex: q.correctIndex,
-      answers: state.answersByQuestion[index] || {},
-    }));
+    payload.questionReview = state.questions.map((q, index) => {
+      const rawAnswers = state.answersByQuestion[index] || {};
+      const answers = Object.fromEntries(
+        Object.entries(rawAnswers).map(([playerId, answer]) => [
+          playerId,
+          getOptionIndex(answer),
+        ])
+      );
+      return {
+        id: q.id,
+        text: q.text,
+        options: q.options,
+        correctIndex: q.correctIndex,
+        answers,
+      };
+    });
   }
 
   return payload;

@@ -25,11 +25,21 @@ export default function PlayPage() {
   } = useQuizRoom();
 
   const isPlaying = room?.phase === "playing";
+  const isFinalResults = room?.phase === "final_results";
+  const hidePageChrome = isPlaying || isFinalResults;
 
   return (
-    <main className={isPlaying ? classes.playingMain : undefined}>
-      {!isPlaying ? (
-        <Title subtitle="Answer questions — fastest correct answers win bragging rights.">
+    <main
+      className={
+        isPlaying
+          ? classes.playingMain
+          : isFinalResults
+            ? classes.resultsMain
+            : undefined
+      }
+    >
+      {!hidePageChrome ? (
+        <Title subtitle="Answer quickly — fastest correct answers earn the most points.">
           Quiz room
         </Title>
       ) : null}
@@ -62,7 +72,7 @@ export default function PlayPage() {
         />
       )}
 
-      {!isPlaying ? (
+      {!hidePageChrome ? (
         <Link href="/" className={classes.backLink}>
           ← Back home
         </Link>

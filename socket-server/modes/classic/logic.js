@@ -2,6 +2,18 @@ const QUESTION_BANK = require("../../data/questions.json");
 const { shuffle } = require("../../lib/utils");
 const { clearRoomTimer } = require("../../lib/timers");
 
+const SPEED_POINTS = [10, 8, 7, 5];
+
+function getOptionIndex(answer) {
+  if (answer == null) return undefined;
+  if (typeof answer === "object") return answer.optionIndex;
+  return answer;
+}
+
+function createAnswer(optionIndex) {
+  return { optionIndex, answeredAt: Date.now() };
+}
+
 function toBoundedNumber(value, fallback, min, max) {
   const n = Number(value);
   if (!Number.isFinite(n)) return fallback;
@@ -40,9 +52,32 @@ function pickQuestions(count) {
   return pool.slice(0, Math.min(count, pool.length));
 }
 
-function scoreAnswer(question, optionIndex) {
-  if (optionIndex == null || optionIndex < 0) return 0;
-  return optionIndex === question.correctIndex ? 1 : 0;
+function pointsForRank(rank) {
+  return SPEED_POINTS[Math.min(rank, SPEED_POINTS.length - 1)];
+}
+
+function scoreQuestionBySpeed(question, answers, players) {
+  const correctPlayers = players
+    .map((player) => {
+      const answer = answers[player.id];
+      const optionIndex = getOptionIndex(answer);
+      const answeredAt =
+        answer && typeof answer === "object" ? answer.answeredAt : Infinity;
+      return { playerId: player.id, optionIndex, answeredAt };
+    })
+    .filter(
+      (entry) =>
+        entry.optionIndex != null &&
+        entry.optionIndex >= 0 &&
+        entry.optionIndex === question.correctIndex
+    )
+    .sort((a, b) => a.answeredAt - b.answeredAt);
+
+  const pointsByPlayer = {};
+  correctPlayers.forEach((entry, rank) => {
+    pointsByPlayer[entry.playerId] = pointsForRank(rank);
+  });
+  return pointsByPlayer;
 }
 
 function allPlayersAnswered(room, state) {
@@ -55,8 +90,10 @@ function applyScoresForCurrentQuestion(room, state) {
   if (!question) return;
 
   const answers = state.answersByQuestion[state.currentQuestionIndex] || {};
+  const pointsByPlayer = scoreQuestionBySpeed(question, answers, room.players);
+
   for (const player of room.players) {
-    const points = scoreAnswer(question, answers[player.id]);
+    const points = pointsByPlayer[player.id] || 0;
     state.scores[player.id] = (state.scores[player.id] || 0) + points;
   }
 }
@@ -77,6 +114,7 @@ function finalizeGame(room, state) {
   state.result = {
     rankings,
     totalQuestions: state.questions.length,
+    maxScore: state.questions.length * SPEED_POINTS[0],
   };
 }
 
@@ -119,9 +157,10 @@ function scheduleQuestionTimer(roomCode, ctx) {
     if (current.state.currentQuestionIndex !== questionIndex) return;
 
     const answers = current.state.answersByQuestion[questionIndex] || {};
+    const deadline = current.phaseDeadline ?? Date.now();
     for (const player of current.players) {
       if (answers[player.id] === undefined) {
-        answers[player.id] = -1;
+        answers[player.id] = { optionIndex: -1, answeredAt: deadline };
       }
     }
     current.state.answersByQuestion[questionIndex] = answers;
@@ -174,7 +213,7 @@ function submitAnswer(room, playerId, optionIndex, ctx) {
     return { ok: false, message: "You already answered this question." };
   }
 
-  answers[playerId] = idx;
+  answers[playerId] = createAnswer(idx);
   state.answersByQuestion[state.currentQuestionIndex] = answers;
 
   if (allPlayersAnswered(room, state)) {
