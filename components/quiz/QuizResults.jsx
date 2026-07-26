@@ -46,7 +46,37 @@ function placeLabel(rank) {
   return `${rank}e`;
 }
 
-export default function QuizResults({ room, isHost, onReset }) {
+function defaultRenderReviewItem(q, index, { yourPlayerId, classes }) {
+  const yourIndex = q.answers?.[yourPlayerId];
+  const correctText = q.options[q.correctIndex];
+  const pickedWrong =
+    yourIndex != null && yourIndex >= 0 && yourIndex !== q.correctIndex;
+  const missed = yourIndex === -1 || yourIndex === undefined;
+
+  return (
+    <article key={q.id} className={classes.reviewItem}>
+      <p className={classes.reviewQuestion}>
+        {index + 1}. {q.text}
+      </p>
+      <div className={classes.answerCompare}>
+        <span className={classes.correct}>✅ {correctText}</span>
+        {pickedWrong ? (
+          <span className={classes.wrong}>❌ {q.options[yourIndex]}</span>
+        ) : null}
+        {missed ? (
+          <span className={classes.wrong}>❌ Pas de réponse</span>
+        ) : null}
+      </div>
+    </article>
+  );
+}
+
+export default function QuizResults({
+  room,
+  isHost,
+  onReset,
+  renderReviewItem = defaultRenderReviewItem,
+}) {
   const { result, questionReview, yourPlayerId } = room;
   const rankings = result?.rankings ?? [];
   const total = rankings.length;
@@ -232,32 +262,9 @@ export default function QuizResults({ room, isHost, onReset }) {
               <details className={classes.review}>
                 <summary className={classes.reviewSummary}>Voir le corrigé</summary>
                 <div className={classes.reviewBody}>
-                  {questionReview.map((q, index) => {
-                    const yourIndex = q.answers?.[yourPlayerId];
-                    const correctText = q.options[q.correctIndex];
-                    const pickedWrong =
-                      yourIndex != null &&
-                      yourIndex >= 0 &&
-                      yourIndex !== q.correctIndex;
-                    const missed = yourIndex === -1 || yourIndex === undefined;
-
-                    return (
-                      <article key={q.id} className={classes.reviewItem}>
-                        <p className={classes.reviewQuestion}>
-                          {index + 1}. {q.text}
-                        </p>
-                        <div className={classes.answerCompare}>
-                          <span className={classes.correct}>✅ {correctText}</span>
-                          {pickedWrong ? (
-                            <span className={classes.wrong}>❌ {q.options[yourIndex]}</span>
-                          ) : null}
-                          {missed ? (
-                            <span className={classes.wrong}>❌ Pas de réponse</span>
-                          ) : null}
-                        </div>
-                      </article>
-                    );
-                  })}
+                  {questionReview.map((q, index) =>
+                    renderReviewItem(q, index, { yourPlayerId, classes })
+                  )}
                 </div>
               </details>
             ) : null}

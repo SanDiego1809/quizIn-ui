@@ -1,0 +1,74 @@
+.stage {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  min-height: 100dvh;
+  background: #0f172a;
+  padding: 1rem 1.25rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 64rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.progress {
+  font-size: 0.875rem;
+  color: #94a3b8;
+}
+
+.timer {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fbbf24;
+}
+
+.question {
+  margin: 0.75rem auto 1rem;
+  max-width: 64rem;
+  width: 100%;
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  line-height: 1.4;
+  text-align: center;
+}
+
+.countryName {
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+.mapArea {
+  /* This box's own height comes from flex-grow (not an explicit
+     `height`), so a plain `height: 100%` on the WorldMap wrapper
+     inside it can't reliably resolve against it. Making this a flex
+     container lets the child stretch to fill via flexbox (the
+     default `align-items: stretch`) instead of a percentage height. */
+  display: flex;
+  flex: 1;
+  /* `.stage`/`main` above rely on min-height rather than a definite
+     height, so a plain `flex: 1` can collapse to (near) 0px instead of
+     filling the remaining space. Guarantee a real, viewport-relative
+     floor here and let flex-grow use any extra space on top of it. */
+  min-height: clamp(20rem, 60dvh, 40rem);
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  border-radius: 0.75rem;
+  border: 1px solid #334155;
+  background: #172033;
+  overflow: hidden;
+}
+
+.hint {
+  margin: 0.85rem auto 0;
+  max-width: 64rem;
+  width: 100%;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  text-align: center;
+}

@@ -1,0 +1,107 @@
+.wrapper {
+  /* No explicit `height` here on purpose: `.mapArea` is a flex
+     container, and a flex item's cross-axis size only stretches to
+     fill it (the default `align-items: stretch`) when that size is
+     `auto`. An explicit `height: 100%` falls back to normal
+     percentage-height resolution instead, which doesn't reliably
+     resolve against an ancestor whose own height comes from
+     flex-grow rather than a literal `height` value. */
+  position: relative;
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.dragging {
+  cursor: grabbing;
+}
+
+.status {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.svg {
+  /* Same reasoning as `.wrapper` above: rely on flex stretch (auto
+     height) rather than a percentage height. */
+  display: block;
+  width: 100%;
+  min-height: 0;
+}
+
+.country {
+  fill: #334155;
+  stroke: #0f172a;
+  stroke-width: 0.5;
+  cursor: pointer;
+  transition: fill 0.15s ease;
+  /* Keep borders readable while zoomed in. */
+  vector-effect: non-scaling-stroke;
+}
+
+.country:hover {
+  fill: #52616f;
+}
+
+.country.pending {
+  fill: #b45309;
+}
+
+.country.disabled {
+  cursor: grab;
+}
+
+.dragging .country,
+.dragging .country.disabled {
+  cursor: grabbing;
+}
+
+.country.disabled:hover {
+  fill: #334155;
+}
+
+.country.disabled.pending:hover {
+  fill: #b45309;
+}
+
+.controls {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.controlButton {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.45rem;
+  border: 1px solid #475569;
+  background: rgb(15 23 42 / 0.9);
+  color: #f8fafc;
+  font: inherit;
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+
+.controlButton:hover:not(:disabled) {
+  background: #1e293b;
+  border-color: #64748b;
+}
+
+.controlButton:disabled {
+  opacity: 0.4;
+  cursor: default;
+}

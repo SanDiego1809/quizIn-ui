@@ -1,7 +1,9 @@
 const classic = require("./classic");
+const geography = require("./geography");
 
 const MODES = {
   [classic.id]: classic,
+  [geography.id]: geography,
 };
 
 const DEFAULT_MODE_ID = classic.id;

@@ -1,0 +1,862 @@
+[
+  {
+    "id": "geo-af",
+    "countryCode": "af",
+    "countryName": "Afghanistan"
+  },
+  {
+    "id": "geo-al",
+    "countryCode": "al",
+    "countryName": "Albania"
+  },
+  {
+    "id": "geo-dz",
+    "countryCode": "dz",
+    "countryName": "Algeria"
+  },
+  {
+    "id": "geo-ao",
+    "countryCode": "ao",
+    "countryName": "Angola"
+  },
+  {
+    "id": "geo-ar",
+    "countryCode": "ar",
+    "countryName": "Argentina"
+  },
+  {
+    "id": "geo-am",
+    "countryCode": "am",
+    "countryName": "Armenia"
+  },
+  {
+    "id": "geo-au",
+    "countryCode": "au",
+    "countryName": "Australia"
+  },
+  {
+    "id": "geo-at",
+    "countryCode": "at",
+    "countryName": "Austria"
+  },
+  {
+    "id": "geo-az",
+    "countryCode": "az",
+    "countryName": "Azerbaijan"
+  },
+  {
+    "id": "geo-bs",
+    "countryCode": "bs",
+    "countryName": "Bahamas"
+  },
+  {
+    "id": "geo-bd",
+    "countryCode": "bd",
+    "countryName": "Bangladesh"
+  },
+  {
+    "id": "geo-by",
+    "countryCode": "by",
+    "countryName": "Belarus"
+  },
+  {
+    "id": "geo-be",
+    "countryCode": "be",
+    "countryName": "Belgium"
+  },
+  {
+    "id": "geo-bz",
+    "countryCode": "bz",
+    "countryName": "Belize"
+  },
+  {
+    "id": "geo-bj",
+    "countryCode": "bj",
+    "countryName": "Benin"
+  },
+  {
+    "id": "geo-bt",
+    "countryCode": "bt",
+    "countryName": "Bhutan"
+  },
+  {
+    "id": "geo-bo",
+    "countryCode": "bo",
+    "countryName": "Bolivia"
+  },
+  {
+    "id": "geo-ba",
+    "countryCode": "ba",
+    "countryName": "Bosnia and Herz."
+  },
+  {
+    "id": "geo-bw",
+    "countryCode": "bw",
+    "countryName": "Botswana"
+  },
+  {
+    "id": "geo-br",
+    "countryCode": "br",
+    "countryName": "Brazil"
+  },
+  {
+    "id": "geo-bn",
+    "countryCode": "bn",
+    "countryName": "Brunei"
+  },
+  {
+    "id": "geo-bg",
+    "countryCode": "bg",
+    "countryName": "Bulgaria"
+  },
+  {
+    "id": "geo-bf",
+    "countryCode": "bf",
+    "countryName": "Burkina Faso"
+  },
+  {
+    "id": "geo-bi",
+    "countryCode": "bi",
+    "countryName": "Burundi"
+  },
+  {
+    "id": "geo-kh",
+    "countryCode": "kh",
+    "countryName": "Cambodia"
+  },
+  {
+    "id": "geo-cm",
+    "countryCode": "cm",
+    "countryName": "Cameroon"
+  },
+  {
+    "id": "geo-ca",
+    "countryCode": "ca",
+    "countryName": "Canada"
+  },
+  {
+    "id": "geo-cf",
+    "countryCode": "cf",
+    "countryName": "Central African Rep."
+  },
+  {
+    "id": "geo-td",
+    "countryCode": "td",
+    "countryName": "Chad"
+  },
+  {
+    "id": "geo-cl",
+    "countryCode": "cl",
+    "countryName": "Chile"
+  },
+  {
+    "id": "geo-cn",
+    "countryCode": "cn",
+    "countryName": "China"
+  },
+  {
+    "id": "geo-co",
+    "countryCode": "co",
+    "countryName": "Colombia"
+  },
+  {
+    "id": "geo-cg",
+    "countryCode": "cg",
+    "countryName": "Congo"
+  },
+  {
+    "id": "geo-cr",
+    "countryCode": "cr",
+    "countryName": "Costa Rica"
+  },
+  {
+    "id": "geo-ci",
+    "countryCode": "ci",
+    "countryName": "Côte d'Ivoire"
+  },
+  {
+    "id": "geo-hr",
+    "countryCode": "hr",
+    "countryName": "Croatia"
+  },
+  {
+    "id": "geo-cu",
+    "countryCode": "cu",
+    "countryName": "Cuba"
+  },
+  {
+    "id": "geo-cy",
+    "countryCode": "cy",
+    "countryName": "Cyprus"
+  },
+  {
+    "id": "geo-cz",
+    "countryCode": "cz",
+    "countryName": "Czech Rep."
+  },
+  {
+    "id": "geo-cd",
+    "countryCode": "cd",
+    "countryName": "Dem. Rep. Congo"
+  },
+  {
+    "id": "geo-kp",
+    "countryCode": "kp",
+    "countryName": "Dem. Rep. Korea"
+  },
+  {
+    "id": "geo-dk",
+    "countryCode": "dk",
+    "countryName": "Denmark"
+  },
+  {
+    "id": "geo-dj",
+    "countryCode": "dj",
+    "countryName": "Djibouti"
+  },
+  {
+    "id": "geo-do",
+    "countryCode": "do",
+    "countryName": "Dominican Rep."
+  },
+  {
+    "id": "geo-ec",
+    "countryCode": "ec",
+    "countryName": "Ecuador"
+  },
+  {
+    "id": "geo-eg",
+    "countryCode": "eg",
+    "countryName": "Egypt"
+  },
+  {
+    "id": "geo-sv",
+    "countryCode": "sv",
+    "countryName": "El Salvador"
+  },
+  {
+    "id": "geo-gq",
+    "countryCode": "gq",
+    "countryName": "Eq. Guinea"
+  },
+  {
+    "id": "geo-er",
+    "countryCode": "er",
+    "countryName": "Eritrea"
+  },
+  {
+    "id": "geo-ee",
+    "countryCode": "ee",
+    "countryName": "Estonia"
+  },
+  {
+    "id": "geo-et",
+    "countryCode": "et",
+    "countryName": "Ethiopia"
+  },
+  {
+    "id": "geo-fk",
+    "countryCode": "fk",
+    "countryName": "Falkland Is."
+  },
+  {
+    "id": "geo-fj",
+    "countryCode": "fj",
+    "countryName": "Fiji"
+  },
+  {
+    "id": "geo-fi",
+    "countryCode": "fi",
+    "countryName": "Finland"
+  },
+  {
+    "id": "geo-fr",
+    "countryCode": "fr",
+    "countryName": "France"
+  },
+  {
+    "id": "geo-ga",
+    "countryCode": "ga",
+    "countryName": "Gabon"
+  },
+  {
+    "id": "geo-gm",
+    "countryCode": "gm",
+    "countryName": "Gambia"
+  },
+  {
+    "id": "geo-ge",
+    "countryCode": "ge",
+    "countryName": "Georgia"
+  },
+  {
+    "id": "geo-de",
+    "countryCode": "de",
+    "countryName": "Germany"
+  },
+  {
+    "id": "geo-gh",
+    "countryCode": "gh",
+    "countryName": "Ghana"
+  },
+  {
+    "id": "geo-gr",
+    "countryCode": "gr",
+    "countryName": "Greece"
+  },
+  {
+    "id": "geo-gl",
+    "countryCode": "gl",
+    "countryName": "Greenland"
+  },
+  {
+    "id": "geo-gt",
+    "countryCode": "gt",
+    "countryName": "Guatemala"
+  },
+  {
+    "id": "geo-gn",
+    "countryCode": "gn",
+    "countryName": "Guinea"
+  },
+  {
+    "id": "geo-gw",
+    "countryCode": "gw",
+    "countryName": "Guinea-Bissau"
+  },
+  {
+    "id": "geo-gy",
+    "countryCode": "gy",
+    "countryName": "Guyana"
+  },
+  {
+    "id": "geo-ht",
+    "countryCode": "ht",
+    "countryName": "Haiti"
+  },
+  {
+    "id": "geo-hn",
+    "countryCode": "hn",
+    "countryName": "Honduras"
+  },
+  {
+    "id": "geo-hu",
+    "countryCode": "hu",
+    "countryName": "Hungary"
+  },
+  {
+    "id": "geo-is",
+    "countryCode": "is",
+    "countryName": "Iceland"
+  },
+  {
+    "id": "geo-in",
+    "countryCode": "in",
+    "countryName": "India"
+  },
+  {
+    "id": "geo-id",
+    "countryCode": "id",
+    "countryName": "Indonesia"
+  },
+  {
+    "id": "geo-ir",
+    "countryCode": "ir",
+    "countryName": "Iran"
+  },
+  {
+    "id": "geo-iq",
+    "countryCode": "iq",
+    "countryName": "Iraq"
+  },
+  {
+    "id": "geo-ie",
+    "countryCode": "ie",
+    "countryName": "Ireland"
+  },
+  {
+    "id": "geo-il",
+    "countryCode": "il",
+    "countryName": "Israel"
+  },
+  {
+    "id": "geo-it",
+    "countryCode": "it",
+    "countryName": "Italy"
+  },
+  {
+    "id": "geo-jm",
+    "countryCode": "jm",
+    "countryName": "Jamaica"
+  },
+  {
+    "id": "geo-jp",
+    "countryCode": "jp",
+    "countryName": "Japan"
+  },
+  {
+    "id": "geo-jo",
+    "countryCode": "jo",
+    "countryName": "Jordan"
+  },
+  {
+    "id": "geo-kz",
+    "countryCode": "kz",
+    "countryName": "Kazakhstan"
+  },
+  {
+    "id": "geo-ke",
+    "countryCode": "ke",
+    "countryName": "Kenya"
+  },
+  {
+    "id": "geo-kr",
+    "countryCode": "kr",
+    "countryName": "Korea"
+  },
+  {
+    "id": "geo-kw",
+    "countryCode": "kw",
+    "countryName": "Kuwait"
+  },
+  {
+    "id": "geo-kg",
+    "countryCode": "kg",
+    "countryName": "Kyrgyzstan"
+  },
+  {
+    "id": "geo-la",
+    "countryCode": "la",
+    "countryName": "Lao PDR"
+  },
+  {
+    "id": "geo-lv",
+    "countryCode": "lv",
+    "countryName": "Latvia"
+  },
+  {
+    "id": "geo-lb",
+    "countryCode": "lb",
+    "countryName": "Lebanon"
+  },
+  {
+    "id": "geo-ls",
+    "countryCode": "ls",
+    "countryName": "Lesotho"
+  },
+  {
+    "id": "geo-lr",
+    "countryCode": "lr",
+    "countryName": "Liberia"
+  },
+  {
+    "id": "geo-ly",
+    "countryCode": "ly",
+    "countryName": "Libya"
+  },
+  {
+    "id": "geo-lt",
+    "countryCode": "lt",
+    "countryName": "Lithuania"
+  },
+  {
+    "id": "geo-lu",
+    "countryCode": "lu",
+    "countryName": "Luxembourg"
+  },
+  {
+    "id": "geo-mk",
+    "countryCode": "mk",
+    "countryName": "Macedonia"
+  },
+  {
+    "id": "geo-mg",
+    "countryCode": "mg",
+    "countryName": "Madagascar"
+  },
+  {
+    "id": "geo-mw",
+    "countryCode": "mw",
+    "countryName": "Malawi"
+  },
+  {
+    "id": "geo-my",
+    "countryCode": "my",
+    "countryName": "Malaysia"
+  },
+  {
+    "id": "geo-ml",
+    "countryCode": "ml",
+    "countryName": "Mali"
+  },
+  {
+    "id": "geo-mr",
+    "countryCode": "mr",
+    "countryName": "Mauritania"
+  },
+  {
+    "id": "geo-mx",
+    "countryCode": "mx",
+    "countryName": "Mexico"
+  },
+  {
+    "id": "geo-md",
+    "countryCode": "md",
+    "countryName": "Moldova"
+  },
+  {
+    "id": "geo-mn",
+    "countryCode": "mn",
+    "countryName": "Mongolia"
+  },
+  {
+    "id": "geo-me",
+    "countryCode": "me",
+    "countryName": "Montenegro"
+  },
+  {
+    "id": "geo-ma",
+    "countryCode": "ma",
+    "countryName": "Morocco"
+  },
+  {
+    "id": "geo-mz",
+    "countryCode": "mz",
+    "countryName": "Mozambique"
+  },
+  {
+    "id": "geo-mm",
+    "countryCode": "mm",
+    "countryName": "Myanmar"
+  },
+  {
+    "id": "geo-na",
+    "countryCode": "na",
+    "countryName": "Namibia"
+  },
+  {
+    "id": "geo-np",
+    "countryCode": "np",
+    "countryName": "Nepal"
+  },
+  {
+    "id": "geo-nl",
+    "countryCode": "nl",
+    "countryName": "Netherlands"
+  },
+  {
+    "id": "geo-nc",
+    "countryCode": "nc",
+    "countryName": "New Caledonia"
+  },
+  {
+    "id": "geo-nz",
+    "countryCode": "nz",
+    "countryName": "New Zealand"
+  },
+  {
+    "id": "geo-ni",
+    "countryCode": "ni",
+    "countryName": "Nicaragua"
+  },
+  {
+    "id": "geo-ne",
+    "countryCode": "ne",
+    "countryName": "Niger"
+  },
+  {
+    "id": "geo-ng",
+    "countryCode": "ng",
+    "countryName": "Nigeria"
+  },
+  {
+    "id": "geo-no",
+    "countryCode": "no",
+    "countryName": "Norway"
+  },
+  {
+    "id": "geo-om",
+    "countryCode": "om",
+    "countryName": "Oman"
+  },
+  {
+    "id": "geo-pk",
+    "countryCode": "pk",
+    "countryName": "Pakistan"
+  },
+  {
+    "id": "geo-ps",
+    "countryCode": "ps",
+    "countryName": "Palestine"
+  },
+  {
+    "id": "geo-pa",
+    "countryCode": "pa",
+    "countryName": "Panama"
+  },
+  {
+    "id": "geo-pg",
+    "countryCode": "pg",
+    "countryName": "Papua New Guinea"
+  },
+  {
+    "id": "geo-py",
+    "countryCode": "py",
+    "countryName": "Paraguay"
+  },
+  {
+    "id": "geo-pe",
+    "countryCode": "pe",
+    "countryName": "Peru"
+  },
+  {
+    "id": "geo-ph",
+    "countryCode": "ph",
+    "countryName": "Philippines"
+  },
+  {
+    "id": "geo-pl",
+    "countryCode": "pl",
+    "countryName": "Poland"
+  },
+  {
+    "id": "geo-pt",
+    "countryCode": "pt",
+    "countryName": "Portugal"
+  },
+  {
+    "id": "geo-pr",
+    "countryCode": "pr",
+    "countryName": "Puerto Rico"
+  },
+  {
+    "id": "geo-qa",
+    "countryCode": "qa",
+    "countryName": "Qatar"
+  },
+  {
+    "id": "geo-ro",
+    "countryCode": "ro",
+    "countryName": "Romania"
+  },
+  {
+    "id": "geo-ru",
+    "countryCode": "ru",
+    "countryName": "Russia"
+  },
+  {
+    "id": "geo-rw",
+    "countryCode": "rw",
+    "countryName": "Rwanda"
+  },
+  {
+    "id": "geo-ss",
+    "countryCode": "ss",
+    "countryName": "S. Sudan"
+  },
+  {
+    "id": "geo-sa",
+    "countryCode": "sa",
+    "countryName": "Saudi Arabia"
+  },
+  {
+    "id": "geo-sn",
+    "countryCode": "sn",
+    "countryName": "Senegal"
+  },
+  {
+    "id": "geo-rs",
+    "countryCode": "rs",
+    "countryName": "Serbia"
+  },
+  {
+    "id": "geo-sl",
+    "countryCode": "sl",
+    "countryName": "Sierra Leone"
+  },
+  {
+    "id": "geo-sk",
+    "countryCode": "sk",
+    "countryName": "Slovakia"
+  },
+  {
+    "id": "geo-si",
+    "countryCode": "si",
+    "countryName": "Slovenia"
+  },
+  {
+    "id": "geo-sb",
+    "countryCode": "sb",
+    "countryName": "Solomon Is."
+  },
+  {
+    "id": "geo-so",
+    "countryCode": "so",
+    "countryName": "Somalia"
+  },
+  {
+    "id": "geo-za",
+    "countryCode": "za",
+    "countryName": "South Africa"
+  },
+  {
+    "id": "geo-es",
+    "countryCode": "es",
+    "countryName": "Spain"
+  },
+  {
+    "id": "geo-lk",
+    "countryCode": "lk",
+    "countryName": "Sri Lanka"
+  },
+  {
+    "id": "geo-sd",
+    "countryCode": "sd",
+    "countryName": "Sudan"
+  },
+  {
+    "id": "geo-sr",
+    "countryCode": "sr",
+    "countryName": "Suriname"
+  },
+  {
+    "id": "geo-sz",
+    "countryCode": "sz",
+    "countryName": "Swaziland"
+  },
+  {
+    "id": "geo-se",
+    "countryCode": "se",
+    "countryName": "Sweden"
+  },
+  {
+    "id": "geo-ch",
+    "countryCode": "ch",
+    "countryName": "Switzerland"
+  },
+  {
+    "id": "geo-sy",
+    "countryCode": "sy",
+    "countryName": "Syria"
+  },
+  {
+    "id": "geo-tw",
+    "countryCode": "tw",
+    "countryName": "Taiwan"
+  },
+  {
+    "id": "geo-tj",
+    "countryCode": "tj",
+    "countryName": "Tajikistan"
+  },
+  {
+    "id": "geo-tz",
+    "countryCode": "tz",
+    "countryName": "Tanzania"
+  },
+  {
+    "id": "geo-th",
+    "countryCode": "th",
+    "countryName": "Thailand"
+  },
+  {
+    "id": "geo-tl",
+    "countryCode": "tl",
+    "countryName": "Timor-Leste"
+  },
+  {
+    "id": "geo-tg",
+    "countryCode": "tg",
+    "countryName": "Togo"
+  },
+  {
+    "id": "geo-tt",
+    "countryCode": "tt",
+    "countryName": "Trinidad and Tobago"
+  },
+  {
+    "id": "geo-tn",
+    "countryCode": "tn",
+    "countryName": "Tunisia"
+  },
+  {
+    "id": "geo-tr",
+    "countryCode": "tr",
+    "countryName": "Turkey"
+  },
+  {
+    "id": "geo-tm",
+    "countryCode": "tm",
+    "countryName": "Turkmenistan"
+  },
+  {
+    "id": "geo-ug",
+    "countryCode": "ug",
+    "countryName": "Uganda"
+  },
+  {
+    "id": "geo-ua",
+    "countryCode": "ua",
+    "countryName": "Ukraine"
+  },
+  {
+    "id": "geo-ae",
+    "countryCode": "ae",
+    "countryName": "United Arab Emirates"
+  },
+  {
+    "id": "geo-gb",
+    "countryCode": "gb",
+    "countryName": "United Kingdom"
+  },
+  {
+    "id": "geo-us",
+    "countryCode": "us",
+    "countryName": "United States"
+  },
+  {
+    "id": "geo-uy",
+    "countryCode": "uy",
+    "countryName": "Uruguay"
+  },
+  {
+    "id": "geo-uz",
+    "countryCode": "uz",
+    "countryName": "Uzbekistan"
+  },
+  {
+    "id": "geo-vu",
+    "countryCode": "vu",
+    "countryName": "Vanuatu"
+  },
+  {
+    "id": "geo-ve",
+    "countryCode": "ve",
+    "countryName": "Venezuela"
+  },
+  {
+    "id": "geo-vn",
+    "countryCode": "vn",
+    "countryName": "Vietnam"
+  },
+  {
+    "id": "geo-eh",
+    "countryCode": "eh",
+    "countryName": "W. Sahara"
+  },
+  {
+    "id": "geo-ye",
+    "countryCode": "ye",
+    "countryName": "Yemen"
+  },
+  {
+    "id": "geo-zm",
+    "countryCode": "zm",
+    "countryName": "Zambia"
+  },
+  {
+    "id": "geo-zw",
+    "countryCode": "zw",
+    "countryName": "Zimbabwe"
+  }
+]
