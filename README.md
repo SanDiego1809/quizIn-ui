@@ -33,8 +33,28 @@ Open [http://localhost:3000](http://localhost:3000) and click **Start a quiz**, 
 | `QUIZIN_SOCKET_PORT` | `4000` | Socket server listen port |
 | `NEXT_PUBLIC_APP_ORIGIN` | `http://localhost:3000,…` | Extra allowed CORS origins for direct socket connections |
 | `QUIZIN_SOCKET_IDLE_MS` | `1800000` | Disconnect idle clients (`0` to disable) |
+| `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` (dev) | Canonical site URL for sitemap, Open Graph, and JSON-LD (no trailing slash) |
+| `GOOGLE_SITE_VERIFICATION` | *(unset)* | Google Search Console HTML tag verification token |
 
 In **development**, the browser connects directly to `http://127.0.0.1:4000` (CORS allows localhost origins). In **production**, it uses the same origin and Next.js rewrites `/socket.io` to the socket server.
+
+## SEO & Google Search Console
+
+Marketing routes are indexable: `/`, `/play`, `/contact`, `/multiplayer-quiz`, `/classic-quiz`, `/geography-quiz`. The app exposes:
+
+- **`/sitemap.xml`** — generated from `app/sitemap.js`
+- **`/robots.txt`** — allows crawlers and points to the sitemap
+- **Metadata** — titles, descriptions, Open Graph, and Twitter cards via `lib/site/metadata.js`
+- **JSON-LD** — structured data on the home and contact pages
+
+After deploy:
+
+1. Set **`NEXT_PUBLIC_SITE_URL`** to your production URL (e.g. `https://quizin.example.com`).
+2. Open [Google Search Console](https://search.google.com/search-console), add your property, and choose the **HTML tag** verification method.
+3. Copy the `content` value from the meta tag and set **`GOOGLE_SITE_VERIFICATION`** in your hosting environment, then redeploy.
+4. In Search Console, submit **`https://your-domain/sitemap.xml`**.
+
+Landing pages link to `/play` (and `/play?mode=classic` or `geography`) so campaign URLs pre-select a game mode when creating a room.
 
 You still need **`npm run dev:socket`** running in a second terminal.
 

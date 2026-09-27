@@ -1,9 +1,7 @@
 import "./globals.css";
+import { rootMetadata } from "@/lib/site/metadata";
 
-export const metadata = {
-  title: "QuizIn",
-  description: "QuizIn UI",
-};
+export const metadata = rootMetadata();
 
 export default function RootLayout({ children }) {
   return (

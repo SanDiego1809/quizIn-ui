@@ -18,12 +18,20 @@ export default function QuizLobby({
   onJoin,
   connected,
   connectionError,
+  defaultMode,
 }) {
   const [animation, setAnimation] = useState(DEFAULT_ANIMATION);
 
   return (
     <section className={classes.panel}>
       <h2 className={classes.heading}>Join a quiz room</h2>
+      {defaultMode ? (
+        <p className={classes.hint}>
+          New rooms start in{" "}
+          <strong>{defaultMode === "geography" ? "Geography Quiz" : "Classic Quiz"}</strong>{" "}
+          mode (host can change before starting).
+        </p>
+      ) : null}
       {connected ? (
         <p className={classes.statusOk}>Connected to game server</p>
       ) : connectionError ? (
@@ -41,7 +49,7 @@ export default function QuizLobby({
         onSubmit={(e) => {
           e.preventDefault();
           const data = new FormData(e.currentTarget);
-          onCreate(String(data.get("name") || ""), animation);
+          onCreate(String(data.get("name") || ""), animation, defaultMode);
         }}
       >
         <label className={classes.label}>

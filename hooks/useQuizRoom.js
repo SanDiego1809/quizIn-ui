@@ -55,8 +55,10 @@ export function useQuizRoom() {
     };
   }, []);
 
-  const createRoom = useCallback((name, animation) => {
-    getQuizSocket()?.emit("quiz:room_create", { name, animation });
+  const createRoom = useCallback((name, animation, mode) => {
+    const payload = { name, animation };
+    if (mode) payload.mode = mode;
+    getQuizSocket()?.emit("quiz:room_create", payload);
   }, []);
 
   const joinRoom = useCallback((roomCode, name, animation) => {

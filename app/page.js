@@ -1,18 +1,11 @@
-"use client";
+import HomePage from "@/components/home/HomePage";
+import { createPageMetadata } from "@/lib/site/metadata";
 
-import Link from "next/link";
-import Button from "@/components/button/Button";
-import Title from "@/components/title/Title";
+export const metadata = createPageMetadata({
+  title: "Free Multiplayer Quiz Online with Friends",
+  path: "/",
+});
 
-export default function HomePage() {
-  return (
-    <main>
-      <Title subtitle="Create, play, and share quizzes with friends.">
-        QuizIn
-      </Title>
-      <Link href="/play">
-        <Button>Start a quiz</Button>
-      </Link>
-    </main>
-  );
+export default function Page() {
+  return <HomePage />;
 }
