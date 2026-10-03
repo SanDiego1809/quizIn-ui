@@ -1,17 +1,45 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Title from "@/components/title/Title";
+import { getTranslations } from "@/lib/i18n";
 import QuizLobby from "@/components/quiz/QuizLobby";
 import ModeView from "@/components/quiz/modes/ModeView";
 import { parsePlayModeParam } from "@/lib/quiz/playMode";
 import { useQuizRoom } from "@/hooks/useQuizRoom";
 import classes from "./page.module.css";
 
-export default function PlayRoom() {
+export default function PlayRoom({ lang: propLang } = {}) {
   const searchParams = useSearchParams();
   const defaultMode = parsePlayModeParam(searchParams.get("mode"));
+  // Initialize lang from server prop (propLang) to match SSR output.
+  const [lang, setLang] = useState(propLang || "en");
+
+  // After mount, prefer query param or stored local choice.
+  useEffect(() => {
+    try {
+      const qLang = searchParams.get("lang");
+      const stored = localStorage.getItem("quizin_lang");
+      if (qLang && qLang !== lang) {
+        setLang(qLang);
+        localStorage.setItem("quizin_lang", qLang);
+        return;
+      }
+      if (stored && stored !== lang) {
+        setLang(stored);
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, []); // run once on mount
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("quizin_lang", lang);
+    } catch {}
+  }, [lang]);
   const {
     room,
     error,
@@ -43,7 +71,7 @@ export default function PlayRoom() {
       }
     >
       {!hidePageChrome ? (
-        <Title subtitle="Answer quickly — fastest correct answers earn the most points.">
+        <Title subtitle={getTranslations(lang).play.roomSubtitle}>
           Quiz room
         </Title>
       ) : null}
@@ -64,6 +92,7 @@ export default function PlayRoom() {
           onCreate={createRoom}
           onJoin={joinRoom}
           defaultMode={defaultMode}
+          lang={lang}
         />
       ) : (
         <ModeView
@@ -74,6 +103,7 @@ export default function PlayRoom() {
           onSubmit={submitAnswer}
           onAction={sendGameAction}
           onUpdateConfig={updateRoomConfig}
+          lang={lang}
         />
       )}
 

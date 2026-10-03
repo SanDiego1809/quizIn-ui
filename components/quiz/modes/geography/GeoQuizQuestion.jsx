@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { getTranslations } from "@/lib/i18n";
 import classes from "./GeoQuizQuestion.module.css";
 
 // d3-geo touches the DOM-free geometry math only, but we still load it
@@ -15,10 +16,17 @@ function formatCountdown(deadline) {
   return `${seconds}s`;
 }
 
-export default function GeoQuizQuestion({ room, onSubmit }) {
+function fill(template, vars) {
+  return String(template ?? "").replace(/\{(\w+)\}/g, (_, key) =>
+    vars[key] != null ? String(vars[key]) : ""
+  );
+}
+
+export default function GeoQuizQuestion({ room, onSubmit, lang = "en" }) {
   const [countdown, setCountdown] = useState(null);
   const [pendingCode, setPendingCode] = useState(null);
   const questionNumber = (room.currentQuestionIndex ?? 0) + 1;
+  const t = getTranslations(lang).geoQuestion;
 
   useEffect(() => {
     setPendingCode(null);
@@ -46,13 +54,16 @@ export default function GeoQuizQuestion({ room, onSubmit }) {
     <section className={classes.stage}>
       <header className={classes.header}>
         <span className={classes.progress}>
-          Country {questionNumber} / {room.totalQuestions}
+          {fill(t.progress, {
+            current: questionNumber,
+            total: room.totalQuestions,
+          })}
         </span>
         {countdown ? <span className={classes.timer}>{countdown}</span> : null}
       </header>
 
       <h2 className={classes.question}>
-        Click on:{" "}
+        {t.prompt}{" "}
         <span className={classes.countryName}>
           {room.question?.countryName}
         </span>
@@ -68,8 +79,11 @@ export default function GeoQuizQuestion({ room, onSubmit }) {
 
       <p className={classes.hint}>
         {room.hasAnswered
-          ? `Answer locked in. Waiting for others (${room.answeredCount}/${room.players.length})…`
-          : "Tap the country on the map. Scroll or pinch to zoom, drag to pan."}
+          ? fill(t.waiting, {
+              answered: room.answeredCount,
+              total: room.players.length,
+            })
+          : t.hint}
       </p>
     </section>
   );

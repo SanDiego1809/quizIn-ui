@@ -12,6 +12,7 @@ export default function GeographyModeView({
   onReset,
   onAction,
   onUpdateConfig,
+  lang = "en",
 }) {
   return (
     <>
@@ -22,6 +23,7 @@ export default function GeographyModeView({
           onStart={onStart}
           onReset={onReset}
           onUpdateConfig={onUpdateConfig}
+          lang={lang}
         />
       ) : null}
 
@@ -31,6 +33,7 @@ export default function GeographyModeView({
           onSubmit={(countryCode) =>
             onAction({ type: "submit_country", countryCode })
           }
+          lang={lang}
         />
       ) : null}
 
@@ -40,6 +43,7 @@ export default function GeographyModeView({
           isHost={isHost}
           onReset={onReset}
           renderReviewItem={renderGeoReviewItem}
+          lang={lang}
         />
       ) : null}
     </>

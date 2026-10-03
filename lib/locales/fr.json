@@ -1,0 +1,226 @@
+{
+  "home": {
+    "title": "Quiz multijoueur gratuit entre amis",
+    "subtitle": "Créez, jouez et partagez des quiz avec vos amis.",
+    "play": "Démarrer un quiz",
+    "contact": "Contact & crédits",
+    "multiplayerLink": "Salles de quiz multijoueur",
+    "faqHeading": "Foire aux questions",
+    "multiplayerNote": "utilisent un code simple de 6 lettres — aucune inscription requise.",
+    "faq": [
+      {
+        "question": "QuizIn est-il gratuit ?",
+        "answer": "Oui. QuizIn est gratuit — créez une salle, invitez vos amis avec un code de 6 lettres et commencez à jouer. Aucun compte ni téléchargement requis."
+      },
+      {
+        "question": "Combien de joueurs peuvent rejoindre une salle ?",
+        "answer": "Les amis rejoignent la même salle avec votre code et votre pseudonyme. L'hôte démarre la partie lorsque tout le monde est prêt."
+      },
+      {
+        "question": "Quels modes de quiz sont disponibles ?",
+        "answer": "Le Quiz classique est un trivia à choix multiple avec un chronomètre partagé. Le Quiz de géographie affiche le nom d'un pays — les joueurs cliquent sur le pays sur une carte interactive."
+      },
+      {
+        "question": "Dois-je installer quelque chose ?",
+        "answer": "Non. QuizIn fonctionne dans votre navigateur. Pour le développement local, le serveur doit être en cours d'exécution ; en production, le site se connecte automatiquement."
+      },
+      {
+        "question": "Comment fonctionne le système de points ?",
+        "answer": "En mode classique, les bonnes réponses plus rapides rapportent plus de points. En géographie, le premier à trouver le pays marque des points. Après la dernière question, vous voyez le classement et la correction."
+      }
+    ]
+  },
+  "contact": {
+    "heading": "Contact",
+    "lead": "Questions, retours ou idées — nous serions ravis de vous lire.",
+    "github": "Dépôt GitHub",
+    "play": "Jouer un quiz",
+    "getInTouch": "Nous contacter",
+    "getInTouchBody": "QuizIn est un projet de quiz multijoueur. Pour les bugs, idées de fonctionnalités ou toute autre question, écrivez-nous à {email}.",
+    "librariesTitle": "Bibliothèques et outils",
+    "librariesLead": "Merci aux projets open source qui font tourner ce site.",
+    "assetsTitle": "Assets et données",
+    "videosTitle": "Tutoriels et vidéos",
+    "videosLead": "Merci aux créateurs dont les guides ont aidé à façonner QuizIn.",
+    "videosEmpty": "Ajoutez vos liens de tutoriels dans lib/site/credits.js sous LEARNING_VIDEOS.",
+    "backHome": "← Retour à l'accueil",
+    "pageTitle": "Contact et crédits",
+    "pageDescription": "Contactez QuizIn pour vos retours et votre support. Crédits des bibliothèques open source, assets et tutoriels utilisés pour ce quiz multijoueur."
+  },
+  "credits": {
+    "libraries": {
+      "nextjs": { "note": "Routage App, interface et build de production" },
+      "react": { "note": "Composants et état côté client" },
+      "socketio": { "note": "Salles de quiz multijoueur en temps réel" },
+      "threejs": { "note": "Lobby d'avatars 3D et animations (chargeur FBX)" },
+      "d3geo": { "note": "Projection de la carte du monde en mode géographie" }
+    },
+    "assets": {
+      "mixamo": { "note": "Personnage Y Bot et clips d'animation dans /public/assets/animation" },
+      "geoCountries": {
+        "name": "GeoJSON des pays du monde",
+        "note": "Frontières des pays pour la carte interactive"
+      }
+    },
+    "videos": {
+      "d3GeoMap": {
+        "title": "Utiliser React (Hooks) avec D3 — Carte du monde avec D3-geo",
+        "creator": "Murat Kemal Dar (série de tutoriels)",
+        "note": "Carte interactive du mode géographie (d3-geo + React)"
+      },
+      "mocapAnimation": {
+        "title": "Animation par motion capture avec Three.js",
+        "creator": "Bobby Roe",
+        "note": "Scène d'avatars, clips mocap FBX et animations style Mixamo"
+      }
+    }
+  },
+  "privacy": {
+    "heading": "Politique de confidentialité",
+    "summary": "Cette page explique comment QuizIn gère les données personnelles.",
+    "note": "Pour la version légale complète, consultez la version anglaise ou contactez-nous."
+  },
+  "marketing": {
+    "whyPlay": "Pourquoi jouer sur QuizIn",
+    "explore": "Explorer",
+    "cta": "Jouer maintenant — gratuit",
+    "howItWorks": "Comment ça marche",
+    "backHome": "← Retour à l'accueil",
+    "relatedNav": "Autres modes de quiz",
+    "relatedMultiplayer": "Quiz multijoueur",
+    "relatedClassic": "Trivia classique",
+    "relatedGeography": "Quiz carte du monde",
+    "relatedContact": "Contact et crédits"
+  },
+  "play": {
+    "joinHeading": "Rejoindre une salle de quiz",
+    "newRoomsStart": "Les nouvelles salles démarrent en",
+    "geographyLabel": "Quiz de géographie",
+    "classicLabel": "Quiz classique",
+    "connected": "Connecté au serveur de jeu",
+    "connecting": "Connexion au serveur…",
+    "yourName": "Votre nom",
+    "namePlaceholder": "Alex",
+    "createRoom": "Créer une salle",
+    "divider": "ou",
+    "roomCode": "Code de salle",
+    "roomCodePlaceholder": "ABC123",
+    "joinRoom": "Rejoindre la salle"
+  },
+  "roomSubtitle": "Répondez rapidement — les bonnes réponses les plus rapides rapportent le plus de points.",
+  "results": {
+    "matchEnded": "Partie terminée",
+    "andTheWinnerIs": "Et le gagnant est…",
+    "winnerLabel": "Vainqueur",
+    "youTag": "(vous)",
+    "viewReview": "Voir le corrigé",
+    "replay": "Rejouer",
+    "waitingHostRestart": "En attente de l'hôte pour relancer une partie…"
+  },
+  "settings": {
+    "gameSetup": "Configuration de la partie",
+    "modeLabel": "Mode",
+    "start": "Démarrer",
+    "backToLobby": "Retour au lobby",
+    "waitingForHost": "En attente de l'hôte…"
+  },
+  "settings_fields": {
+    "questionsPerGame": {
+      "label": "Nombre de questions",
+      "hint": ""
+    },
+    "questionTimeSeconds": {
+      "label": "Temps par question (secondes)",
+      "hint": "0 = pas de minuterie"
+    }
+  },
+  "modes": {
+    "classic": {
+      "name": "Quiz classique",
+      "description": "Questions à choix multiple partagées, manches chronométrées et points selon la rapidité. Idéal pour les soirées quiz.",
+      "learnMore": "En savoir plus →"
+    },
+    "geography": {
+      "name": "Quiz de géographie",
+      "description": "Le nom d'un pays s'affiche — cliquez le sur la carte interactive avant vos amis. Parfait pour les amoureux de la géographie et les classes.",
+      "learnMore": "En savoir plus →"
+    }
+  },
+  "geoQuestion": {
+    "progress": "Pays {current} / {total}",
+    "prompt": "Cliquez sur :",
+    "waiting": "Réponse enregistrée. En attente des autres ({answered}/{total})…",
+    "hint": "Touchez le pays sur la carte. Molette ou pincez pour zoomer, glissez pour vous déplacer."
+  },
+  "how": {
+    "title": "Comment ça marche",
+    "steps": [
+      "Créez une salle avec votre pseudonyme",
+      "Partagez le code de salle avec vos amis",
+      "L'hôte choisit le mode et démarre la partie",
+      "Competez sur le classement en direct"
+    ]
+  },
+  "landing": {
+    "multiplayer-quiz": {
+      "title": "Quiz multijoueur en ligne entre amis",
+      "headline": "Salles de quiz multijoueurs en temps réel",
+      "description": "Organisez un quiz en ligne gratuit pour vos amis. Créez une salle, partagez votre code et jouez au trivia classique ou à la géographie dans le navigateur.",
+      "bullets": [
+        "Codes de salle de 6 lettres — faciles à partager",
+        "Scores en direct et classements après chaque partie",
+        "Modes trivia classique et carte géographique",
+        "Fonctionne sur navigateurs desktop et mobiles"
+      ],
+      "howItWorks": [
+        { "title": "Créez une salle", "body": "Saisissez votre nom et appuyez sur Créer la salle. Vous devenez l'hôte." },
+        { "title": "Invitez des amis", "body": "Partagez le code de la salle. Les amis rejoignent avec le même code et leur nom." },
+        { "title": "Choisissez un mode et démarrez", "body": "L'hôte choisit Classic ou Geography, ajuste les paramètres et démarre le quiz." }
+      ]
+    ,
+    "playHref": "/play",
+    "keywords": ["quiz multijoueur en ligne","quiz entre amis","salle de trivia en ligne","jeu quiz temps réel"]
+    },
+    "classic-quiz": {
+      "title": "Quiz classique — Multijoueur",
+      "headline": "Trivia à choix multiple entre amis",
+      "description": "Jouez à un quiz classique en ligne. Tout le monde reçoit les mêmes questions, se bat contre le chrono et concourt pour la première place.",
+      "bullets": [
+        "Questions partagées pour tous les joueurs",
+        "Minuterie et nombre de questions configurables",
+        "Scoring basé sur la rapidité",
+        "Correction à la fin"
+      ],
+      "howItWorks": [
+        { "title": "Rejoindre ou héberger", "body": "Ouvrez la salle, créez une partie ou rejoignez avec le code d'un ami." },
+        { "title": "Sélectionner Classic", "body": "L'hôte définit le mode Classic et les options comme le nombre de questions." },
+        { "title": "Répondre avant la fin du temps", "body": "Choisissez rapidement la bonne réponse — les plus rapides gagnent plus de points." }
+      ]
+    ,
+    "playHref": "/play?mode=classic",
+    "modeLabel": "Quiz classique",
+    "keywords": ["quiz classique","quiz choix multiple en ligne","trivia multijoueur","nuit de quiz en ligne"]
+    },
+    "geography-quiz": {
+      "title": "Quiz de géographie — Jeu de carte",
+      "headline": "Cliquez sur les pays sur la carte",
+      "description": "Quiz de géographie gratuit : un pays s'affiche — soyez le premier à le trouver sur la carte interactive.",
+      "bullets": [
+        "Carte interactive propulsée par d3-geo",
+        "Indications par nom de pays — cliquez le territoire correspondant",
+        "Salles multijoueur avec compétition en direct",
+        "Zoom et panoramique pour explorer la carte"
+      ],
+      "howItWorks": [
+        { "title": "Démarrer une salle géographie", "body": "Créez une salle et choisissez le mode Geography dans le lobby." },
+        { "title": "Lire le pays", "body": "Chaque manche affiche un pays. Trouvez-le avant les autres." },
+        { "title": "Gagner la manche", "body": "Le premier clic correct marque le point. Consultez le classement final." }
+      ]
+    ,
+    "playHref": "/play?mode=geography",
+    "modeLabel": "Quiz de géographie",
+    "keywords": ["quiz géographie en ligne","map quiz","jeu pays","trivia carte multijoueur"]
+    }
+  }
+}
+

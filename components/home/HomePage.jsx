@@ -2,7 +2,7 @@ import Link from "next/link";
 import Button from "@/components/button/Button";
 import JsonLd from "@/components/seo/JsonLd";
 import Title from "@/components/title/Title";
-import { HOME_FAQ } from "@/lib/site/faq";
+import { getHomeFaq } from "@/lib/site/faq";
 import {
   faqPageJsonLd,
   organizationJsonLd,
@@ -10,60 +10,53 @@ import {
   webSiteJsonLd,
 } from "@/lib/site/jsonLd";
 import { SITE_TAGLINE } from "@/lib/site/site";
+import { getTranslations } from "@/lib/i18n";
 import classes from "./HomePage.module.css";
 
-export default function HomePage() {
-  const jsonLd = [
-    webSiteJsonLd(),
-    organizationJsonLd(),
-    softwareApplicationJsonLd(),
-    faqPageJsonLd(HOME_FAQ),
-  ];
+export default function HomePage({ lang = "en" }) {
+  const all = getTranslations(lang);
+  const t = all.home;
+  const localizedFaq = getHomeFaq();
+  const jsonLd = [webSiteJsonLd(), organizationJsonLd(), softwareApplicationJsonLd(), faqPageJsonLd(localizedFaq)];
 
   return (
     <>
       <JsonLd data={jsonLd} />
       <main className={classes.main}>
         <header className={classes.hero}>
-          <Title subtitle={SITE_TAGLINE}>
-            Free multiplayer quiz with friends
+          <Title subtitle={t.subtitle}>
+            {t.title}
           </Title>
-          <Link href="/play" className={classes.ctaWrap}>
-            <Button>Start a quiz</Button>
+          <Link href={`/play?lang=${lang}`} className={classes.ctaWrap}>
+            <Button>{t.play}</Button>
           </Link>
-          <Link href="/contact" className={classes.footerLink}>
-            Contact &amp; credits
+          <Link href={`/contact?lang=${lang}`} className={classes.footerLink}>
+            {t.contact}
           </Link>
         </header>
 
         <section className={classes.section} aria-labelledby="home-modes">
           <h2 id="home-modes" className={classes.sectionTitle}>
-            Quiz modes
+            {all.modes && all.how ? all.how.title : "Quiz modes"}
           </h2>
           <div className={classes.modeGrid}>
             <article className={classes.modeCard}>
-              <h3 className={classes.modeName}>Classic Quiz</h3>
-              <p className={classes.modeDesc}>
-                Shared multiple-choice questions, timed rounds, and speed-based
-                scoring. Great for trivia nights and quick party games.
-              </p>
-              <Link href="/classic-quiz" className={classes.modeLink}>
-                Learn more →
+              <h3 className={classes.modeName}>{all.modes.classic.name}</h3>
+              <p className={classes.modeDesc}>{all.modes.classic.description}</p>
+              <Link href={`/classic-quiz?lang=${lang}`} className={classes.modeLink}>
+                {all.modes.classic.learnMore}
               </Link>
             </article>
             <article className={classes.modeCard}>
-              <h3 className={classes.modeName}>Geography Quiz</h3>
-              <p className={classes.modeDesc}>
-                A country name appears — click it on the interactive world map
-                before your friends do. Built for map lovers and classrooms.
-              </p>
-              <Link href="/geography-quiz" className={classes.modeLink}>
-                Learn more →
+              <h3 className={classes.modeName}>{all.modes.geography.name}</h3>
+              <p className={classes.modeDesc}>{all.modes.geography.description}</p>
+              <Link href={`/geography-quiz?lang=${lang}`} className={classes.modeLink}>
+                {all.modes.geography.learnMore}
               </Link>
             </article>
           </div>
           <p className={classes.sectionLead}>
-            <Link href="/multiplayer-quiz">Multiplayer quiz rooms</Link> use a
+            <Link href={`/multiplayer-quiz?lang=${lang}`}>Multiplayer quiz rooms</Link> use a
             simple 6-letter code — no sign-up required.
           </p>
         </section>
@@ -82,10 +75,10 @@ export default function HomePage() {
 
         <section className={classes.section} aria-labelledby="home-faq">
           <h2 id="home-faq" className={classes.sectionTitle}>
-            Frequently asked questions
+            {all.home?.faqHeading || "Frequently asked questions"}
           </h2>
           <dl className={classes.faqList}>
-            {HOME_FAQ.map((item) => (
+            {localizedFaq.map((item) => (
               <div key={item.question} className={classes.faqItem}>
                 <dt className={classes.faqQuestion}>{item.question}</dt>
                 <dd className={classes.faqAnswer}>{item.answer}</dd>

@@ -1,14 +1,10 @@
 import Link from "next/link";
 import JsonLd from "@/components/seo/JsonLd";
 import Title from "@/components/title/Title";
-import {
-  ASSET_CREDITS,
-  CONTACT,
-  LEARNING_VIDEOS,
-  LIBRARIES,
-} from "@/lib/site/credits";
+import { CONTACT, getLocalizedCredits } from "@/lib/site/credits";
 import { organizationJsonLd, webPageJsonLd } from "@/lib/site/jsonLd";
 import { createPageMetadata } from "@/lib/site/metadata";
+import { getTranslations } from "@/lib/i18n";
 import classes from "./page.module.css";
 
 const PAGE_DESCRIPTION =
@@ -26,12 +22,7 @@ function CreditList({ items }) {
     <ul className={classes.creditList}>
       {items.map((item) => (
         <li key={item.name} className={classes.creditItem}>
-          <a
-            href={item.url}
-            className={classes.creditName}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href={item.url} className={classes.creditName} target="_blank" rel="noopener noreferrer">
             {item.name}
           </a>
           <p className={classes.creditNote}>{item.note}</p>
@@ -41,13 +32,29 @@ function CreditList({ items }) {
   );
 }
 
-export default function ContactPage() {
-  const videos = LEARNING_VIDEOS.filter((entry) => entry.url?.trim());
+function EmailBody({ template, email }) {
+  const [before = "", after = ""] = String(template ?? "").split("{email}");
+  return (
+    <p className={classes.sectionLead}>
+      {before}
+      <a href={`mailto:${email}`} className={classes.emailInline}>
+        {email}
+      </a>
+      {after}
+    </p>
+  );
+}
+
+export default async function ContactPage({ searchParams }) {
+  const params = await searchParams;
+  const lang = params?.lang || "en";
+  const t = getTranslations(lang).contact;
+  const { libraries, assets, videos } = getLocalizedCredits(lang);
 
   const jsonLd = [
     webPageJsonLd({
-      title: "Contact & credits",
-      description: PAGE_DESCRIPTION,
+      title: t.pageTitle,
+      description: t.pageDescription,
       path: "/contact",
     }),
     organizationJsonLd(),
@@ -57,121 +64,77 @@ export default function ContactPage() {
     <>
       <JsonLd data={jsonLd} />
       <main className={classes.page}>
-      <div className={classes.intro}>
-        <Title subtitle="Questions, feedback, or ideas for QuizIn — we'd love to hear from you.">
-          Contact
-        </Title>
-      </div>
+        <div className={classes.intro}>
+          <Title subtitle={t.lead}>{t.heading}</Title>
+        </div>
 
-      <section className={classes.section} aria-labelledby="contact-heading">
-        <h2 id="contact-heading" className={classes.sectionTitle}>
-          Get in touch
-        </h2>
-        <p className={classes.sectionLead}>
-          QuizIn is a multiplayer quiz project. For bugs, feature ideas, or any
-          other questions, reach us by email
-          {CONTACT.email ? (
-            <>
-              {" "}
-              at{" "}
-              <a
-                href={`mailto:${CONTACT.email}`}
-                className={classes.emailInline}
-              >
-                {CONTACT.email}
+        <section className={classes.section} aria-labelledby="contact-heading">
+          <h2 id="contact-heading" className={classes.sectionTitle}>
+            {t.getInTouch}
+          </h2>
+          <EmailBody template={t.getInTouchBody} email={CONTACT.email} />
+          <div className={classes.contactActions}>
+            {CONTACT.github ? (
+              <a href={CONTACT.github} className={classes.contactLink} target="_blank" rel="noopener noreferrer">
+                {t.github}
               </a>
-            </>
-          ) : (
-            "."
-          )}
-          {CONTACT.email ? "." : null}
-        </p>
-        <div className={classes.contactActions}>
-          {CONTACT.github ? (
-            <a
-              href={CONTACT.github}
-              className={classes.contactLink}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              GitHub repository
-            </a>
-          ) : null}
-          {CONTACT.email ? (
+            ) : null}
             <a href={`mailto:${CONTACT.email}`} className={classes.contactLink}>
               {CONTACT.email}
             </a>
-          ) : null}
-          <Link href="/play" className={classes.contactLink}>
-            Play a quiz
-          </Link>
-        </div>
-      </section>
+            <Link href={`/play?lang=${lang}`} className={classes.contactLink}>
+              {t.play}
+            </Link>
+          </div>
+        </section>
 
-      <hr className={classes.divider} />
+        <hr className={classes.divider} />
 
-      <section className={classes.section} aria-labelledby="libraries-heading">
-        <h2 id="libraries-heading" className={classes.sectionTitle}>
-          Libraries &amp; tools
-        </h2>
-        <p className={classes.sectionLead}>
-          Shoutout to the open-source projects that power this site.
-        </p>
-        <CreditList items={LIBRARIES} />
-      </section>
+        <section className={classes.section} aria-labelledby="libraries-heading">
+          <h2 id="libraries-heading" className={classes.sectionTitle}>
+            {t.librariesTitle}
+          </h2>
+          <p className={classes.sectionLead}>{t.librariesLead}</p>
+          <CreditList items={libraries} />
+        </section>
 
-      <section className={classes.section} aria-labelledby="assets-heading">
-        <h2 id="assets-heading" className={classes.sectionTitle}>
-          Assets &amp; data
-        </h2>
-        <CreditList items={ASSET_CREDITS} />
-      </section>
+        <section className={classes.section} aria-labelledby="assets-heading">
+          <h2 id="assets-heading" className={classes.sectionTitle}>
+            {t.assetsTitle}
+          </h2>
+          <CreditList items={assets} />
+        </section>
 
-      <hr className={classes.divider} />
+        <hr className={classes.divider} />
 
-      <section className={classes.section} aria-labelledby="videos-heading">
-        <h2 id="videos-heading" className={classes.sectionTitle}>
-          Tutorials &amp; videos
-        </h2>
-        <p className={classes.sectionLead}>
-          Thanks to the creators whose walkthroughs helped shape QuizIn.
-        </p>
-        {videos.length > 0 ? (
-          <ul className={classes.creditList}>
-            {videos.map((video) => (
-              <li key={video.url} className={classes.creditItem}>
-                <div className={classes.videoItem}>
-                  <a
-                    href={video.url}
-                    className={classes.videoTitle}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {video.title}
-                  </a>
-                  {video.creator ? (
-                    <p className={classes.videoMeta}>{video.creator}</p>
-                  ) : null}
-                  {video.note ? (
-                    <p className={classes.creditNote}>{video.note}</p>
-                  ) : null}
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className={classes.emptyVideos}>
-            Add your tutorial links in{" "}
-            <code>lib/site/credits.js</code> under{" "}
-            <code>LEARNING_VIDEOS</code>.
-          </p>
-        )}
-      </section>
+        <section className={classes.section} aria-labelledby="videos-heading">
+          <h2 id="videos-heading" className={classes.sectionTitle}>
+            {t.videosTitle}
+          </h2>
+          <p className={classes.sectionLead}>{t.videosLead}</p>
+          {videos.length > 0 ? (
+            <ul className={classes.creditList}>
+              {videos.map((video) => (
+                <li key={video.url} className={classes.creditItem}>
+                  <div className={classes.videoItem}>
+                    <a href={video.url} className={classes.videoTitle} target="_blank" rel="noopener noreferrer">
+                      {video.title}
+                    </a>
+                    {video.creator ? <p className={classes.videoMeta}>{video.creator}</p> : null}
+                    {video.note ? <p className={classes.creditNote}>{video.note}</p> : null}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className={classes.emptyVideos}>{t.videosEmpty}</p>
+          )}
+        </section>
 
-      <Link href="/" className={classes.backLink}>
-        ← Back home
-      </Link>
-    </main>
+        <Link href={`/?lang=${lang}`} className={classes.backLink}>
+          {t.backHome}
+        </Link>
+      </main>
     </>
   );
 }

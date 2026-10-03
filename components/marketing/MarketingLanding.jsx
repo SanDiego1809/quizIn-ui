@@ -7,8 +7,11 @@ import { organizationJsonLd, webPageJsonLd } from "@/lib/site/jsonLd";
 import { notFound } from "next/navigation";
 import classes from "./MarketingLanding.module.css";
 
-export default function MarketingLanding({ slug }) {
-  const page = getLandingPage(slug);
+import { getTranslations } from "@/lib/i18n";
+import { getLandingPageLocalized } from "@/lib/site/landingPages";
+
+export default function MarketingLanding({ slug, lang = "en" }) {
+  const page = getLandingPageLocalized(slug, lang) || getLandingPage(slug);
   if (!page) notFound();
 
   const jsonLd = [
@@ -20,26 +23,34 @@ export default function MarketingLanding({ slug }) {
     organizationJsonLd(),
   ];
 
+  const t = getTranslations(lang).marketing;
+  const title = page.title;
+  const headline = page.headline;
+  const description = page.description;
+  const bullets = page.bullets;
+  const howItWorks = page.howItWorks;
+  const playHref = page.playHref.includes("?")
+    ? `${page.playHref}&lang=${lang}`
+    : `${page.playHref}?lang=${lang}`;
+
   return (
     <>
       <JsonLd data={jsonLd} />
       <main className={classes.main}>
         <header className={classes.hero}>
-          <Title subtitle={page.description}>{page.headline}</Title>
-          {page.modeLabel ? (
-            <p className={classes.modeBadge}>{page.modeLabel}</p>
-          ) : null}
-          <Link href={page.playHref} className={classes.ctaWrap}>
-            <Button>Play now — free</Button>
+          <Title subtitle={description}>{headline}</Title>
+          {page.modeLabel ? <p className={classes.modeBadge}>{page.modeLabel}</p> : null}
+          <Link href={playHref} className={classes.ctaWrap}>
+            <Button>{t.cta}</Button>
           </Link>
         </header>
 
         <section className={classes.section} aria-labelledby={`${slug}-features`}>
           <h2 id={`${slug}-features`} className={classes.sectionTitle}>
-            Why play on QuizIn
+            {t.whyPlay}
           </h2>
           <ul className={classes.bulletList}>
-            {page.bullets.map((item) => (
+            {bullets.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
@@ -47,10 +58,10 @@ export default function MarketingLanding({ slug }) {
 
         <section className={classes.section} aria-labelledby={`${slug}-how`}>
           <h2 id={`${slug}-how`} className={classes.sectionTitle}>
-            How it works
+            {t.howItWorks}
           </h2>
           <ol className={classes.steps}>
-            {page.howItWorks.map((step, index) => (
+            {howItWorks.map((step, index) => (
               <li key={step.title} className={classes.step}>
                 <span className={classes.stepNum}>{index + 1}</span>
                 <div>
@@ -62,16 +73,16 @@ export default function MarketingLanding({ slug }) {
           </ol>
         </section>
 
-        <nav className={classes.related} aria-label="Other quiz modes">
-          <span className={classes.relatedLabel}>Explore</span>
-          <Link href="/multiplayer-quiz">Multiplayer quiz</Link>
-          <Link href="/classic-quiz">Classic trivia</Link>
-          <Link href="/geography-quiz">Geography map quiz</Link>
-          <Link href="/contact">Contact &amp; credits</Link>
+        <nav className={classes.related} aria-label={t.relatedNav}>
+          <span className={classes.relatedLabel}>{t.explore}</span>
+          <Link href={`/multiplayer-quiz?lang=${lang}`}>{t.relatedMultiplayer}</Link>
+          <Link href={`/classic-quiz?lang=${lang}`}>{t.relatedClassic}</Link>
+          <Link href={`/geography-quiz?lang=${lang}`}>{t.relatedGeography}</Link>
+          <Link href={`/contact?lang=${lang}`}>{t.relatedContact}</Link>
         </nav>
 
-        <Link href="/" className={classes.backLink}>
-          ← Back home
+        <Link href={`/?lang=${lang}`} className={classes.backLink}>
+          {t.backHome}
         </Link>
       </main>
     </>

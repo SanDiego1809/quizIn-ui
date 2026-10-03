@@ -1,0 +1,227 @@
+{
+  "home": {
+    "title": "Free multiplayer quiz with friends",
+    "subtitle": "Create, play, and share quizzes with friends.",
+    "play": "Start a quiz",
+    "contact": "Contact & credits",
+    "multiplayerLink": "Multiplayer quiz rooms",
+    "faqHeading": "Frequently asked questions",
+    "multiplayerNote": "use a simple 6-letter code — no sign-up required.",
+    "faq": [
+      {
+        "question": "Is QuizIn free to play?",
+        "answer": "Yes. QuizIn is free — create a room, invite friends with a 6-letter code, and start playing. No account or download is required."
+      },
+      {
+        "question": "How many players can join a quiz room?",
+        "answer": "Friends join the same room with your room code and display name. The host starts the game when everyone is ready."
+      },
+      {
+        "question": "What quiz modes are available?",
+        "answer": "Classic Quiz is multiple-choice trivia with a shared timer. Geography Quiz shows a country name — players click the country on an interactive world map. The host picks the mode in the waiting room."
+      },
+      {
+        "question": "Do I need to install anything?",
+        "answer": "No. QuizIn runs in your browser. For local development the game server must be running; in production the site connects automatically."
+      },
+      {
+        "question": "How does scoring work?",
+        "answer": "In classic mode, faster correct answers earn more points. Geography mode rewards whoever finds the country on the map first. After the last question you see a leaderboard and review."
+      }
+    ]
+  },
+  "contact": {
+    "heading": "Contact",
+    "lead": "Questions, feedback, or ideas — we'd love to hear from you.",
+    "github": "GitHub repository",
+    "play": "Play a quiz",
+    "getInTouch": "Get in touch",
+    "getInTouchBody": "QuizIn is a multiplayer quiz project. For bugs, feature ideas, or any other questions, reach us by email {email}.",
+    "librariesTitle": "Libraries & tools",
+    "librariesLead": "Shoutout to the open-source projects that power this site.",
+    "assetsTitle": "Assets & data",
+    "videosTitle": "Tutorials & videos",
+    "videosLead": "Thanks to the creators whose walkthroughs helped shape QuizIn.",
+    "videosEmpty": "Add your tutorial links in lib/site/credits.js under LEARNING_VIDEOS.",
+    "backHome": "← Back home",
+    "pageTitle": "Contact & credits",
+    "pageDescription": "Contact QuizIn for feedback and support. Credits for open-source libraries, assets, and tutorials used to build this multiplayer quiz."
+  },
+  "credits": {
+    "libraries": {
+      "nextjs": { "note": "App routing, UI, and production build" },
+      "react": { "note": "Components and client state" },
+      "socketio": { "note": "Real-time multiplayer quiz rooms" },
+      "threejs": { "note": "3D avatar lobby and animations (FBX loader)" },
+      "d3geo": { "note": "Geography mode world map projection" }
+    },
+    "assets": {
+      "mixamo": { "note": "Y Bot character and animation clips in /public/assets/animation" },
+      "geoCountries": {
+        "name": "World countries GeoJSON",
+        "note": "Country boundaries for the interactive map"
+      }
+    },
+    "videos": {
+      "d3GeoMap": {
+        "title": "Using React (Hooks) with D3 — World Map with D3-geo",
+        "creator": "Murat Kemal Dar (tutorial series)",
+        "note": "Geography mode interactive world map (d3-geo + React)"
+      },
+      "mocapAnimation": {
+        "title": "Motion Capture Animation with Three.js",
+        "creator": "Bobby Roe",
+        "note": "Avatar scene, FBX mocap clips, and Mixamo-style animations"
+      }
+    }
+  },
+  "privacy": {
+    "heading": "Privacy Policy",
+    "summary": "This page explains how QuizIn handles personal data.",
+    "note": "For a full legal version, see the English copy or contact us."
+  },
+  "marketing": {
+    "whyPlay": "Why play on QuizIn",
+    "explore": "Explore",
+    "cta": "Play now — free",
+    "howItWorks": "How it works",
+    "backHome": "← Back home",
+    "relatedNav": "Other quiz modes",
+    "relatedMultiplayer": "Multiplayer quiz",
+    "relatedClassic": "Classic trivia",
+    "relatedGeography": "Geography map quiz",
+    "relatedContact": "Contact & credits"
+  },
+  "play": {
+    "joinHeading": "Join a quiz room",
+    "newRoomsStart": "New rooms start in",
+    "geographyLabel": "Geography Quiz",
+    "classicLabel": "Classic Quiz",
+    "connected": "Connected to game server",
+    "connecting": "Connecting to game server…",
+    "yourName": "Your name",
+    "namePlaceholder": "Alex",
+    "createRoom": "Create room",
+    "divider": "or",
+    "roomCode": "Room code",
+    "roomCodePlaceholder": "ABC123",
+    "joinRoom": "Join room"
+  },
+  "roomSubtitle": "Answer quickly — fastest correct answers earn the most points.",
+  "results": {
+    "matchEnded": "Match finished",
+    "andTheWinnerIs": "And the winner is…",
+    "winnerLabel": "Winner",
+    "youTag": "(you)",
+    "viewReview": "View review",
+    "replay": "Play again",
+    "waitingHostRestart": "Waiting for the host to start a new game…"
+  },
+  "settings": {
+    "gameSetup": "Game setup",
+    "modeLabel": "Mode",
+    "start": "Start",
+    "backToLobby": "Back to lobby",
+    "waitingForHost": "Waiting for the host to start…"
+  },
+  "settings_fields": {
+    "questionsPerGame": {
+      "label": "Number of questions",
+      "hint": ""
+    },
+    "questionTimeSeconds": {
+      "label": "Time per question (seconds)",
+      "hint": "0 = no timer"
+    }
+  },
+  "modes": {
+    "classic": {
+      "name": "Classic Quiz",
+      "description": "Shared multiple-choice questions, timed rounds, and speed-based scoring. Great for trivia nights and quick party games.",
+      "learnMore": "Learn more →"
+    },
+    "geography": {
+      "name": "Geography Quiz",
+      "description": "A country name appears — click it on the interactive world map before your friends do. Built for map lovers and classrooms.",
+      "learnMore": "Learn more →"
+    }
+  },
+  "geoQuestion": {
+    "progress": "Country {current} / {total}",
+    "prompt": "Click on:",
+    "waiting": "Answer locked in. Waiting for others ({answered}/{total})…",
+    "hint": "Tap the country on the map. Scroll or pinch to zoom, drag to pan."
+  },
+  "how": {
+    "title": "How it works",
+    "steps": [
+      "Create a room with your display name",
+      "Share the room code with friends",
+      "Host picks the mode and starts the game",
+      "Compete on the live leaderboard"
+    ]
+  }
+  ,
+  "landing": {
+    "multiplayer-quiz": {
+      "title": "Multiplayer Quiz Online with Friends",
+      "headline": "Real-time multiplayer quiz rooms",
+      "description": "Host a free online quiz for friends. Create a room, share your code, and play classic trivia or geography together in the browser.",
+      "bullets": [
+        "6-letter room codes — easy to share in chat or on a call",
+        "Live scores and leaderboards after each game",
+        "Classic trivia and geography map modes",
+        "Works on desktop and mobile browsers"
+      ],
+      "howItWorks": [
+        { "title": "Create a room", "body": "Enter your name and tap Create room. You become the host." },
+        { "title": "Invite friends", "body": "Share the room code. Friends join with the same code and their names." },
+        { "title": "Pick a mode & start", "body": "The host chooses Classic or Geography, adjusts settings, and starts the quiz." }
+      ]
+    ,
+    "playHref": "/play",
+    "keywords": ["multiplayer quiz online","quiz with friends","online trivia room","real-time quiz game"]
+    },
+    "classic-quiz": {
+      "title": "Classic Trivia Quiz — Multiplayer",
+      "headline": "Multiple-choice trivia with friends",
+      "description": "Play a fast-paced classic quiz online. Everyone gets the same questions, races the timer, and competes for the top spot on the leaderboard.",
+      "bullets": [
+        "Shared questions for every player in the room",
+        "Configurable timer and number of questions",
+        "Speed-based scoring for correct answers",
+        "Answer review at the end of the game"
+      ],
+      "howItWorks": [
+        { "title": "Join or host", "body": "Open the quiz room, create a game, or join with a friend's code." },
+        { "title": "Select Classic Quiz", "body": "The host sets Classic mode and options like question count and time limit." },
+        { "title": "Answer before time runs out", "body": "Pick the right option quickly — faster correct answers score higher." }
+      ]
+    ,
+    "playHref": "/play?mode=classic",
+    "modeLabel": "Classic Quiz",
+    "keywords": ["classic trivia quiz","multiple choice quiz online","multiplayer trivia","quiz night online"]
+    },
+    "geography-quiz": {
+      "title": "Geography Quiz — World Map Game",
+      "headline": "Click countries on the world map",
+      "description": "Free online geography quiz: a country name appears — be the first to find it on the interactive world map. Perfect for map lovers and classroom fun.",
+      "bullets": [
+        "Interactive world map powered by d3-geo",
+        "Country-name prompts — click the matching territory",
+        "Multiplayer rooms with live competition",
+        "Zoom and pan to explore the map while you play"
+      ],
+      "howItWorks": [
+        { "title": "Start a geography room", "body": "Create a room and choose Geography Quiz in the lobby (or use the button below)." },
+        { "title": "Read the country", "body": "Each round shows a country name. Find it on the map before others do." },
+        { "title": "Win the round", "body": "First correct click scores the point. Play through all countries and check the final standings." }
+      ]
+    ,
+    "playHref": "/play?mode=geography",
+    "modeLabel": "Geography Quiz",
+    "keywords": ["geography quiz online","world map quiz","country quiz game","map trivia multiplayer"]
+    }
+  }
+}
+

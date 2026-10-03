@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import classes from "./QuizResults.module.css";
 import Button from "@/components/button/Button";
+import { getTranslations } from "@/lib/i18n";
 
 const REVEAL_DELAY_MS = 1200;
 const CELEBRATION_DELAY_MS = 500;
@@ -76,8 +77,11 @@ export default function QuizResults({
   isHost,
   onReset,
   renderReviewItem = defaultRenderReviewItem,
+  lang = "en",
 }) {
   const { result, questionReview, yourPlayerId } = room;
+  const all = getTranslations(lang);
+  const t = all.results ?? {};
   const rankings = result?.rankings ?? [];
   const total = rankings.length;
 
@@ -196,8 +200,8 @@ export default function QuizResults({
 
       <div className={classes.content}>
         <header className={classes.intro}>
-          <p className={classes.eyebrow}>Partie terminée</p>
-          <h2 className={classes.title}>Et le gagnant est…</h2>
+          <p className={classes.eyebrow}>{t.matchEnded}</p>
+          <h2 className={classes.title}>{t.andTheWinnerIs}</h2>
         </header>
 
         <ol ref={listRef} className={classes.podium} aria-label="Révélation du classement">
@@ -226,10 +230,10 @@ export default function QuizResults({
                   >
                     <TrophyIcon className={classes.trophy} />
                     <div className={classes.winnerBody}>
-                      <p className={classes.winnerLabel}>Vainqueur</p>
+                      <p className={classes.winnerLabel}>{t.winnerLabel}</p>
                       <h3 className={classes.winnerName}>
                         {entry.name}
-                        {isYou ? <span className={classes.youTag}> (vous)</span> : null}
+                        {isYou ? <span className={classes.youTag}> {t.youTag}</span> : null}
                       </h3>
                       <p className={classes.winnerScore}>{scoreLabel}</p>
                     </div>
@@ -259,8 +263,8 @@ export default function QuizResults({
         {showDetails ? (
           <div className={classes.details}>
             {questionReview?.length ? (
-              <details className={classes.review}>
-                <summary className={classes.reviewSummary}>Voir le corrigé</summary>
+                  <details className={classes.review}>
+                <summary className={classes.reviewSummary}>{t.viewReview}</summary>
                 <div className={classes.reviewBody}>
                   {questionReview.map((q, index) =>
                     renderReviewItem(q, index, { yourPlayerId, classes })
@@ -271,11 +275,9 @@ export default function QuizResults({
 
             <footer className={classes.actions}>
               {isHost ? (
-                <Button onClick={onReset}>Rejouer</Button>
+                <Button onClick={onReset}>{t.replay}</Button>
               ) : (
-                <p className={classes.hint}>
-                  En attente de l&apos;hôte pour relancer une partie…
-                </p>
+                <p className={classes.hint}>{t.waitingHostRestart}</p>
               )}
             </footer>
           </div>

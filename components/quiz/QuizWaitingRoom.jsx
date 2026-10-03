@@ -5,6 +5,7 @@ import Button from "@/components/button/Button";
 import QuizRoomSettings, {
   formatRoomSettingsSummary,
 } from "@/components/quiz/QuizRoomSettings";
+import { getTranslations } from "@/lib/i18n";
 
 export default function QuizWaitingRoom({
   room,
@@ -12,26 +13,26 @@ export default function QuizWaitingRoom({
   onStart,
   onReset,
   onUpdateConfig,
+  lang = "en",
 }) {
   const inLobby = room.phase === "lobby";
+  const t = getTranslations(lang).play;
 
   return (
     <section className={classes.panel}>
       <div className={classes.codeBlock}>
-        <span className={classes.codeLabel}>Room code</span>
+        <span className={classes.codeLabel}>{t.roomCode}</span>
         <strong className={classes.code}>{room.roomCode}</strong>
       </div>
 
-      <h2 className={classes.heading}>
-        {inLobby ? "Waiting for players" : "Game in progress"}
-      </h2>
+      <h2 className={classes.heading}>{inLobby ? t.waitingForPlayers : t.gameInProgress}</h2>
 
       <ul className={classes.playerList}>
         {room.players.map((player) => (
           <li key={player.id} className={classes.player}>
             <span className={classes.playerName}>
               {player.name}
-              {player.isHost ? " (host)" : ""}
+              {player.isHost ? ` (${t.hostTag})` : ""}
             </span>
             {player.animation ? (
               <span className={classes.playerAnimation}>{player.animation}</span>
@@ -41,16 +42,12 @@ export default function QuizWaitingRoom({
       </ul>
 
       {inLobby ? (
-        <QuizRoomSettings
-          room={room}
-          isHost={isHost}
-          onUpdateConfig={onUpdateConfig}
-        />
+        <QuizRoomSettings room={room} isHost={isHost} onUpdateConfig={onUpdateConfig} lang={lang} />
       ) : null}
 
       {inLobby && isHost ? (
         <Button onClick={() => onStart()}>
-          Start {formatRoomSettingsSummary(room)}
+          {t.start} {formatRoomSettingsSummary(room, lang)}
         </Button>
       ) : null}
 
@@ -60,9 +57,7 @@ export default function QuizWaitingRoom({
         </Button>
       ) : null}
 
-      {inLobby && !isHost ? (
-        <p className={classes.hint}>Waiting for the host to start…</p>
-      ) : null}
+      {inLobby && !isHost ? <p className={classes.hint}>{t.waitingForHost}</p> : null}
     </section>
   );
 }

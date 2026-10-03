@@ -1,11 +1,7 @@
-import HomePage from "@/components/home/HomePage";
-import { createPageMetadata } from "@/lib/site/metadata";
+import HomeClient from "@/components/home/HomeClient";
 
-export const metadata = createPageMetadata({
-  title: "Free Multiplayer Quiz Online with Friends",
-  path: "/",
-});
-
-export default function Page() {
-  return <HomePage />;
+export default async function Page({ searchParams }) {
+  const params = await searchParams;
+  const initialLang = params?.lang;
+  return <HomeClient initialLang={initialLang} />;
 }

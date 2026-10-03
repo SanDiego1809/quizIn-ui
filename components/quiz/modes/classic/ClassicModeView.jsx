@@ -11,6 +11,7 @@ export default function ClassicModeView({
   onReset,
   onSubmit,
   onUpdateConfig,
+  lang = "en",
 }) {
   return (
     <>
@@ -21,15 +22,16 @@ export default function ClassicModeView({
           onStart={onStart}
           onReset={onReset}
           onUpdateConfig={onUpdateConfig}
+          lang={lang}
         />
       ) : null}
 
       {room.phase === "playing" ? (
-        <QuizQuestion room={room} onSubmit={onSubmit} />
+        <QuizQuestion room={room} onSubmit={onSubmit} lang={lang} />
       ) : null}
 
       {room.phase === "final_results" ? (
-        <QuizResults room={room} isHost={isHost} onReset={onReset} />
+        <QuizResults room={room} isHost={isHost} onReset={onReset} lang={lang} />
       ) : null}
     </>
   );
