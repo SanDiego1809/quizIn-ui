@@ -1,4 +1,10 @@
 {
+  "site": {
+    "play": "Jouer",
+    "languageLabel": "Langue",
+    "privacy": "Confidentialité",
+    "contact": "Contact"
+  },
   "home": {
     "title": "Quiz multijoueur gratuit entre amis",
     "subtitle": "Créez, jouez et partagez des quiz avec vos amis.",

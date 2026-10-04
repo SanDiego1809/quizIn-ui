@@ -10,12 +10,10 @@ function PlayLoading() {
   );
 }
 
-export default async function PlayPage({ searchParams }) {
-  const params = await searchParams;
-  const lang = params?.lang || undefined;
+export default function PlayPage() {
   return (
     <Suspense fallback={<PlayLoading />}>
-      <PlayRoom lang={lang} />
+      <PlayRoom />
     </Suspense>
   );
 }

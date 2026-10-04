@@ -1,4 +1,10 @@
 {
+  "site": {
+    "play": "Jugar",
+    "languageLabel": "Idioma",
+    "privacy": "Privacidad",
+    "contact": "Contacto"
+  },
   "home": {
     "title": "Concurso multijugador gratuito con amigos",
     "subtitle": "Crea, juega y comparte cuestionarios con tus amigos.",

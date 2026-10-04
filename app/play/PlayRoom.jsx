@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Title from "@/components/title/Title";
+import { useLang } from "@/components/site/LangProvider";
+import { useSiteChrome } from "@/components/site/SiteChrome";
 import { getTranslations } from "@/lib/i18n";
 import QuizLobby from "@/components/quiz/QuizLobby";
 import ModeView from "@/components/quiz/modes/ModeView";
@@ -11,35 +13,11 @@ import { parsePlayModeParam } from "@/lib/quiz/playMode";
 import { useQuizRoom } from "@/hooks/useQuizRoom";
 import classes from "./page.module.css";
 
-export default function PlayRoom({ lang: propLang } = {}) {
+export default function PlayRoom() {
   const searchParams = useSearchParams();
   const defaultMode = parsePlayModeParam(searchParams.get("mode"));
-  // Initialize lang from server prop (propLang) to match SSR output.
-  const [lang, setLang] = useState(propLang || "en");
-
-  // After mount, prefer query param or stored local choice.
-  useEffect(() => {
-    try {
-      const qLang = searchParams.get("lang");
-      const stored = localStorage.getItem("quizin_lang");
-      if (qLang && qLang !== lang) {
-        setLang(qLang);
-        localStorage.setItem("quizin_lang", qLang);
-        return;
-      }
-      if (stored && stored !== lang) {
-        setLang(stored);
-      }
-    } catch (e) {
-      // ignore
-    }
-  }, []); // run once on mount
-
-  useEffect(() => {
-    try {
-      localStorage.setItem("quizin_lang", lang);
-    } catch {}
-  }, [lang]);
+  const { lang } = useLang();
+  const { setImmersive } = useSiteChrome();
   const {
     room,
     error,
@@ -59,6 +37,11 @@ export default function PlayRoom({ lang: propLang } = {}) {
   const isPlaying = room?.phase === "playing";
   const isFinalResults = room?.phase === "final_results";
   const hidePageChrome = isPlaying || isFinalResults;
+
+  useEffect(() => {
+    setImmersive(hidePageChrome);
+    return () => setImmersive(false);
+  }, [hidePageChrome, setImmersive]);
 
   return (
     <main
@@ -108,7 +91,7 @@ export default function PlayRoom({ lang: propLang } = {}) {
       )}
 
       {!hidePageChrome ? (
-        <Link href="/" className={classes.backLink}>
+        <Link href={`/?lang=${lang}`} className={classes.backLink}>
           ← Back home
         </Link>
       ) : null}

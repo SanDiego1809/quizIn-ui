@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import Button from "@/components/button/Button";
 import JsonLd from "@/components/seo/JsonLd";
 import Title from "@/components/title/Title";
+import { useLang } from "@/components/site/LangProvider";
 import { HOME_FAQ } from "@/lib/site/faq";
 import {
   faqPageJsonLd,
@@ -15,41 +15,17 @@ import {
 import { getTranslations } from "@/lib/i18n";
 import classes from "./HomePage.module.css";
 
-export default function HomeClient({ initialLang } = {}) {
-  // Start with server-provided initialLang (or 'en') so server and client render match.
-  const [lang, setLang] = useState(initialLang || "en");
-
-  // After hydration, prefer stored local choice or navigator preference.
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem("quizin_lang");
-      if (stored && stored !== lang) {
-        setLang(stored);
-        return;
-      }
-      if (!stored) {
-        // If no stored choice, try browser preference
-        const nav = navigator?.language?.slice(0, 2);
-        const candidate = nav || lang;
-        if (candidate && candidate !== lang) {
-          setLang(candidate);
-        }
-      }
-    } catch {
-      // ignore
-    }
-  }, []); // run once on mount
-
-  useEffect(() => {
-    try {
-      localStorage.setItem("quizin_lang", lang);
-    } catch {}
-  }, [lang]);
-
+export default function HomeClient() {
+  const { lang } = useLang();
   const all = getTranslations(lang);
   const t = all.home;
   const localizedFaq = all.home?.faq || [];
-  const jsonLd = [webSiteJsonLd(), organizationJsonLd(), softwareApplicationJsonLd(), faqPageJsonLd(localizedFaq.length ? localizedFaq : HOME_FAQ)];
+  const jsonLd = [
+    webSiteJsonLd(),
+    organizationJsonLd(),
+    softwareApplicationJsonLd(),
+    faqPageJsonLd(localizedFaq.length ? localizedFaq : HOME_FAQ),
+  ];
 
   return (
     <>
@@ -58,17 +34,6 @@ export default function HomeClient({ initialLang } = {}) {
         <header className={classes.hero}>
           <div style={{ display: "flex", gap: 12, alignItems: "center", flexDirection: "column" }}>
             <Title subtitle={t.subtitle}>{t.title}</Title>
-            <div style={{ display: "flex", gap: 8 }}>
-              <button onClick={() => setLang("en")} style={{ padding: "0.4rem 0.7rem", borderRadius: 8, cursor: "pointer" }}>
-                EN
-              </button>
-              <button onClick={() => setLang("fr")} style={{ padding: "0.4rem 0.7rem", borderRadius: 8, cursor: "pointer" }}>
-                FR
-              </button>
-              <button onClick={() => setLang("es")} style={{ padding: "0.4rem 0.7rem", borderRadius: 8, cursor: "pointer" }}>
-                ES
-              </button>
-            </div>
             <div style={{ marginTop: 12 }}>
               <Link href={`/play?lang=${lang}`} className={classes.ctaWrap}>
                 <Button>{t.play}</Button>
@@ -134,4 +99,3 @@ export default function HomeClient({ initialLang } = {}) {
     </>
   );
 }
-

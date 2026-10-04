@@ -30,7 +30,10 @@ export default function HomePage({ lang = "en" }) {
           <Link href={`/play?lang=${lang}`} className={classes.ctaWrap}>
             <Button>{t.play}</Button>
           </Link>
-          <Link href={`/contact?lang=${lang}`} className={classes.footerLink}>
+          <Link
+            href={`/contact?lang=${lang}`}
+            className={classes.footerLink}
+          >
             {t.contact}
           </Link>
         </header>

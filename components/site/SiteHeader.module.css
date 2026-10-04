@@ -1,0 +1,77 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(10px);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: min(100%, 64rem);
+  margin: 0 auto;
+  padding: 0.75rem 1.25rem;
+}
+
+.brand {
+  color: #f8fafc;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+
+.brand:hover {
+  color: #e2e8f0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.langs {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.lang,
+.langActive {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #94a3b8;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.45rem;
+  cursor: pointer;
+}
+
+.lang:hover {
+  color: #e2e8f0;
+}
+
+.langActive {
+  color: #f8fafc;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.play {
+  color: #f8fafc;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.play:hover {
+  color: #cbd5e1;
+}

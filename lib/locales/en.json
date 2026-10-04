@@ -1,4 +1,10 @@
 {
+  "site": {
+    "play": "Play",
+    "languageLabel": "Language",
+    "privacy": "Privacy",
+    "contact": "Contact"
+  },
   "home": {
     "title": "Free multiplayer quiz with friends",
     "subtitle": "Create, play, and share quizzes with friends.",
