@@ -66,6 +66,10 @@
       "geoCountries": {
         "name": "World countries GeoJSON",
         "note": "Country boundaries for the interactive map"
+      },
+      "openTriviaQa": {
+        "name": "OpenTriviaQA",
+        "note": "Classic quiz question bank (CC BY-SA 4.0)"
       }
     },
     "videos": {

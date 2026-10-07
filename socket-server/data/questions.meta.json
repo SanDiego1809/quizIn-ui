@@ -1,0 +1,93 @@
+{
+  "source": "https://github.com/uberspot/OpenTriviaQA",
+  "license": "CC BY-SA 4.0",
+  "importSource": "C:\\Projects\\Projects\\quizIn-ui\\socket-server\\data\\trivia\\categories",
+  "importedAt": "2026-10-04T16:10:00.855Z",
+  "totalQuestions": 46583,
+  "categories": {
+    "animals": {
+      "count": 1364,
+      "skipped": 2
+    },
+    "brain-teasers": {
+      "count": 203,
+      "skipped": 4
+    },
+    "celebrities": {
+      "count": 3190,
+      "skipped": 6
+    },
+    "entertainment": {
+      "count": 280,
+      "skipped": 0
+    },
+    "for-kids": {
+      "count": 756,
+      "skipped": 3
+    },
+    "general": {
+      "count": 3287,
+      "skipped": 3
+    },
+    "geography": {
+      "count": 842,
+      "skipped": 0
+    },
+    "history": {
+      "count": 1645,
+      "skipped": 0
+    },
+    "hobbies": {
+      "count": 1242,
+      "skipped": 0
+    },
+    "humanities": {
+      "count": 1096,
+      "skipped": 1
+    },
+    "literature": {
+      "count": 1282,
+      "skipped": 6
+    },
+    "movies": {
+      "count": 4311,
+      "skipped": 2
+    },
+    "music": {
+      "count": 5526,
+      "skipped": 53
+    },
+    "people": {
+      "count": 2740,
+      "skipped": 3
+    },
+    "rated": {
+      "count": 2171,
+      "skipped": 14
+    },
+    "religion-faith": {
+      "count": 637,
+      "skipped": 1
+    },
+    "science-technology": {
+      "count": 2485,
+      "skipped": 1
+    },
+    "sports": {
+      "count": 2840,
+      "skipped": 0
+    },
+    "television": {
+      "count": 5228,
+      "skipped": 2
+    },
+    "video-games": {
+      "count": 598,
+      "skipped": 1
+    },
+    "world": {
+      "count": 4860,
+      "skipped": 15
+    }
+  }
+}

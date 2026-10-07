@@ -12,7 +12,7 @@ const SETTINGS_FIELDS = [
     label: "Number of questions",
     type: "number",
     min: 1,
-    max: 10,
+    max: 25,
     step: 1,
   },
   {

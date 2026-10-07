@@ -66,6 +66,10 @@
       "geoCountries": {
         "name": "GeoJSON de países del mundo",
         "note": "Fronteras de países para el mapa interactivo"
+      },
+      "openTriviaQa": {
+        "name": "OpenTriviaQA",
+        "note": "Banco de preguntas del quiz clásico (CC BY-SA 4.0)"
       }
     },
     "videos": {

@@ -32,7 +32,7 @@ function sanitizeSettings(input = {}, defaults) {
       input.questionsPerGame,
       defaults.questionsPerGame,
       1,
-      10
+      25
     ),
   };
 }
