@@ -18,8 +18,20 @@ export default function SiteHeader() {
   return (
     <header className={classes.header}>
       <div className={classes.inner}>
-        <Link href={`/?lang=${lang}`} className={classes.brand}>
-          {SITE_NAME}
+        <Link
+          href={`/?lang=${lang}`}
+          className={classes.brand}
+          aria-label={SITE_NAME}
+        >
+          {/* Plain img avoids Next/Image sizing quirks with transparent PNGs */}
+          <img
+            src="/quizin-logo-dark.png"
+            alt={SITE_NAME}
+            className={classes.brandLogo}
+            width={949}
+            height={429}
+            decoding="async"
+          />
         </Link>
 
         <div className={classes.actions}>

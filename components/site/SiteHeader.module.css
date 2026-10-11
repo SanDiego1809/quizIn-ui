@@ -18,15 +18,31 @@
 }
 
 .brand {
-  color: #f8fafc;
-  font-size: 1.15rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
   text-decoration: none;
+  line-height: 0;
 }
 
-.brand:hover {
-  color: #e2e8f0;
+.brand:hover .brandLogo {
+  opacity: 0.92;
+}
+
+.brandLogo {
+  display: block;
+  height: 3.75rem;
+  width: auto;
+  max-width: min(70vw, 16rem);
+  object-fit: contain;
+  /* Help light logo pop on dark header */
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35));
+}
+
+@media (max-width: 520px) {
+  .brandLogo {
+    height: 2.85rem;
+  }
 }
 
 .actions {
