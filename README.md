@@ -28,15 +28,74 @@ Open [http://localhost:3000](http://localhost:3000) and click **Start a quiz**, 
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
-| `NEXT_PUBLIC_SOCKET_URL` | *(same as the page)* | Override only if the socket server is on another host |
+| `NEXT_PUBLIC_SOCKET_URL` | *(dev: `127.0.0.1:4000`)* | Browser Socket.IO URL. On Vercel set this to your long-running socket host |
 | `QUIZIN_SOCKET_URL` | `http://127.0.0.1:4000` | Backend URL used by Next.js to proxy `/socket.io` |
 | `QUIZIN_SOCKET_PORT` | `4000` | Socket server listen port |
 | `NEXT_PUBLIC_APP_ORIGIN` | `http://localhost:3000,…` | Extra allowed CORS origins for direct socket connections |
 | `QUIZIN_SOCKET_IDLE_MS` | `1800000` | Disconnect idle clients (`0` to disable) |
 | `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` (dev) | Canonical site URL for sitemap, Open Graph, and JSON-LD (no trailing slash) |
 | `GOOGLE_SITE_VERIFICATION` | *(unset)* | Google Search Console HTML tag verification token |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | *(unset)* | Clerk publishable key (auth UI). Guests still work without it |
+| `CLERK_SECRET_KEY` | *(unset)* | Clerk secret (Next.js + socket JWT verify) |
+| `NEXT_PUBLIC_CLERK_SIGN_IN_URL` | `/sign-in` | Clerk sign-in path |
+| `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | `/sign-up` | Clerk sign-up path |
+| `DATABASE_URL` | *(unset)* | Neon Postgres connection string (profiles, history, favorites, credits) |
 
-In **development**, the browser connects directly to `http://127.0.0.1:4000` (CORS allows localhost origins). In **production**, it uses the same origin and Next.js rewrites `/socket.io` to the socket server.
+Copy [`.env.example`](.env.example) to `.env.local` for Next.js. The socket server loads `.env` / `.env.local` via `socket-server/loadEnv.js`, so the same `CLERK_SECRET_KEY` and `DATABASE_URL` are available to both processes locally.
+
+## Auth, profiles & database
+
+QuizIn supports **guest play** and optional **accounts**. Passwords are never stored in this repo — [Clerk](https://clerk.com) handles sign-in (email + OAuth). App data (profiles, history, favorites, credits) lives in **Postgres** (recommended: [Neon](https://neon.tech)) via **Prisma**.
+
+### What guests vs signed-in users can do
+
+| | Guest | Signed in |
+| --- | --- | --- |
+| Create / join / play rooms | Yes | Yes |
+| Persistent display name & avatar | No (entered each time) | Yes (`/profile`) |
+| Game history & credits | No | Yes (saved when a match ends) |
+| Favorites (e.g. quiz modes) | Sign-in required | Yes (free: 3 max; premium: unlimited) |
+| Premium unlocks | — | `UserProfile.plan = premium` (set in DB for now) |
+
+### How it fits together
+
+1. **Next.js (Vercel)** — `ClerkProvider`, sign-in/up UI, `/profile`, and `/api/me*` routes.
+2. **Clerk** — issues session tokens; middleware protects `/profile` and `/api/me*`. `/play` stays public.
+3. **Socket.IO** — optional JWT on connect (`socket.auth.token`). If valid, the player gets a `userId`; guests omit the token and play as today.
+4. **Neon + Prisma** — schema in [`prisma/schema.prisma`](prisma/schema.prisma): `UserProfile`, `GameResult`, `Favorite`.
+
+On first API call after sign-in, the app **upserts** a `UserProfile` from the Clerk user id. The lobby prefills name/avatar from that profile when signed in.
+
+### Clerk app settings (dashboard)
+
+Create a **Consumer** application (not B2B). Recommended sign-in options:
+
+- Email (password or email code)
+- Google OAuth
+
+Set paths to `/sign-in` and `/sign-up`, and allow `http://localhost:3000` plus your Vercel URL.
+
+You can also link the project with the [Clerk CLI](https://clerk.com/docs/cli): `clerk auth login` then `clerk init` (keys are written to `.env.local`).
+
+### Local database setup
+
+```bash
+# After DATABASE_URL is set in .env.local (Neon `neon link` / `neon deploy` can write it)
+npm run db:push      # create/sync tables
+npm run db:studio    # optional Prisma Studio UI
+```
+
+`npm run db:push` loads `.env.local` (Prisma alone only auto-loads `.env`).
+
+`npm run build` / `postinstall` run `prisma generate` so the client stays in sync.
+
+### Deploy (Vercel + socket host)
+
+- **Vercel** hosts the Next.js app (Clerk + Prisma API routes). Set all `NEXT_PUBLIC_*`, `CLERK_SECRET_KEY`, and `DATABASE_URL` there.
+- **Socket.IO** must run on a **long-running** host (Railway / Fly.io / Render). Set `CLERK_SECRET_KEY`, `DATABASE_URL`, and `NEXT_PUBLIC_APP_ORIGIN` to your Vercel URL(s). Point Vercel’s `NEXT_PUBLIC_SOCKET_URL` at that socket host.
+- Do **not** run the in-memory room server on Vercel serverless functions — rooms would not survive across invocations.
+
+In **development**, the browser connects directly to `http://127.0.0.1:4000` (CORS allows localhost origins). In **production on Vercel**, set `NEXT_PUBLIC_SOCKET_URL` to the socket host (same-origin rewrites alone are not enough across hosts).
 
 ## SEO & Google Search Console
 
@@ -63,23 +122,24 @@ If you see a connection error, restart **both** terminals after pulling changes 
 ## Project layout
 
 ```
+prisma/                     Postgres schema (UserProfile, GameResult, Favorite)
+app/
+  play/                     Multiplayer quiz UI
+  profile/                  Account profile, history, favorites
+  sign-in/, sign-up/        Clerk hosted auth pages
+  api/me/                   Profile / history / favorites APIs
 socket-server/              Real-time game server
-  server.js                 Entry point
-  config.js                 Ports, CORS
-  data/questions.json       Question bank (shared across modes)
+  server.js                 Entry point (+ Clerk JWT middleware)
+  lib/clerkAuth.js          Optional session verify on connect
+  lib/persistGameResults.js Write history/credits for signed-in players
+  lib/db.js                 Prisma client for the socket process
   modes/                    Game mode plugins (rules + payloads)
-    index.js                Mode registry
-    classic/                Classic quiz mode
-  lib/                      Room store, timers, lifecycle
-  handlers/                 Socket event handlers (thin dispatchers)
-
-app/play/                   Multiplayer quiz UI
-components/quiz/
-  modes/                    Mode-specific UI (ModeView + per-mode views)
-hooks/useQuizRoom.js        Client socket state
-lib/quiz/
-  socket.js                 Socket.IO client singleton
-  modes/                    Client mode view registry
+components/auth/            Header sign-in/up, session helpers
+hooks/useQuizRoom.js        Client socket state (+ Clerk token sync)
+hooks/usePlayerProfile.js   Prefill lobby from /api/me
+lib/quiz/socket.js          Socket.IO client singleton
+lib/db/                     Prisma helpers for Next.js API routes
+middleware.js               Clerk middleware (protects /profile, /api/me*)
 ```
 
 ## Game modes
@@ -152,9 +212,11 @@ Each mode can also export `settingsFields` (labels, min/max) so the waiting room
 | ------- | ----------- |
 | `npm run dev` | Start Next.js development server |
 | `npm run dev:socket` | Start the quiz Socket.IO server |
-| `npm run build` | Build for production |
+| `npm run build` | `prisma generate` + production Next.js build |
 | `npm run start` | Start production Next.js server |
 | `npm run lint` | Run ESLint |
+| `npm run db:push` | Push Prisma schema to Postgres (Neon) |
+| `npm run db:studio` | Open Prisma Studio |
 
 ## How a game works (classic mode)
 

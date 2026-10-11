@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Plan {
+  free
+  premium
+}
+
+model UserProfile {
+  id          String       @id @default(cuid())
+  clerkUserId String       @unique
+  displayName String
+  avatarKey   String       @default("Idle")
+  credits     Int          @default(0)
+  plan        Plan         @default(free)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  gameResults GameResult[]
+  favorites   Favorite[]
+}
+
+model GameResult {
+  id       String      @id @default(cuid())
+  userId   String
+  user     UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mode     String
+  roomCode String
+  score    Int
+  rank     Int
+  playedAt DateTime    @default(now())
+  summary  Json?
+
+  @@index([userId, playedAt])
+}
+
+model Favorite {
+  id         String      @id @default(cuid())
+  userId     String
+  user       UserProfile @relation(fields: [userId], references: [id], onDelete: Cascade)
+  targetType String
+  targetId   String
+  createdAt  DateTime    @default(now())
+
+  @@unique([userId, targetType, targetId])
+  @@index([userId])
+}

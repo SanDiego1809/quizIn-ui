@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import AuthControls from "@/components/auth/AuthControls";
 import { getTranslations } from "@/lib/i18n";
 import { SUPPORTED_LANGS } from "@/lib/lang";
 import { SITE_NAME } from "@/lib/site/site";
@@ -35,6 +36,8 @@ export default function SiteHeader() {
               </button>
             ))}
           </div>
+
+          <AuthControls />
 
           {!onPlay ? (
             <Link href={`/play?lang=${lang}`} className={classes.play}>

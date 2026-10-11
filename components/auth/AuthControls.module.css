@@ -1,0 +1,37 @@
+.wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.signIn,
+.signUp,
+.profile {
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.signIn,
+.signUp {
+  appearance: none;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: transparent;
+  border-radius: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+  font: inherit;
+}
+
+.signUp {
+  border-color: rgba(56, 189, 248, 0.45);
+  color: #7dd3fc;
+}
+
+.signIn:hover,
+.signUp:hover,
+.profile:hover {
+  color: #f8fafc;
+  border-color: rgba(226, 232, 240, 0.55);
+}

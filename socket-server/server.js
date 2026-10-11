@@ -1,3 +1,5 @@
+require("./loadEnv");
+
 const http = require("http");
 const { Server } = require("socket.io");
 const { PORT, HOST, SOCKET_IDLE_MS, CORS_ORIGINS } = require("./config");
@@ -6,6 +8,7 @@ const {
   createRoomEmitter,
   removeSocketFromAllRooms,
 } = require("./lib/roomLifecycle");
+const { registerClerkAuth } = require("./lib/clerkAuth");
 const { registerSocketHandlers } = require("./handlers");
 
 const server = http.createServer((req, res) => {
@@ -34,6 +37,7 @@ const ctx = {
     removeSocketFromAllRooms(socket, { io, rooms, emitRoom, ...options }),
 };
 
+registerClerkAuth(io);
 registerSocketHandlers(io, ctx);
 
 if (SOCKET_IDLE_MS > 0) {

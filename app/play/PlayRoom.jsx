@@ -11,6 +11,7 @@ import QuizLobby from "@/components/quiz/QuizLobby";
 import ModeView from "@/components/quiz/modes/ModeView";
 import { parsePlayModeParam } from "@/lib/quiz/playMode";
 import { useQuizRoom } from "@/hooks/useQuizRoom";
+import { usePlayerProfile } from "@/hooks/usePlayerProfile";
 import classes from "./page.module.css";
 
 export default function PlayRoom() {
@@ -18,6 +19,7 @@ export default function PlayRoom() {
   const defaultMode = parsePlayModeParam(searchParams.get("mode"));
   const { lang } = useLang();
   const { setImmersive } = useSiteChrome();
+  const { defaultName, defaultAnimation } = usePlayerProfile();
   const {
     room,
     error,
@@ -75,6 +77,8 @@ export default function PlayRoom() {
           onCreate={createRoom}
           onJoin={joinRoom}
           defaultMode={defaultMode}
+          defaultName={defaultName}
+          defaultAnimation={defaultAnimation}
           lang={lang}
         />
       ) : (

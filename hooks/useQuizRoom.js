@@ -1,59 +1,79 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { getQuizSocket } from "@/lib/quiz/socket";
+import { useClerkSession } from "@/components/auth/ClerkSessionProvider";
+import { getQuizSocket, syncQuizSocketAuth } from "@/lib/quiz/socket";
 
 export function useQuizRoom() {
+  const { enabled, isLoaded, isSignedIn, getToken } = useClerkSession();
   const [room, setRoom] = useState(null);
   const [error, setError] = useState(null);
   const [connected, setConnected] = useState(false);
   const [connectionError, setConnectionError] = useState(null);
 
   useEffect(() => {
-    const socket = getQuizSocket();
-    if (!socket) return undefined;
+    let cancelled = false;
 
-    const onConnect = () => {
-      setConnected(true);
-      setConnectionError(null);
-    };
-    const onDisconnect = () => setConnected(false);
-    const onConnectError = (err) => {
-      setConnected(false);
-      const raw = err?.message || "";
-      const friendly =
-        raw.includes("xhr poll error") || raw.includes("websocket error")
-          ? "Cannot reach the game server. In a second terminal run: npm run dev:socket"
-          : raw ||
-            "Cannot reach the game server. Run npm run dev:socket in a second terminal.";
-      setConnectionError(friendly);
-    };
-    const onRoomState = (state) => {
-      setRoom(state);
-      setError(null);
-    };
-    const onQuizError = ({ message }) => setError(message);
+    async function connect() {
+      if (enabled && !isLoaded) return;
 
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-    socket.on("connect_error", onConnectError);
-    socket.on("quiz:room_state", onRoomState);
-    socket.on("quiz:error", onQuizError);
+      const socket = enabled
+        ? await syncQuizSocketAuth(isSignedIn ? getToken : null)
+        : getQuizSocket();
+      if (!socket || cancelled) return undefined;
 
-    if (!socket.connected && !socket.active) socket.connect();
-    if (socket.connected) {
-      setConnected(true);
-      setConnectionError(null);
+      const onConnect = () => {
+        setConnected(true);
+        setConnectionError(null);
+      };
+      const onDisconnect = () => setConnected(false);
+      const onConnectError = (err) => {
+        setConnected(false);
+        const raw = err?.message || "";
+        const friendly =
+          raw.includes("xhr poll error") || raw.includes("websocket error")
+            ? "Cannot reach the game server. In a second terminal run: npm run dev:socket"
+            : raw ||
+              "Cannot reach the game server. Run npm run dev:socket in a second terminal.";
+        setConnectionError(friendly);
+      };
+      const onRoomState = (state) => {
+        setRoom(state);
+        setError(null);
+      };
+      const onQuizError = ({ message }) => setError(message);
+
+      socket.on("connect", onConnect);
+      socket.on("disconnect", onDisconnect);
+      socket.on("connect_error", onConnectError);
+      socket.on("quiz:room_state", onRoomState);
+      socket.on("quiz:error", onQuizError);
+
+      if (!socket.connected && !socket.active) socket.connect();
+      if (socket.connected) {
+        setConnected(true);
+        setConnectionError(null);
+      }
+
+      return () => {
+        socket.off("connect", onConnect);
+        socket.off("disconnect", onDisconnect);
+        socket.off("connect_error", onConnectError);
+        socket.off("quiz:room_state", onRoomState);
+        socket.off("quiz:error", onQuizError);
+      };
     }
 
+    let cleanup;
+    connect().then((fn) => {
+      cleanup = fn;
+    });
+
     return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("connect_error", onConnectError);
-      socket.off("quiz:room_state", onRoomState);
-      socket.off("quiz:error", onQuizError);
+      cancelled = true;
+      if (typeof cleanup === "function") cleanup();
     };
-  }, []);
+  }, [enabled, isLoaded, isSignedIn, getToken]);
 
   const createRoom = useCallback((name, animation, mode) => {
     const payload = { name, animation };

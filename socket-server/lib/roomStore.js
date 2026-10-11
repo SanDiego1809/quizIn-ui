@@ -25,6 +25,7 @@ function createEmptyRoom({
         animation: hostAnimation,
         socketId: hostSocketId,
         isHost: true,
+        userId: null,
       },
     ],
     settings: { ...gameMode.defaultSettings },

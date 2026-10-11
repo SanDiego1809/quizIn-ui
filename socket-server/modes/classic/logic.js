@@ -116,6 +116,13 @@ function finalizeGame(room, state) {
     totalQuestions: state.questions.length,
     maxScore: state.questions.length * SPEED_POINTS[0],
   };
+
+  try {
+    const { persistGameResults } = require("../../lib/persistGameResults");
+    void persistGameResults(room);
+  } catch (err) {
+    console.error("[classic.finalizeGame] persist failed", err);
+  }
 }
 
 function advanceQuestion(roomCode, ctx) {

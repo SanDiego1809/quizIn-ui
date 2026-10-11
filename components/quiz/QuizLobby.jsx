@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import classes from "./QuizLobby.module.css";
 import Button from "@/components/button/Button";
@@ -18,10 +18,21 @@ export default function QuizLobby({
   connected,
   connectionError,
   defaultMode,
+  defaultName = "",
+  defaultAnimation = DEFAULT_ANIMATION,
   lang = "en",
 }) {
-  const [animation, setAnimation] = useState(DEFAULT_ANIMATION);
+  const [animation, setAnimation] = useState(defaultAnimation || DEFAULT_ANIMATION);
+  const [name, setName] = useState(defaultName || "");
   const t = getTranslations(lang).play;
+
+  useEffect(() => {
+    if (defaultName) setName(defaultName);
+  }, [defaultName]);
+
+  useEffect(() => {
+    if (defaultAnimation) setAnimation(defaultAnimation);
+  }, [defaultAnimation]);
 
   return (
     <section className={classes.panel}>
@@ -61,6 +72,8 @@ export default function QuizLobby({
             placeholder={t.namePlaceholder}
             maxLength={30}
             required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </label>
         <Button type="submit" disabled={!connected}>
@@ -96,6 +109,8 @@ export default function QuizLobby({
             placeholder={t.namePlaceholder}
             maxLength={30}
             required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </label>
         <Button type="submit" variant="secondary" disabled={!connected}>

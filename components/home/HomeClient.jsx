@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Button from "@/components/button/Button";
+import ModeFavoriteButton from "@/components/auth/ModeFavoriteButton";
 import JsonLd from "@/components/seo/JsonLd";
 import Title from "@/components/title/Title";
 import { useLang } from "@/components/site/LangProvider";
@@ -56,6 +57,7 @@ export default function HomeClient() {
               <Link href={`/classic-quiz?lang=${lang}`} className={classes.modeLink}>
                 {all.modes.classic.learnMore}
               </Link>
+              <ModeFavoriteButton modeId="classic" />
             </article>
             <article className={classes.modeCard}>
               <h3 className={classes.modeName}>{all.modes.geography.name}</h3>
@@ -63,6 +65,7 @@ export default function HomeClient() {
               <Link href={`/geography-quiz?lang=${lang}`} className={classes.modeLink}>
                 {all.modes.geography.learnMore}
               </Link>
+              <ModeFavoriteButton modeId="geography" />
             </article>
           </div>
           <p className={classes.sectionLead}>

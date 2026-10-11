@@ -115,6 +115,13 @@ function finalizeGame(room, state) {
     totalQuestions: state.countries.length,
     maxScore: state.countries.length * SPEED_POINTS[0],
   };
+
+  try {
+    const { persistGameResults } = require("../../lib/persistGameResults");
+    void persistGameResults(room);
+  } catch (err) {
+    console.error("[geography.finalizeGame] persist failed", err);
+  }
 }
 
 function advanceQuestion(roomCode, ctx) {

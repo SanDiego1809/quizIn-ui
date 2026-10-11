@@ -43,6 +43,7 @@ function registerRoomHandlers(socket, ctx) {
       hostAnimation: sanitizeAnimation(animation),
       mode,
     });
+    room.players[0].userId = socket.data?.userId || null;
 
     setRoom(roomCode, room);
     socket.join(roomCode);
@@ -81,6 +82,7 @@ function registerRoomHandlers(socket, ctx) {
       animation: sanitizeAnimation(animation),
       socketId: socket.id,
       isHost: false,
+      userId: socket.data?.userId || null,
     });
 
     socket.join(code);
