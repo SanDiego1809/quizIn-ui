@@ -95,7 +95,9 @@ Split hosting: **Vercel** for Next.js; **Render** for the Socket.IO process ([`r
 
 #### 1. Vercel (Next.js)
 
-1. Import [quizIn-ui](https://github.com/TriAxis-IT-Solutions/quizIn-ui) at [vercel.com/new](https://vercel.com/new) (framework: Next.js; [`vercel.json`](vercel.json) sets build/install).
+Production app: **https://quizin-ui.vercel.app** (project `quizin-ui` under the Vercel team).
+
+1. Import the GitHub repo at [vercel.com/new](https://vercel.com/new) (framework: Next.js), or deploy with `npx vercel --prod` after `npx vercel login`.
 2. Add environment variables (Production + Preview as needed):
 
 | Variable | Notes |
@@ -114,7 +116,11 @@ CLI (after `npx vercel login`): `npx vercel` then `npx vercel --prod`; set secre
 
 #### 2. Render (socket server)
 
-1. [Render Dashboard](https://dashboard.render.com) → **New** → **Blueprint** and select this repo (uses [`render.yaml`](render.yaml)), **or** **Web Service** manually:
+Production socket: **https://quizin-socket.onrender.com** (health: `/health`).
+
+Render needs a GitHub repo it can fetch. If the org repo is private and not linked in Render, use a personal mirror (e.g. [SanDiego1809/quizIn-ui](https://github.com/SanDiego1809/quizIn-ui)) or connect the org in the Render Dashboard → Account → GitHub.
+
+1. [Render Dashboard](https://dashboard.render.com) → **New** → **Blueprint** (uses [`render.yaml`](render.yaml)), **or** **Web Service** manually:
    - **Build:** `npm install`
    - **Start:** `npm run start:socket`
    - **Health check:** `/health`
