@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:socket": "node socket-server/server.js",
+    "start:socket": "node socket-server/server.js",
     "import:trivia": "node socket-server/scripts/import-opentriviaqa.js",
     "build": "prisma generate && next build",
     "start": "next start",

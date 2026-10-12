@@ -30,7 +30,7 @@ Open [http://localhost:3000](http://localhost:3000) and click **Start a quiz**, 
 | -------- | ------- | ----------- |
 | `NEXT_PUBLIC_SOCKET_URL` | *(dev: `127.0.0.1:4000`)* | Browser Socket.IO URL. On Vercel set this to your long-running socket host |
 | `QUIZIN_SOCKET_URL` | `http://127.0.0.1:4000` | Backend URL used by Next.js to proxy `/socket.io` |
-| `QUIZIN_SOCKET_PORT` | `4000` | Socket server listen port |
+| `QUIZIN_SOCKET_PORT` | `4000` | Socket listen port (Render uses `PORT` first) |
 | `NEXT_PUBLIC_APP_ORIGIN` | `http://localhost:3000,…` | Extra allowed CORS origins for direct socket connections |
 | `QUIZIN_SOCKET_IDLE_MS` | `1800000` | Disconnect idle clients (`0` to disable) |
 | `NEXT_PUBLIC_SITE_URL` | `http://localhost:3000` (dev) | Canonical site URL for sitemap, Open Graph, and JSON-LD (no trailing slash) |
@@ -89,13 +89,53 @@ npm run db:studio    # optional Prisma Studio UI
 
 `npm run build` / `postinstall` run `prisma generate` so the client stays in sync.
 
-### Deploy (Vercel + socket host)
+### Deploy (Vercel + Render)
 
-- **Vercel** hosts the Next.js app (Clerk + Prisma API routes). Set all `NEXT_PUBLIC_*`, `CLERK_SECRET_KEY`, and `DATABASE_URL` there.
-- **Socket.IO** must run on a **long-running** host (Railway / Fly.io / Render). Set `CLERK_SECRET_KEY`, `DATABASE_URL`, and `NEXT_PUBLIC_APP_ORIGIN` to your Vercel URL(s). Point Vercel’s `NEXT_PUBLIC_SOCKET_URL` at that socket host.
-- Do **not** run the in-memory room server on Vercel serverless functions — rooms would not survive across invocations.
+Split hosting: **Vercel** for Next.js; **Render** for the Socket.IO process ([`render.yaml`](render.yaml)). Do **not** run rooms on Vercel serverless — they will not survive across invocations.
 
-In **development**, the browser connects directly to `http://127.0.0.1:4000` (CORS allows localhost origins). In **production on Vercel**, set `NEXT_PUBLIC_SOCKET_URL` to the socket host (same-origin rewrites alone are not enough across hosts).
+#### 1. Vercel (Next.js)
+
+1. Import [quizIn-ui](https://github.com/TriAxis-IT-Solutions/quizIn-ui) at [vercel.com/new](https://vercel.com/new) (framework: Next.js; [`vercel.json`](vercel.json) sets build/install).
+2. Add environment variables (Production + Preview as needed):
+
+| Variable | Notes |
+| -------- | ----- |
+| `NEXT_PUBLIC_SITE_URL` | Final app URL, e.g. `https://quizin-ui.vercel.app` |
+| `NEXT_PUBLIC_SOCKET_URL` | Render socket URL (set after step 2), e.g. `https://quizin-socket.onrender.com` |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` / `CLERK_SECRET_KEY` | From Clerk dashboard |
+| `NEXT_PUBLIC_CLERK_SIGN_IN_URL` / `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | `/sign-in`, `/sign-up` |
+| `DATABASE_URL` | Neon connection string |
+| `GOOGLE_SITE_VERIFICATION` / `NEXT_PUBLIC_GA_ID` | Optional |
+
+3. Deploy. Note the deployment URL for CORS on Render.
+4. In Clerk, allow that Vercel URL (and custom domain if any) as an authorized origin / redirect URL.
+
+CLI (after `npx vercel login`): `npx vercel` then `npx vercel --prod`; set secrets with `npx vercel env add`.
+
+#### 2. Render (socket server)
+
+1. [Render Dashboard](https://dashboard.render.com) → **New** → **Blueprint** and select this repo (uses [`render.yaml`](render.yaml)), **or** **Web Service** manually:
+   - **Build:** `npm install`
+   - **Start:** `npm run start:socket`
+   - **Health check:** `/health`
+2. Set env vars on the service:
+
+| Variable | Notes |
+| -------- | ----- |
+| `NODE_ENV` | `production` (Blueprint already sets this) |
+| `NEXT_PUBLIC_APP_ORIGIN` | Vercel URL(s), comma-separated — e.g. `https://quizin-ui.vercel.app` |
+| `DATABASE_URL` | Same Neon string as Vercel |
+| `CLERK_SECRET_KEY` | Same as Vercel (socket JWT verify) |
+
+Render injects `PORT`; the socket server listens on `PORT` or `QUIZIN_SOCKET_PORT` (default `4000`).
+
+#### 3. Cross-link the two hosts
+
+1. Copy the Render service URL → Vercel env `NEXT_PUBLIC_SOCKET_URL` → redeploy Vercel.
+2. Confirm Render `NEXT_PUBLIC_APP_ORIGIN` includes every browser origin that loads the app (Vercel URL + custom domain).
+3. Smoke-test: open the Vercel URL → Start a quiz → room create/join over WebSocket.
+
+In **development**, the browser connects to `http://127.0.0.1:4000`. In **production**, the browser uses `NEXT_PUBLIC_SOCKET_URL` (same-origin `/socket.io` rewrites alone are not enough across hosts).
 
 ## SEO & Google Search Console
 

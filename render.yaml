@@ -1,0 +1,26 @@
+# Render Blueprint: long-running Socket.IO game server for QuizIn.
+# Connect this repo in Render → New → Blueprint, or create a Web Service manually
+# with start command `npm run start:socket` and health check `/health`.
+#
+# After deploy, set Vercel env NEXT_PUBLIC_SOCKET_URL to this service's URL
+# (e.g. https://quizin-socket.onrender.com).
+
+services:
+  - type: web
+    name: quizin-socket
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm install
+    startCommand: npm run start:socket
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Comma-separated Vercel URL(s), e.g. https://quizin-ui.vercel.app
+      - key: NEXT_PUBLIC_APP_ORIGIN
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false

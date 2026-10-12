@@ -1,5 +1,6 @@
 function parsePort() {
-  const v = process.env.QUIZIN_SOCKET_PORT;
+  // Render (and most PaaS) inject PORT; keep QUIZIN_SOCKET_PORT for local overrides.
+  const v = process.env.PORT || process.env.QUIZIN_SOCKET_PORT;
   return Number(v) || 4000;
 }
 
