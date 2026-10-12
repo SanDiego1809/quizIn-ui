@@ -3,7 +3,13 @@ import { absoluteUrl } from "@/lib/site/site";
 
 /** @returns {import('next').MetadataRoute.Sitemap} */
 export default function sitemap() {
-  const staticPaths = ["", "/play", "/contact", ...LANDING_SLUGS.map((s) => `/${s}`)];
+  const staticPaths = [
+    "",
+    "/play",
+    "/faq",
+    "/contact",
+    ...LANDING_SLUGS.map((s) => `/${s}`),
+  ];
 
   return staticPaths.map((path) => ({
     url: absoluteUrl(path || "/"),

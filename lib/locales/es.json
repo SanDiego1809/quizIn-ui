@@ -3,7 +3,8 @@
     "play": "Jugar",
     "languageLabel": "Idioma",
     "privacy": "Privacidad",
-    "contact": "Contacto",
+    "contact": "Contacto y créditos",
+    "faq": "FAQ",
     "signIn": "Iniciar sesión",
     "signUp": "Registrarse",
     "profile": "Perfil"
@@ -47,8 +48,29 @@
     "subtitle": "Crea, juega y comparte cuestionarios con tus amigos.",
     "play": "Iniciar un quiz",
     "contact": "Contacto y créditos",
+    "modesHeading": "Elige tu juego",
+    "joinCodeLabel": "¿Tienes un código?",
+    "joinCodePlaceholder": "ABC123",
+    "joinCta": "Unirse",
+    "hostCta": "Crear una sala",
+    "stepsHeading": "Cómo funciona",
+    "steps": [
+      { "title": "Crear", "body": "Abre una sala" },
+      { "title": "Compartir", "body": "Envía el código" },
+      { "title": "Jugar", "body": "Compite en vivo" }
+    ],
+    "recentHeading": "Partidas recientes",
+    "recentSeeProfile": "Perfil",
     "multiplayerLink": "Salas de concurso multijugador",
+    "friendsLineBefore": "Comparte un ",
+    "friendsLineCode": "código de 6 letras",
+    "friendsLineAfter": " → jugad juntos",
     "faqHeading": "Preguntas frecuentes",
+    "faqSeeAll": "Ver todas",
+    "faqLink": "FAQ",
+    "faqPageTitle": "FAQ — QuizIn",
+    "faqPageDescription": "Respuestas sobre las salas de quiz multijugador de QuizIn, modos, puntuación y primeros pasos.",
+    "faqBackHome": "← Volver al inicio",
     "multiplayerNote": "utilizan un código simple de 6 letras — sin necesidad de registro.",
     "faq": [
       {
@@ -186,11 +208,13 @@
   "modes": {
     "classic": {
       "name": "Quiz clásico",
+      "vibe": "Velocidad",
       "description": "Preguntas de opción múltiple compartidas, rondas cronometradas y puntuación por rapidez. Ideal para noches de trivia.",
       "learnMore": "Más información →"
     },
     "geography": {
       "name": "Quiz de geografía",
+      "vibe": "Mapas",
       "description": "Aparece el nombre de un país — haz clic en él en el mapa interactivo antes que tus amigos. Perfecto para amantes de los mapas y aulas.",
       "learnMore": "Más información →"
     }

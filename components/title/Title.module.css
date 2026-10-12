@@ -8,9 +8,10 @@
 
 .title {
   margin: 0;
+  font-family: var(--font-display), var(--font-ui);
   font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   background: linear-gradient(135deg, #f8fafc 0%, #94a3b8 100%);
   background-clip: text;
   -webkit-background-clip: text;

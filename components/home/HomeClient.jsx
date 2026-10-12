@@ -1,104 +1,200 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import Button from "@/components/button/Button";
+import { useRouter } from "next/navigation";
 import ModeFavoriteButton from "@/components/auth/ModeFavoriteButton";
 import JsonLd from "@/components/seo/JsonLd";
-import Title from "@/components/title/Title";
 import { useLang } from "@/components/site/LangProvider";
-import { HOME_FAQ } from "@/lib/site/faq";
 import {
-  faqPageJsonLd,
   organizationJsonLd,
   softwareApplicationJsonLd,
   webSiteJsonLd,
 } from "@/lib/site/jsonLd";
+import { SITE_NAME } from "@/lib/site/site";
 import { getTranslations } from "@/lib/i18n";
+import HomeFaqTeaser from "./HomeFaqTeaser";
+import HomeRecentGames from "./HomeRecentGames";
 import classes from "./HomePage.module.css";
 
+const MODES = [
+  { id: "classic", infoHref: "/classic-quiz" },
+  { id: "geography", infoHref: "/geography-quiz" },
+];
+
+function ModeInfoIcon() {
+  return (
+    <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" focusable="false">
+      <circle cx="10" cy="10" r="8.25" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="10" cy="6.25" r="1.1" fill="currentColor" />
+      <path
+        d="M10 9.1v5.1"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function normalizeRoomCode(value) {
+  return String(value || "")
+    .trim()
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "")
+    .slice(0, 6);
+}
+
 export default function HomeClient() {
+  const router = useRouter();
   const { lang } = useLang();
   const all = getTranslations(lang);
   const t = all.home;
-  const localizedFaq = all.home?.faq || [];
-  const jsonLd = [
-    webSiteJsonLd(),
-    organizationJsonLd(),
-    softwareApplicationJsonLd(),
-    faqPageJsonLd(localizedFaq.length ? localizedFaq : HOME_FAQ),
-  ];
+  const steps = t.steps || [];
+  const jsonLd = [webSiteJsonLd(), organizationJsonLd(), softwareApplicationJsonLd()];
+  const [roomCode, setRoomCode] = useState("");
+
+  function handleJoin(event) {
+    event.preventDefault();
+    const code = normalizeRoomCode(roomCode);
+    if (code.length < 4) return;
+    router.push(`/play?code=${encodeURIComponent(code)}&lang=${lang}`);
+  }
 
   return (
     <>
       <JsonLd data={jsonLd} />
-      <main className={classes.main}>
-        <header className={classes.hero}>
-          <div style={{ display: "flex", gap: 12, alignItems: "center", flexDirection: "column" }}>
-            <Title subtitle={t.subtitle}>{t.title}</Title>
-            <div style={{ marginTop: 12 }}>
-              <Link href={`/play?lang=${lang}`} className={classes.ctaWrap}>
-                <Button>{t.play}</Button>
-              </Link>
-              <Link href={`/contact?lang=${lang}`} className={classes.footerLink} style={{ marginLeft: 12 }}>
-                {t.contact}
-              </Link>
-            </div>
-          </div>
-        </header>
+      <div className={classes.shell}>
+        <main className={classes.main}>
+          <header className={classes.hero}>
+            <h1 className={classes.heroBrand}>
+              <img
+                src="/quizin-logo-dark.png"
+                alt={SITE_NAME}
+                className={classes.heroLogo}
+                width={949}
+                height={429}
+                decoding="async"
+              />
+            </h1>
 
-        <section className={classes.section} aria-labelledby="home-modes">
-          <h2 id="home-modes" className={classes.sectionTitle}>
-            {all.how?.title ?? "Quiz modes"}
-          </h2>
-          <div className={classes.modeGrid}>
-            <article className={classes.modeCard}>
-              <h3 className={classes.modeName}>{all.modes.classic.name}</h3>
-              <p className={classes.modeDesc}>{all.modes.classic.description}</p>
-              <Link href={`/classic-quiz?lang=${lang}`} className={classes.modeLink}>
-                {all.modes.classic.learnMore}
-              </Link>
-              <ModeFavoriteButton modeId="classic" />
-            </article>
-            <article className={classes.modeCard}>
-              <h3 className={classes.modeName}>{all.modes.geography.name}</h3>
-              <p className={classes.modeDesc}>{all.modes.geography.description}</p>
-              <Link href={`/geography-quiz?lang=${lang}`} className={classes.modeLink}>
-                {all.modes.geography.learnMore}
-              </Link>
-              <ModeFavoriteButton modeId="geography" />
-            </article>
-          </div>
-          <p className={classes.sectionLead}>
-            <Link href={`/multiplayer-quiz?lang=${lang}`}>{t.multiplayerLink}</Link>{" "}
-            {t.multiplayerNote}
-          </p>
-        </section>
+            {steps.length > 0 ? (
+              <section className={classes.steps} aria-labelledby="home-steps">
+                <h2 id="home-steps" className={classes.sectionTitle}>
+                  {t.stepsHeading}
+                </h2>
+                <ol className={classes.stepsList}>
+                  {steps.map((step, index) => {
+                    const inner = (
+                      <>
+                        <span className={classes.stepNum}>{index + 1}</span>
+                        <span className={classes.stepCopy}>
+                          <span className={classes.stepTitle}>{step.title}</span>
+                          <span className={classes.stepBody}>{step.body}</span>
+                        </span>
+                      </>
+                    );
+                    return (
+                      <li key={step.title} className={classes.stepItem}>
+                        {index === 0 ? (
+                          <Link href={`/play?lang=${lang}`} className={classes.stepLink}>
+                            {inner}
+                          </Link>
+                        ) : (
+                          <div className={classes.stepLink}>{inner}</div>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ol>
+              </section>
+            ) : null}
 
-        <section className={classes.section} aria-labelledby="home-how">
-          <h2 id="home-how" className={classes.sectionTitle}>
-            {all.how?.title ?? "How it works"}
-          </h2>
-          <ol className={classes.steps}>
-            {(all.how?.steps || []).map((s, i) => (
-              <li key={i}>{s}</li>
-            ))}
-          </ol>
-        </section>
-
-        <section className={classes.section} aria-labelledby="home-faq">
-          <h2 id="home-faq" className={classes.sectionTitle}>
-            {t.faqHeading}
-          </h2>
-          <dl className={classes.faqList}>
-            {(all.home?.faq || HOME_FAQ).map((item) => (
-              <div key={item.question} className={classes.faqItem}>
-                <dt className={classes.faqQuestion}>{item.question}</dt>
-                <dd className={classes.faqAnswer}>{item.answer}</dd>
+            <form className={classes.joinForm} onSubmit={handleJoin}>
+              <label className={classes.joinLabel} htmlFor="home-room-code">
+                {t.joinCodeLabel}
+              </label>
+              <div className={classes.joinRow}>
+                <input
+                  id="home-room-code"
+                  name="roomCode"
+                  className={classes.joinInput}
+                  value={roomCode}
+                  onChange={(e) => setRoomCode(normalizeRoomCode(e.target.value))}
+                  placeholder={t.joinCodePlaceholder}
+                  maxLength={6}
+                  autoComplete="off"
+                  spellCheck={false}
+                  inputMode="text"
+                  aria-label={t.joinCodeLabel}
+                />
+                <button
+                  type="submit"
+                  className={classes.joinButton}
+                  disabled={roomCode.length < 4}
+                >
+                  {t.joinCta}
+                </button>
+                <Link href={`/play?lang=${lang}`} className={classes.hostButton}>
+                  {t.hostCta}
+                </Link>
               </div>
-            ))}
-          </dl>
-        </section>
-      </main>
+            </form>
+          </header>
+
+          <section className={classes.section} aria-labelledby="home-modes">
+            <h2 id="home-modes" className={classes.sectionTitle}>
+              {t.modesHeading}
+            </h2>
+            <div className={classes.modeGrid}>
+              {MODES.map(({ id, infoHref }, index) => {
+                const mode = all.modes[id];
+                return (
+                  <article
+                    key={id}
+                    className={`${classes.modeCard} ${classes[id]}`}
+                    style={{ "--stagger": `${index * 90}ms` }}
+                  >
+                    <div className={classes.modeCorner}>
+                      <Link
+                        href={`${infoHref}?lang=${lang}`}
+                        className={classes.infoLink}
+                        aria-label={mode.learnMore.replace(/\s*→\s*$/, "")}
+                        title={mode.learnMore.replace(/\s*→\s*$/, "")}
+                      >
+                        <ModeInfoIcon />
+                      </Link>
+                      <ModeFavoriteButton modeId={id} />
+                    </div>
+                    <Link
+                      href={`/play?mode=${id}&lang=${lang}`}
+                      className={classes.modePlay}
+                    >
+                      <span className={classes.modeDecor} aria-hidden="true" />
+                      {id === "classic" ? (
+                        <span className={classes.classicPills} aria-hidden="true">
+                          <span />
+                          <span />
+                          <span />
+                          <span />
+                        </span>
+                      ) : (
+                        <span className={classes.geoPreview} aria-hidden="true" />
+                      )}
+                      <h3 className={classes.modeName}>{mode.name}</h3>
+                      <p className={classes.vibe}>{mode.vibe}</p>
+                    </Link>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+
+          <HomeRecentGames />
+          <HomeFaqTeaser />
+        </main>
+      </div>
     </>
   );
 }

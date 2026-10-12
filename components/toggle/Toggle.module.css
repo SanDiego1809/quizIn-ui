@@ -1,0 +1,140 @@
+/* Ported from projet_web Toggle.module.css — favorite (+ basic) variants */
+
+.basic .iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.basic .iconContainer:hover {
+  transform: scale(1.1);
+}
+
+.basic .iconContainer:active {
+  transform: scale(0.95);
+}
+
+.basic svg {
+  width: var(--size, 50px);
+  height: var(--size, 50px);
+  color: var(--primary-color, #000);
+}
+
+.basic .toggled {
+  transform: scale(1.2);
+}
+
+.favorite.mainContainer {
+  position: relative;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.favorite .iconContainer {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  width: var(--size, 1.75rem);
+  height: var(--size, 1.75rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  transition: transform 0.3s ease-in-out;
+}
+
+.favorite .iconContainer:hover:not(:disabled) {
+  transform: scale(1.1);
+}
+
+.favorite .iconContainer:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.favorite .iconContainer svg:nth-child(1),
+.favorite .iconContainer.toggled svg:nth-child(1) {
+  position: absolute;
+  fill: var(--primary-color, #ff5bef);
+  width: var(--size, 1.75rem);
+  height: var(--size, 1.75rem);
+}
+
+.favorite .iconContainer.toggled svg:nth-child(1) {
+  animation: keyframes-svg-filled 1s forwards;
+}
+
+.favorite .iconContainer svg:nth-child(2) {
+  position: absolute;
+  animation: keyframes-svg-celebrate 0.5s;
+  animation-fill-mode: forwards;
+  display: none;
+  stroke: var(--primary-color, #ff5bef);
+  fill: var(--primary-color, #ff5bef);
+  width: calc(var(--size, 1.75rem) + 1.75rem);
+  height: calc(var(--size, 1.75rem) + 1.75rem);
+  stroke-width: 2px;
+}
+
+.favorite .iconContainer.toggled svg:nth-child(2) {
+  display: block;
+}
+
+.disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.disabled .iconContainer {
+  cursor: not-allowed;
+}
+
+@keyframes keyframes-svg-filled {
+  0% {
+    transform: scale(0);
+  }
+
+  25% {
+    transform: scale(1.2);
+  }
+
+  50% {
+    transform: scale(1);
+    filter: brightness(1.5);
+  }
+}
+
+@keyframes keyframes-svg-celebrate {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    opacity: 1;
+    filter: brightness(1.5);
+  }
+
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .favorite .iconContainer.toggled svg:nth-child(1),
+  .favorite .iconContainer svg:nth-child(2) {
+    animation: none;
+  }
+
+  .favorite .iconContainer:hover:not(:disabled),
+  .favorite .iconContainer:active:not(:disabled) {
+    transform: none;
+  }
+}

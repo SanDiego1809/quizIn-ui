@@ -1,8 +1,10 @@
 "use client";
 
 import { createContext, useContext, useMemo, useState } from "react";
+import { FlashBannerProvider } from "@/components/ui/FlashBanner";
 import SiteHeader from "./SiteHeader";
 import SiteFooter from "./SiteFooter";
+import classes from "./SiteChrome.module.css";
 
 const SiteChromeContext = createContext({
   immersive: false,
@@ -18,10 +20,18 @@ export default function SiteChrome({ children }) {
   const value = useMemo(() => ({ immersive, setImmersive }), [immersive]);
 
   return (
-    <SiteChromeContext.Provider value={value}>
-      {!immersive ? <SiteHeader /> : null}
-      {children}
-      {!immersive ? <SiteFooter /> : null}
-    </SiteChromeContext.Provider>
+    <FlashBannerProvider>
+      <SiteChromeContext.Provider value={value}>
+        <div className={classes.shell}>
+          {!immersive ? <SiteHeader /> : null}
+          <div className={classes.content}>{children}</div>
+          {!immersive ? (
+            <div className={classes.footer}>
+              <SiteFooter />
+            </div>
+          ) : null}
+        </div>
+      </SiteChromeContext.Provider>
+    </FlashBannerProvider>
   );
 }

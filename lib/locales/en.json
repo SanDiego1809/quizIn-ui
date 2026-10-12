@@ -3,7 +3,8 @@
     "play": "Play",
     "languageLabel": "Language",
     "privacy": "Privacy",
-    "contact": "Contact",
+    "contact": "Contact & credits",
+    "faq": "FAQ",
     "signIn": "Sign in",
     "signUp": "Sign up",
     "profile": "Profile"
@@ -47,8 +48,29 @@
     "subtitle": "Create, play, and share quizzes with friends.",
     "play": "Start a quiz",
     "contact": "Contact & credits",
+    "modesHeading": "Pick your game",
+    "joinCodeLabel": "Have a room code?",
+    "joinCodePlaceholder": "ABC123",
+    "joinCta": "Join",
+    "hostCta": "Host a room",
+    "stepsHeading": "How it works",
+    "steps": [
+      { "title": "Create", "body": "Host a room" },
+      { "title": "Share", "body": "Send the code" },
+      { "title": "Play", "body": "Compete live" }
+    ],
+    "recentHeading": "Recent games",
+    "recentSeeProfile": "Profile",
     "multiplayerLink": "Multiplayer quiz rooms",
+    "friendsLineBefore": "Share a ",
+    "friendsLineCode": "6-letter code",
+    "friendsLineAfter": " → play together",
     "faqHeading": "Frequently asked questions",
+    "faqSeeAll": "See all",
+    "faqLink": "FAQ",
+    "faqPageTitle": "FAQ — QuizIn",
+    "faqPageDescription": "Answers about QuizIn multiplayer quiz rooms, modes, scoring, and getting started.",
+    "faqBackHome": "← Back home",
     "multiplayerNote": "use a simple 6-letter code — no sign-up required.",
     "faq": [
       {
@@ -186,11 +208,13 @@
   "modes": {
     "classic": {
       "name": "Classic Quiz",
+      "vibe": "Speed",
       "description": "Shared multiple-choice questions, timed rounds, and speed-based scoring. Great for trivia nights and quick party games.",
       "learnMore": "Learn more →"
     },
     "geography": {
       "name": "Geography Quiz",
+      "vibe": "Maps",
       "description": "A country name appears — click it on the interactive world map before your friends do. Built for map lovers and classrooms.",
       "learnMore": "Learn more →"
     }

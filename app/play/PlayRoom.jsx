@@ -17,6 +17,11 @@ import classes from "./page.module.css";
 export default function PlayRoom() {
   const searchParams = useSearchParams();
   const defaultMode = parsePlayModeParam(searchParams.get("mode"));
+  const defaultRoomCode = String(searchParams.get("code") || "")
+    .trim()
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "")
+    .slice(0, 6);
   const { lang } = useLang();
   const { setImmersive } = useSiteChrome();
   const { defaultName, defaultAnimation } = usePlayerProfile();
@@ -78,6 +83,7 @@ export default function PlayRoom() {
           onJoin={joinRoom}
           defaultMode={defaultMode}
           defaultName={defaultName}
+          defaultRoomCode={defaultRoomCode}
           defaultAnimation={defaultAnimation}
           lang={lang}
         />

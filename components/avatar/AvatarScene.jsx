@@ -21,12 +21,14 @@ export default function AvatarScene({
   showQuizPedestal = false,
   answered = false,
   onIdleRestore,
+  onError,
 }) {
   const mountRef = useRef(null);
   const animationRef = useRef(animation);
   const playAnimationRef = useRef(null);
   const screenMaterialRef = useRef(null);
   const onIdleRestoreRef = useRef(onIdleRestore);
+  const onErrorRef = useRef(onError);
   const skipPreviewTimerRef = useRef(true);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
@@ -34,6 +36,14 @@ export default function AvatarScene({
   useEffect(() => {
     onIdleRestoreRef.current = onIdleRestore;
   }, [onIdleRestore]);
+
+  useEffect(() => {
+    onErrorRef.current = onError;
+  }, [onError]);
+
+  useEffect(() => {
+    if (loadError) onErrorRef.current?.(loadError);
+  }, [loadError]);
 
   useEffect(() => {
     animationRef.current = animation;

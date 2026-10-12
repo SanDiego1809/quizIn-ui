@@ -3,7 +3,8 @@
     "play": "Jouer",
     "languageLabel": "Langue",
     "privacy": "Confidentialité",
-    "contact": "Contact",
+    "contact": "Contact & crédits",
+    "faq": "FAQ",
     "signIn": "Connexion",
     "signUp": "S'inscrire",
     "profile": "Profil"
@@ -47,8 +48,29 @@
     "subtitle": "Créez, jouez et partagez des quiz avec vos amis.",
     "play": "Démarrer un quiz",
     "contact": "Contact & crédits",
+    "modesHeading": "Choisissez votre jeu",
+    "joinCodeLabel": "Vous avez un code ?",
+    "joinCodePlaceholder": "ABC123",
+    "joinCta": "Rejoindre",
+    "hostCta": "Créer une salle",
+    "stepsHeading": "Comment ça marche",
+    "steps": [
+      { "title": "Créer", "body": "Ouvrez une salle" },
+      { "title": "Partager", "body": "Envoyez le code" },
+      { "title": "Jouer", "body": "Affrontez-vous" }
+    ],
+    "recentHeading": "Parties récentes",
+    "recentSeeProfile": "Profil",
     "multiplayerLink": "Salles de quiz multijoueur",
+    "friendsLineBefore": "Partagez un ",
+    "friendsLineCode": "code à 6 lettres",
+    "friendsLineAfter": " → jouez ensemble",
     "faqHeading": "Foire aux questions",
+    "faqSeeAll": "Tout voir",
+    "faqLink": "FAQ",
+    "faqPageTitle": "FAQ — QuizIn",
+    "faqPageDescription": "Réponses sur les salles de quiz multijoueur QuizIn, les modes, le scoring et pour bien démarrer.",
+    "faqBackHome": "← Retour à l'accueil",
     "multiplayerNote": "utilisent un code simple de 6 lettres — aucune inscription requise.",
     "faq": [
       {
@@ -186,11 +208,13 @@
   "modes": {
     "classic": {
       "name": "Quiz classique",
+      "vibe": "Vitesse",
       "description": "Questions à choix multiple partagées, manches chronométrées et points selon la rapidité. Idéal pour les soirées quiz.",
       "learnMore": "En savoir plus →"
     },
     "geography": {
       "name": "Quiz de géographie",
+      "vibe": "Cartes",
       "description": "Le nom d'un pays s'affiche — cliquez le sur la carte interactive avant vos amis. Parfait pour les amoureux de la géographie et les classes.",
       "learnMore": "En savoir plus →"
     }

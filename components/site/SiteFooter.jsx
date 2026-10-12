@@ -14,6 +14,9 @@ export default function SiteFooter() {
       <Link href={`/privacy?lang=${lang}`} className={classes.link}>
         {t.privacy}
       </Link>
+      <Link href={`/faq?lang=${lang}`} className={classes.link}>
+        {t.faq}
+      </Link>
       <Link href={`/contact?lang=${lang}`} className={classes.link}>
         {t.contact}
       </Link>

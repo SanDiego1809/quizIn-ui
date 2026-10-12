@@ -4,16 +4,31 @@ import { useCallback, useEffect, useState } from "react";
 import { SignInButton } from "@clerk/nextjs";
 import { useClerkSession } from "@/components/auth/ClerkSessionProvider";
 import { useLang } from "@/components/site/LangProvider";
+import Toggle from "@/components/toggle/Toggle";
+import FavoriteBlankIcon from "@/components/toggle/icons/FavoriteBlankIcon";
+import FavoriteCelebration from "@/components/toggle/icons/FavoriteCelebration";
+import FavoriteFilledIcon from "@/components/toggle/icons/FavoriteFilledIcon";
+import { useFlashBanner } from "@/components/ui/FlashBanner";
 import { getTranslations } from "@/lib/i18n";
 import classes from "./ModeFavoriteButton.module.css";
+
+const FAVORITE_ICONS = {
+  isTrue: [FavoriteFilledIcon, FavoriteCelebration],
+  isFalse: [FavoriteBlankIcon],
+};
+
+const TOGGLE_STYLE = {
+  "--primary-color": "#f472b6",
+  "--size": "1.75rem",
+};
 
 export default function ModeFavoriteButton({ modeId }) {
   const { enabled, isLoaded, isSignedIn } = useClerkSession();
   const { lang } = useLang();
   const t = getTranslations(lang).favorites;
+  const { showBanner } = useFlashBanner();
   const [active, setActive] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [message, setMessage] = useState("");
 
   const refresh = useCallback(async () => {
     if (!enabled || !isSignedIn) {
@@ -40,16 +55,21 @@ export default function ModeFavoriteButton({ modeId }) {
   if (!isSignedIn) {
     return (
       <SignInButton mode="modal">
-        <button type="button" className={classes.button}>
-          {t.signInToFavorite}
+        <button
+          type="button"
+          className={classes.signInToggle}
+          style={TOGGLE_STYLE}
+          aria-label={t.signInToFavorite}
+        >
+          <FavoriteBlankIcon />
         </button>
       </SignInButton>
     );
   }
 
-  async function toggle() {
+  async function toggleFavorite() {
+    if (busy) return;
     setBusy(true);
-    setMessage("");
     try {
       if (active) {
         const res = await fetch(
@@ -67,7 +87,7 @@ export default function ModeFavoriteButton({ modeId }) {
         const data = await res.json().catch(() => ({}));
         if (!res.ok) {
           if (data.code === "PREMIUM_REQUIRED") {
-            setMessage(t.premiumRequired);
+            showBanner(t.premiumRequired, { tone: "warning", durationMs: 4000 });
           } else {
             throw new Error(data.error || t.error);
           }
@@ -76,7 +96,7 @@ export default function ModeFavoriteButton({ modeId }) {
         setActive(true);
       }
     } catch (err) {
-      setMessage(err?.message || t.error);
+      showBanner(err?.message || t.error, { tone: "error", durationMs: 4000 });
     } finally {
       setBusy(false);
     }
@@ -84,15 +104,17 @@ export default function ModeFavoriteButton({ modeId }) {
 
   return (
     <div className={classes.wrap}>
-      <button
-        type="button"
-        className={active ? classes.active : classes.button}
-        onClick={toggle}
+      <Toggle
+        variant="favorite"
+        icons={FAVORITE_ICONS}
+        isToggled={active}
+        onToggle={() => {
+          void toggleFavorite();
+        }}
+        style={TOGGLE_STYLE}
         disabled={busy}
-      >
-        {active ? t.remove : t.add}
-      </button>
-      {message ? <p className={classes.message}>{message}</p> : null}
+        label={active ? t.remove : t.add}
+      />
     </div>
   );
 }

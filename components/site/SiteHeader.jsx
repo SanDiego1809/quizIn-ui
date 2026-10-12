@@ -1,19 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import AuthControls from "@/components/auth/AuthControls";
 import { getTranslations } from "@/lib/i18n";
-import { SUPPORTED_LANGS } from "@/lib/lang";
 import { SITE_NAME } from "@/lib/site/site";
+import LanguageDropdown from "./LanguageDropdown";
 import { useLang } from "./LangProvider";
 import classes from "./SiteHeader.module.css";
 
 export default function SiteHeader() {
-  const pathname = usePathname();
-  const { lang, setLang } = useLang();
+  const { lang } = useLang();
   const t = getTranslations(lang).site;
-  const onPlay = pathname === "/play" || pathname.startsWith("/play/");
 
   return (
     <header className={classes.header}>
@@ -35,27 +32,8 @@ export default function SiteHeader() {
         </Link>
 
         <div className={classes.actions}>
-          <div className={classes.langs} role="group" aria-label={t.languageLabel}>
-            {SUPPORTED_LANGS.map((code) => (
-              <button
-                key={code}
-                type="button"
-                className={code === lang ? classes.langActive : classes.lang}
-                onClick={() => setLang(code)}
-                aria-pressed={code === lang}
-              >
-                {code.toUpperCase()}
-              </button>
-            ))}
-          </div>
-
+          <LanguageDropdown label={t.languageLabel} />
           <AuthControls />
-
-          {!onPlay ? (
-            <Link href={`/play?lang=${lang}`} className={classes.play}>
-              {t.play}
-            </Link>
-          ) : null}
         </div>
       </div>
     </header>

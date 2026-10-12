@@ -19,11 +19,18 @@ export default function QuizLobby({
   connectionError,
   defaultMode,
   defaultName = "",
+  defaultRoomCode = "",
   defaultAnimation = DEFAULT_ANIMATION,
   lang = "en",
 }) {
   const [animation, setAnimation] = useState(defaultAnimation || DEFAULT_ANIMATION);
   const [name, setName] = useState(defaultName || "");
+  const [roomCode, setRoomCode] = useState(
+    String(defaultRoomCode || "")
+      .trim()
+      .toUpperCase()
+      .slice(0, 6)
+  );
   const t = getTranslations(lang).play;
 
   useEffect(() => {
@@ -33,6 +40,17 @@ export default function QuizLobby({
   useEffect(() => {
     if (defaultAnimation) setAnimation(defaultAnimation);
   }, [defaultAnimation]);
+
+  useEffect(() => {
+    if (!defaultRoomCode) return;
+    setRoomCode(
+      String(defaultRoomCode)
+        .trim()
+        .toUpperCase()
+        .replace(/[^A-Z0-9]/g, "")
+        .slice(0, 6)
+    );
+  }, [defaultRoomCode]);
 
   return (
     <section className={classes.panel}>
@@ -99,6 +117,17 @@ export default function QuizLobby({
             placeholder={t.roomCodePlaceholder}
             maxLength={6}
             required
+            value={roomCode}
+            onChange={(e) =>
+              setRoomCode(
+                e.target.value
+                  .toUpperCase()
+                  .replace(/[^A-Z0-9]/g, "")
+                  .slice(0, 6)
+              )
+            }
+            autoComplete="off"
+            spellCheck={false}
           />
         </label>
         <label className={classes.label}>
