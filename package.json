@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:socket": "node socket-server/server.js",
+    "dev:all": "node scripts/dev-all.js",
     "start:socket": "node socket-server/server.js",
     "import:trivia": "node socket-server/scripts/import-opentriviaqa.js",
     "build": "prisma generate && next build",
@@ -29,6 +30,7 @@
     "react-dom": "^19.2.7",
     "socket.io": "^4.8.3",
     "socket.io-client": "^4.8.3",
+    "stripe": "^23.0.0",
     "three": "^0.180.0"
   },
   "devDependencies": {

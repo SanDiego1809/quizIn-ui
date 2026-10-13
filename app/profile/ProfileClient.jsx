@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Show, SignInButton } from "@clerk/nextjs";
 import { useLang } from "@/components/site/LangProvider";
 import { getTranslations } from "@/lib/i18n";
@@ -11,6 +12,7 @@ import classes from "./profile.module.css";
 function ProfilePanel() {
   const { lang } = useLang();
   const t = getTranslations(lang).profile;
+  const searchParams = useSearchParams();
   const [profile, setProfile] = useState(null);
   const [history, setHistory] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -19,7 +21,9 @@ function ProfilePanel() {
   const [avatarKey, setAvatarKey] = useState(DEFAULT_ANIMATION);
   const [status, setStatus] = useState("loading");
   const [message, setMessage] = useState("");
+  const [billingMessage, setBillingMessage] = useState("");
   const [saving, setSaving] = useState(false);
+  const [billingBusy, setBillingBusy] = useState(false);
 
   const load = useCallback(async () => {
     setStatus("loading");
@@ -62,6 +66,31 @@ function ProfilePanel() {
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    const billing = searchParams.get("billing");
+    if (billing === "success") {
+      setBillingMessage(t.billingSuccess);
+      load();
+    } else if (billing === "canceled") {
+      setBillingMessage(t.billingCanceled);
+    }
+  }, [searchParams, t.billingSuccess, t.billingCanceled, load]);
+
+  async function startBilling(path) {
+    setBillingBusy(true);
+    setBillingMessage("");
+    try {
+      const res = await fetch(path, { method: "POST" });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || t.billingError);
+      if (!data.url) throw new Error(t.billingError);
+      window.location.href = data.url;
+    } catch (err) {
+      setBillingMessage(err?.message || t.billingError);
+      setBillingBusy(false);
+    }
+  }
 
   async function onSave(event) {
     event.preventDefault();
@@ -125,6 +154,41 @@ function ProfilePanel() {
           {" · "}
           {t.plan}: <strong>{profile?.plan === "premium" ? t.premium : t.free}</strong>
         </p>
+
+        <div className={classes.billingRow}>
+          {profile?.plan !== "premium" ? (
+            <button
+              type="button"
+              className={classes.primary}
+              disabled={billingBusy}
+              onClick={() => startBilling("/api/stripe/checkout")}
+            >
+              {billingBusy ? t.billingRedirecting : t.upgradePremium}
+            </button>
+          ) : null}
+          {profile?.hasBilling ? (
+            <button
+              type="button"
+              className={classes.secondary}
+              disabled={billingBusy}
+              onClick={() => startBilling("/api/stripe/portal")}
+            >
+              {billingBusy ? t.billingRedirecting : t.manageBilling}
+            </button>
+          ) : null}
+        </div>
+        {billingMessage ? (
+          <p
+            className={
+              searchParams.get("billing") === "success"
+                ? classes.success
+                : classes.message
+            }
+            role="status"
+          >
+            {billingMessage}
+          </p>
+        ) : null}
 
         <form className={classes.form} onSubmit={onSave}>
           <label className={classes.label}>

@@ -40,6 +40,10 @@ Open [http://localhost:3000](http://localhost:3000) and click **Start a quiz**, 
 | `NEXT_PUBLIC_CLERK_SIGN_IN_URL` | `/sign-in` | Clerk sign-in path |
 | `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | `/sign-up` | Clerk sign-up path |
 | `DATABASE_URL` | *(unset)* | Neon Postgres connection string (profiles, history, favorites, credits) |
+| `STRIPE_SECRET_KEY` | *(unset)* | Stripe secret key (Checkout + webhooks; direct Stripe, not Clerk Billing) |
+| `STRIPE_WEBHOOK_SECRET` | *(unset)* | Stripe webhook signing secret |
+| `STRIPE_PRICE_PREMIUM_MONTHLY` | *(unset)* | Stripe Price ID for Premium (€5/month EUR) |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | *(unset)* | Stripe publishable key (optional for hosted Checkout) |
 
 Copy [`.env.example`](.env.example) to `.env.local` for Next.js. The socket server loads `.env` / `.env.local` via `socket-server/loadEnv.js`, so the same `CLERK_SECRET_KEY` and `DATABASE_URL` are available to both processes locally.
 
@@ -54,15 +58,16 @@ QuizIn supports **guest play** and optional **accounts**. Passwords are never st
 | Create / join / play rooms | Yes | Yes |
 | Persistent display name & avatar | No (entered each time) | Yes (`/profile`) |
 | Game history & credits | No | Yes (saved when a match ends) |
-| Favorites (e.g. quiz modes) | Sign-in required | Yes (free: 3 max; premium: unlimited) |
-| Premium unlocks | — | `UserProfile.plan = premium` (set in DB for now) |
+| Favorites (e.g. quiz modes) | Sign-in required | Yes (free: 1 max; premium: unlimited) |
+| Premium (€5/month) | — | Stripe Checkout from `/profile`; webhooks set `UserProfile.plan` |
 
 ### How it fits together
 
-1. **Next.js (Vercel)** — `ClerkProvider`, sign-in/up UI, `/profile`, and `/api/me*` routes.
-2. **Clerk** — issues session tokens; middleware protects `/profile` and `/api/me*`. `/play` stays public.
+1. **Next.js (Vercel)** — `ClerkProvider`, sign-in/up UI, `/profile`, and `/api/me*` / `/api/stripe/*` routes.
+2. **Clerk** — issues session tokens; middleware protects `/profile`, `/api/me*`, and Stripe checkout/portal. `/play` stays public. Webhooks are signature-verified only.
 3. **Socket.IO** — optional JWT on connect (`socket.auth.token`). If valid, the player gets a `userId`; guests omit the token and play as today.
 4. **Neon + Prisma** — schema in [`prisma/schema.prisma`](prisma/schema.prisma): `UserProfile`, `GameResult`, `Favorite`.
+5. **Stripe** — Checkout + Customer Portal + webhooks sync `UserProfile.plan` (direct Stripe; not Clerk Billing).
 
 On first API call after sign-in, the app **upserts** a `UserProfile` from the Clerk user id. The lobby prefills name/avatar from that profile when signed in.
 
@@ -87,6 +92,18 @@ npm run db:studio    # optional Prisma Studio UI
 
 `npm run db:push` loads `.env.local` (Prisma alone only auto-loads `.env`).
 
+### Stripe Premium (direct billing)
+
+Premium is billed through **your Stripe account** (not Clerk Billing).
+
+1. In [Stripe Dashboard](https://dashboard.stripe.com) (test mode first), create product **QuizIn Premium** with a recurring price **€5.00 / month**.
+2. Set `STRIPE_SECRET_KEY`, `STRIPE_PRICE_PREMIUM_MONTHLY`, and optionally `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` in `.env.local`.
+3. Local webhooks: run `npm run dev:all` (Next + socket + Stripe listen), or:
+   `stripe listen --forward-to localhost:3000/api/stripe/webhook --events checkout.session.completed,customer.subscription.updated,customer.subscription.deleted,invoice.paid,invoice.payment_failed`
+   and set `STRIPE_WEBHOOK_SECRET` from the CLI output.
+4. Production: add a webhook endpoint to `https://<your-domain>/api/stripe/webhook` for `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid`, `invoice.payment_failed`.
+5. Enable the Customer Portal in Stripe so **Manage billing** on `/profile` can cancel or update payment methods.
+
 `npm run build` / `postinstall` run `prisma generate` so the client stays in sync.
 
 ### Deploy (Vercel + Render)
@@ -107,6 +124,7 @@ Production app: **https://quizin-ui.vercel.app** (project `quizin-ui` under the 
 | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` / `CLERK_SECRET_KEY` | From Clerk dashboard |
 | `NEXT_PUBLIC_CLERK_SIGN_IN_URL` / `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | `/sign-in`, `/sign-up` |
 | `DATABASE_URL` | Neon connection string |
+| `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` / `STRIPE_PRICE_PREMIUM_MONTHLY` | Stripe Premium billing |
 | `GOOGLE_SITE_VERIFICATION` / `NEXT_PUBLIC_GA_ID` | Optional |
 
 3. Deploy. Note the deployment URL for CORS on Render.
@@ -174,6 +192,7 @@ app/
   profile/                  Account profile, history, favorites
   sign-in/, sign-up/        Clerk hosted auth pages
   api/me/                   Profile / history / favorites APIs
+  api/stripe/               Checkout, Customer Portal, webhooks
 socket-server/              Real-time game server
   server.js                 Entry point (+ Clerk JWT middleware)
   lib/clerkAuth.js          Optional session verify on connect
@@ -185,7 +204,8 @@ hooks/useQuizRoom.js        Client socket state (+ Clerk token sync)
 hooks/usePlayerProfile.js   Prefill lobby from /api/me
 lib/quiz/socket.js          Socket.IO client singleton
 lib/db/                     Prisma helpers for Next.js API routes
-middleware.js               Clerk middleware (protects /profile, /api/me*)
+lib/stripe/                 Stripe client + plan sync helpers
+middleware.js               Clerk middleware (protects /profile, /api/me*, Stripe checkout/portal)
 ```
 
 ## Game modes

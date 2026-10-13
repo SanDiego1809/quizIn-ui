@@ -35,6 +35,18 @@
   line-height: 1.5;
 }
 
+.billingRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.75rem;
+}
+
+.success {
+  color: #86efac;
+}
+
 .error {
   color: #fca5a5;
 }

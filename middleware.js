@@ -8,10 +8,18 @@ const authEnabled = Boolean(
 const isProtectedRoute = createRouteMatcher([
   "/profile(.*)",
   "/api/me(.*)",
+  "/api/stripe/checkout(.*)",
+  "/api/stripe/portal(.*)",
 ]);
+
+// Stripe signs /api/stripe/webhook — do not require a Clerk session.
+const isStripeWebhook = createRouteMatcher(["/api/stripe/webhook(.*)"]);
 
 export default authEnabled
   ? clerkMiddleware(async (auth, req) => {
+      if (isStripeWebhook(req)) {
+        return NextResponse.next();
+      }
       if (isProtectedRoute(req)) {
         await auth.protect();
       }

@@ -13,16 +13,19 @@ enum Plan {
 }
 
 model UserProfile {
-  id          String       @id @default(cuid())
-  clerkUserId String       @unique
-  displayName String
-  avatarKey   String       @default("Idle")
-  credits     Int          @default(0)
-  plan        Plan         @default(free)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  gameResults GameResult[]
-  favorites   Favorite[]
+  id                       String       @id @default(cuid())
+  clerkUserId              String       @unique
+  displayName              String
+  avatarKey                String       @default("Idle")
+  credits                  Int          @default(0)
+  plan                     Plan         @default(free)
+  stripeCustomerId         String?      @unique
+  stripeSubscriptionId     String?      @unique
+  stripeSubscriptionStatus String?
+  createdAt                DateTime     @default(now())
+  updatedAt                DateTime     @updatedAt
+  gameResults              GameResult[]
+  favorites                Favorite[]
 }
 
 model GameResult {
