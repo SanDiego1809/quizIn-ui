@@ -1,9 +1,17 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import classes from "./QuizResults.module.css";
 import Button from "@/components/button/Button";
 import { getTranslations } from "@/lib/i18n";
+import { DEFAULT_ANIMATION } from "@/lib/quiz/animations";
+import { DEFAULT_SKIN } from "@/lib/quiz/cosmetics";
+
+const QuizAvatarRoom = dynamic(
+  () => import("@/components/avatar/QuizAvatarRoom"),
+  { ssr: false }
+);
 
 const REVEAL_DELAY_MS = 1200;
 const CELEBRATION_DELAY_MS = 500;
@@ -104,6 +112,21 @@ export default function QuizResults({
   );
 
   const latestRevealedId = visibleEntries[0]?.playerId ?? null;
+  const winnerId = rankings[0]?.playerId ?? null;
+
+  const victoryPlayers = useMemo(() => {
+    if (!showCelebration || !winnerId) return [];
+    return room.players.map((player) => ({
+      id: player.id,
+      name: player.name,
+      skinKey: player.skinKey ?? DEFAULT_SKIN,
+      animation:
+        player.id === winnerId
+          ? player.victoryAnimation || DEFAULT_ANIMATION
+          : DEFAULT_ANIMATION,
+      answered: player.id === winnerId,
+    }));
+  }, [room.players, winnerId, showCelebration]);
 
   useEffect(() => {
     setRevealedCount(0);
@@ -203,6 +226,16 @@ export default function QuizResults({
           <p className={classes.eyebrow}>{t.matchEnded}</p>
           <h2 className={classes.title}>{t.andTheWinnerIs}</h2>
         </header>
+
+        {victoryPlayers.length ? (
+          <div className={classes.victoryScene}>
+            <QuizAvatarRoom
+              players={victoryPlayers}
+              yourPlayerId={yourPlayerId}
+              className={classes.victoryCanvas}
+            />
+          </div>
+        ) : null}
 
         <ol ref={listRef} className={classes.podium} aria-label="Révélation du classement">
           {visibleEntries.map((entry) => {

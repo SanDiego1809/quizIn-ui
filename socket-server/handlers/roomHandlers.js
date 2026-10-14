@@ -12,12 +12,44 @@ const {
   isHostSocket,
   getPlayerIdForSocket,
 } = require("../lib/roomLifecycle");
-const { sanitizeAnimation } = require("../lib/animations");
+const {
+  sanitizeVictoryAnimationChoice,
+  sanitizeSkinChoice,
+  DEFAULT_SKIN,
+} = require("../lib/cosmetics");
+const { DEFAULT_ANIMATION } = require("../lib/animations");
+const { canAcceptPlayer, buildSeatInfo } = require("../lib/premiumSeats");
+const { hydrateSocketAccess, socketAccess } = require("../lib/playerAccess");
+
+async function ensureSocketAccess(socket) {
+  if (socket.data?.accessHydrated) return socketAccess(socket);
+  await hydrateSocketAccess(socket);
+  socket.data.accessHydrated = true;
+  return socketAccess(socket);
+}
+
+function cosmeticsFromAccess(access) {
+  if (!access.signedIn) {
+    return {
+      animation: DEFAULT_ANIMATION,
+      victoryAnimation: DEFAULT_ANIMATION,
+      skinKey: DEFAULT_SKIN,
+    };
+  }
+  return {
+    animation: DEFAULT_ANIMATION,
+    victoryAnimation: sanitizeVictoryAnimationChoice(
+      access.victoryAnimation,
+      access
+    ),
+    skinKey: sanitizeSkinChoice(access.skinKey, access),
+  };
+}
 
 function registerRoomHandlers(socket, ctx) {
-  const { io, rooms, emitRoom } = ctx;
+  const { rooms, emitRoom } = ctx;
 
-  socket.on("quiz:room_create", ({ name, mode = DEFAULT_MODE_ID, animation }) => {
+  socket.on("quiz:room_create", async ({ name, mode = DEFAULT_MODE_ID }) => {
     const safeName = sanitizeName(name);
     if (!safeName) {
       socket.emit("quiz:error", { message: "Name is required." });
@@ -33,6 +65,8 @@ function registerRoomHandlers(socket, ctx) {
       return;
     }
 
+    const access = await ensureSocketAccess(socket);
+    const cosmetics = cosmeticsFromAccess(access);
     const roomCode = uniqueRoomCode(rooms);
     const playerId = randomPlayerId();
     const room = createEmptyRoom({
@@ -40,10 +74,17 @@ function registerRoomHandlers(socket, ctx) {
       hostId: playerId,
       hostName: safeName,
       hostSocketId: socket.id,
-      hostAnimation: sanitizeAnimation(animation),
+      hostAnimation: cosmetics.animation,
       mode,
     });
     room.players[0].userId = socket.data?.userId || null;
+    room.players[0].plan = access.plan;
+    room.players[0].unlockedCosmetics = access.unlockedCosmetics;
+    room.players[0].skinKey = cosmetics.skinKey;
+    room.players[0].victoryAnimation = cosmetics.victoryAnimation;
+    room.settings = getMode(mode).sanitizeSettings(room.settings, {
+      premium: access.plan === "premium",
+    });
 
     setRoom(roomCode, room);
     socket.join(roomCode);
@@ -51,7 +92,7 @@ function registerRoomHandlers(socket, ctx) {
     emitRoom(roomCode);
   });
 
-  socket.on("quiz:room_join", ({ roomCode, name, animation }) => {
+  socket.on("quiz:room_join", async ({ roomCode, name }) => {
     const code = normalizeRoomCode(roomCode);
     const safeName = sanitizeName(name);
     const room = rooms.get(code);
@@ -73,16 +114,34 @@ function registerRoomHandlers(socket, ctx) {
       return;
     }
 
+    const access = await ensureSocketAccess(socket);
+    if (!canAcceptPlayer(room.players, access.plan)) {
+      const seats = buildSeatInfo(room.players);
+      socket.emit("quiz:error", {
+        message:
+          seats.count >= seats.hardCap
+            ? "This room is full (8 players max)."
+            : "Need another Premium player for a larger room. Upgrade on your profile — each Premium unlocks +1 seat (free rooms hold 4).",
+        code: "ROOM_SEAT_LIMIT",
+      });
+      return;
+    }
+
     removeSocketFromAllRooms(socket, ctx);
 
+    const cosmetics = cosmeticsFromAccess(access);
     const playerId = randomPlayerId();
     room.players.push({
       id: playerId,
       name: safeName,
-      animation: sanitizeAnimation(animation),
+      animation: cosmetics.animation,
+      victoryAnimation: cosmetics.victoryAnimation,
+      skinKey: cosmetics.skinKey,
       socketId: socket.id,
       isHost: false,
       userId: socket.data?.userId || null,
+      plan: access.plan,
+      unlockedCosmetics: access.unlockedCosmetics,
     });
 
     socket.join(code);
@@ -124,27 +183,19 @@ function registerRoomHandlers(socket, ctx) {
     emitRoom(code);
   });
 
-  socket.on("quiz:player_animation", ({ roomCode, animation }) => {
+  // Kept for compatibility; in-game animation picking is disabled (Idle only).
+  socket.on("quiz:player_animation", async ({ roomCode }) => {
     const code = normalizeRoomCode(roomCode);
     const room = rooms.get(code);
-
-    if (!room) {
-      socket.emit("quiz:error", { message: "Room not found." });
-      return;
-    }
+    if (!room) return;
 
     const playerId = getPlayerIdForSocket(room, socket);
-    if (!playerId) {
-      socket.emit("quiz:error", {
-        message: "Your session is not in this room. Rejoin with the room code.",
-      });
-      return;
-    }
+    if (!playerId) return;
 
     const player = room.players.find((entry) => entry.id === playerId);
     if (!player) return;
 
-    player.animation = sanitizeAnimation(animation);
+    player.animation = DEFAULT_ANIMATION;
     emitRoom(code);
   });
 }

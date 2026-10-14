@@ -1,6 +1,11 @@
 const QUESTION_BANK = require("../../data/questions.json");
 const { shuffle } = require("../../lib/utils");
 const { clearRoomTimer } = require("../../lib/timers");
+const { isKnownCategory } = require("../../lib/classicCategories");
+const {
+  FREE_CLASSIC_MAX_QUESTIONS,
+  PREMIUM_CLASSIC_MAX_QUESTIONS,
+} = require("../../lib/hostLimits");
 
 const SPEED_POINTS = [10, 8, 7, 5];
 
@@ -20,7 +25,15 @@ function toBoundedNumber(value, fallback, min, max) {
   return Math.min(max, Math.max(min, n));
 }
 
-function sanitizeSettings(input = {}, defaults) {
+function sanitizeSettings(input = {}, defaults, options = {}) {
+  const premium = Boolean(options.premium);
+  const maxQuestions = premium
+    ? PREMIUM_CLASSIC_MAX_QUESTIONS
+    : FREE_CLASSIC_MAX_QUESTIONS;
+  const categoryRaw = String(input.category || "").trim();
+  const category =
+    premium && isKnownCategory(categoryRaw) ? categoryRaw : "";
+
   return {
     questionTimeSeconds: toBoundedNumber(
       input.questionTimeSeconds,
@@ -32,8 +45,9 @@ function sanitizeSettings(input = {}, defaults) {
       input.questionsPerGame,
       defaults.questionsPerGame,
       1,
-      25
+      maxQuestions
     ),
+    category,
   };
 }
 
@@ -47,8 +61,12 @@ function createInitialState() {
   };
 }
 
-function pickQuestions(count) {
-  const pool = shuffle(QUESTION_BANK);
+function pickQuestions(count, category = "") {
+  const filtered = category
+    ? QUESTION_BANK.filter((question) => question.category === category)
+    : QUESTION_BANK;
+  const source = filtered.length ? filtered : QUESTION_BANK;
+  const pool = shuffle(source);
   return pool.slice(0, Math.min(count, pool.length));
 }
 
@@ -178,7 +196,10 @@ function scheduleQuestionTimer(roomCode, ctx) {
 function beginGame(room) {
   clearRoomTimer(room);
   const state = room.state;
-  const questions = pickQuestions(room.settings.questionsPerGame);
+  const questions = pickQuestions(
+    room.settings.questionsPerGame,
+    room.settings.category
+  );
 
   room.phase = "playing";
   state.questions = questions;

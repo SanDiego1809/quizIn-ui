@@ -75,14 +75,14 @@ export function useQuizRoom() {
     };
   }, [enabled, isLoaded, isSignedIn, getToken]);
 
-  const createRoom = useCallback((name, animation, mode) => {
-    const payload = { name, animation };
+  const createRoom = useCallback((name, mode) => {
+    const payload = { name };
     if (mode) payload.mode = mode;
     getQuizSocket()?.emit("quiz:room_create", payload);
   }, []);
 
-  const joinRoom = useCallback((roomCode, name, animation) => {
-    getQuizSocket()?.emit("quiz:room_join", { roomCode, name, animation });
+  const joinRoom = useCallback((roomCode, name) => {
+    getQuizSocket()?.emit("quiz:room_join", { roomCode, name });
   }, []);
 
   const updateRoomConfig = useCallback(

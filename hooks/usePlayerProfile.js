@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useClerkSession } from "@/components/auth/ClerkSessionProvider";
-import { DEFAULT_ANIMATION } from "@/lib/quiz/animations";
+import { DEFAULT_VICTORY_ANIMATION } from "@/lib/quiz/animations";
+import { DEFAULT_SKIN } from "@/lib/quiz/cosmetics";
 
 export function usePlayerProfile() {
   const { enabled, isLoaded, isSignedIn } = useClerkSession();
@@ -44,6 +45,16 @@ export function usePlayerProfile() {
     loading,
     isSignedIn: enabled && isSignedIn,
     defaultName: profile?.displayName || "",
-    defaultAnimation: profile?.avatarKey || DEFAULT_ANIMATION,
+    defaultAnimation: profile?.avatarKey || DEFAULT_VICTORY_ANIMATION,
+    defaultSkin: profile?.skinKey || DEFAULT_SKIN,
+    plan: profile?.plan || "free",
+    unlockedCosmetics: profile?.unlockedCosmetics || [],
+    refreshProfile: () => {
+      if (!enabled || !isSignedIn) return;
+      fetch("/api/me")
+        .then(async (res) => (res.ok ? res.json() : null))
+        .then((data) => setProfile(data?.profile ?? null))
+        .catch(() => {});
+    },
   };
 }

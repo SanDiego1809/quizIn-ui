@@ -1,6 +1,7 @@
 const COUNTRY_BANK = require("../../data/geography-questions.json");
 const { shuffle } = require("../../lib/utils");
 const { clearRoomTimer } = require("../../lib/timers");
+const { FREE_GEOGRAPHY_MAX_QUESTIONS } = require("../../lib/hostLimits");
 
 const SPEED_POINTS = [10, 8, 7, 5];
 
@@ -14,7 +15,12 @@ function toBoundedNumber(value, fallback, min, max) {
   return Math.min(max, Math.max(min, n));
 }
 
-function sanitizeSettings(input = {}, defaults) {
+function sanitizeSettings(input = {}, defaults, options = {}) {
+  const premium = Boolean(options.premium);
+  const maxQuestions = premium
+    ? COUNTRY_BANK.length
+    : Math.min(FREE_GEOGRAPHY_MAX_QUESTIONS, COUNTRY_BANK.length);
+
   return {
     questionTimeSeconds: toBoundedNumber(
       input.questionTimeSeconds,
@@ -26,7 +32,7 @@ function sanitizeSettings(input = {}, defaults) {
       input.questionsPerGame,
       defaults.questionsPerGame,
       1,
-      COUNTRY_BANK.length
+      maxQuestions
     ),
   };
 }

@@ -14,6 +14,8 @@ import {
 import { layoutPlayersForArc } from "./libs/playerArcLayout.js";
 import { CHARACTER_URL, animationUrl } from "@/lib/quiz/avatarAssets";
 import { DEFAULT_ANIMATION } from "@/lib/quiz/animations";
+import { DEFAULT_SKIN } from "@/lib/quiz/cosmetics";
+import { createSkinMaterial } from "@/lib/quiz/skinMaterial";
 import styles from "./AvatarScene.module.css";
 
 function prepareCharacter(root, material, scale) {
@@ -47,8 +49,16 @@ export default function QuizAvatarRoom({
       players
         .map(
           (player) =>
-            `${player.id}:${player.animation ?? DEFAULT_ANIMATION}:${Boolean(player.answered)}`
+            `${player.id}:${player.animation ?? DEFAULT_ANIMATION}:${player.skinKey ?? DEFAULT_SKIN}:${Boolean(player.answered)}`
         )
+        .join("|"),
+    [players]
+  );
+
+  const playerSkinKey = useMemo(
+    () =>
+      players
+        .map((player) => `${player.id}:${player.skinKey ?? DEFAULT_SKIN}`)
         .join("|"),
     [players]
   );
@@ -106,9 +116,6 @@ export default function QuizAvatarRoom({
       "/assets/animation/fire-edge-blue.jpg"
     );
     matcapTexture.colorSpace = THREE.SRGBColorSpace;
-    const characterMaterial = new THREE.MeshMatcapMaterial({
-      matcap: matcapTexture,
-    });
 
     const plane = new THREE.Mesh(
       new THREE.CircleGeometry(18, 64),
@@ -203,7 +210,10 @@ export default function QuizAvatarRoom({
 
           const character = prepareCharacter(
             cloneSkeleton(fbx),
-            characterMaterial,
+            createSkinMaterial(
+              matcapTexture,
+              slot.player.skinKey ?? DEFAULT_SKIN
+            ),
             characterScale
           );
           const mixer = new THREE.AnimationMixer(character);
@@ -307,7 +317,7 @@ export default function QuizAvatarRoom({
         }
       });
     };
-  }, [playerKey, yourPlayerId]);
+  }, [playerKey, playerSkinKey, yourPlayerId]);
 
   return (
     <div ref={mountRef} className={`${styles.mount} ${className}`.trim()}>

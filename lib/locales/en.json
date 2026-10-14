@@ -17,7 +17,8 @@
     "saved": "Profile saved.",
     "retry": "Retry",
     "displayName": "Display name",
-    "avatar": "Default avatar animation",
+    "avatar": "Victory emote",
+    "avatarHint": "Played when you win a quiz. During matches everyone stays on Idle. Guests always use the default avatar.",
     "save": "Save profile",
     "saving": "Saving…",
     "credits": "Credits",
@@ -40,7 +41,19 @@
     "signInRequired": "Sign in to manage your profile, history, and favorites.",
     "signIn": "Sign in",
     "authNotConfigured": "Auth is not configured on this server yet.",
-    "backHome": "← Back home"
+    "backHome": "← Back home",
+    "skin": "Character skin",
+    "locked": "locked",
+    "premiumPerks": "Premium: unlimited favorites, +1 room seat (stack to 8), host category filters & longer games, most cosmetics (Gold skin is play-to-earn only).",
+    "shopHeading": "Cosmetic shop",
+    "shopHint": "Spend credits earned from games, or upgrade to Premium for most cosmetics. Gold is play-to-earn only.",
+    "shopPremiumNote": "Premium includes most cosmetics. Gold is play-to-earn — unlock it with credits from matches.",
+    "shopEmpty": "You already own every credit unlock available to you.",
+    "earnOnlyTag": "play to earn",
+    "unlock": "Unlock",
+    "unlocking": "Unlocking…",
+    "unlockSuccess": "Cosmetic unlocked.",
+    "unlockError": "Could not unlock cosmetic."
   },
   "favorites": {
     "add": "Add to favorites",
@@ -85,7 +98,7 @@
       },
       {
         "question": "How many players can join a quiz room?",
-        "answer": "Friends join the same room with your room code and display name. The host starts the game when everyone is ready."
+        "answer": "Free rooms hold 4 players. Each Premium player in the lobby unlocks +1 seat, up to 8. Guests and free accounts can fill the free seats."
       },
       {
         "question": "What quiz modes are available?",
@@ -182,7 +195,10 @@
     "divider": "or",
     "roomCode": "Room code",
     "roomCodePlaceholder": "ABC123",
-    "joinRoom": "Join room"
+    "joinRoom": "Join room",
+    "avatarFromProfile": "Your victory emote and skin come from your profile.",
+    "avatarGuestDefault": "Guests use the default avatar. Sign in to set a victory emote and skin.",
+    "editAvatarProfile": "Edit on profile"
   },
   "roomSubtitle": "Answer quickly — fastest correct answers earn the most points.",
   "results": {
@@ -199,7 +215,15 @@
     "modeLabel": "Mode",
     "start": "Start",
     "backToLobby": "Back to lobby",
-    "waitingForHost": "Waiting for the host to start…"
+    "waitingForHost": "Waiting for the host to start…",
+    "waitingForPlayers": "Waiting for players",
+    "gameInProgress": "Game in progress",
+    "hostTag": "host",
+    "premiumHostHint": "Premium host unlocks category filters and longer games.",
+    "upgradeLink": "Upgrade",
+    "seatStatus": "{count} / {max} seats · {premium} Premium (+1 each)",
+    "needPremiumSeat": "Need another Premium for a larger room",
+    "overCapacity": "Too many players for current Premium seats. Someone must leave or upgrade before starting."
   },
   "settings_fields": {
     "questionsPerGame": {
@@ -209,6 +233,10 @@
     "questionTimeSeconds": {
       "label": "Time per question (seconds)",
       "hint": "0 = no timer"
+    },
+    "category": {
+      "label": "Category",
+      "hint": "Premium host — filter the trivia bank by category."
     }
   },
   "modes": {

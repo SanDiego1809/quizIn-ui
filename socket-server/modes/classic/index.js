@@ -1,9 +1,16 @@
 const logic = require("./logic");
 const { buildPayload } = require("./payload");
 
+const { CLASSIC_CATEGORIES } = require("../../lib/classicCategories");
+const {
+  FREE_CLASSIC_MAX_QUESTIONS,
+  PREMIUM_CLASSIC_MAX_QUESTIONS,
+} = require("../../lib/hostLimits");
+
 const DEFAULT_SETTINGS = {
   questionTimeSeconds: 30,
   questionsPerGame: 4,
+  category: "",
 };
 
 const SETTINGS_FIELDS = [
@@ -12,8 +19,10 @@ const SETTINGS_FIELDS = [
     label: "Number of questions",
     type: "number",
     min: 1,
-    max: 25,
+    max: PREMIUM_CLASSIC_MAX_QUESTIONS,
+    freeMax: FREE_CLASSIC_MAX_QUESTIONS,
     step: 1,
+    premiumHint: `Free hosts: up to ${FREE_CLASSIC_MAX_QUESTIONS}. Premium: up to ${PREMIUM_CLASSIC_MAX_QUESTIONS}.`,
   },
   {
     key: "questionTimeSeconds",
@@ -23,6 +32,23 @@ const SETTINGS_FIELDS = [
     max: 300,
     step: 5,
     hint: "0 = no timer",
+  },
+  {
+    key: "category",
+    label: "Category",
+    type: "select",
+    premium: true,
+    options: [
+      { value: "", label: "All categories" },
+      ...CLASSIC_CATEGORIES.map((id) => ({
+        value: id,
+        label: id
+          .split("-")
+          .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+          .join(" "),
+      })),
+    ],
+    hint: "Premium host — filter the trivia bank by category.",
   },
 ];
 
@@ -34,7 +60,8 @@ const classicMode = {
   defaultSettings: DEFAULT_SETTINGS,
   settingsFields: SETTINGS_FIELDS,
   createInitialState: logic.createInitialState,
-  sanitizeSettings: (input) => logic.sanitizeSettings(input, DEFAULT_SETTINGS),
+  sanitizeSettings: (input, options) =>
+    logic.sanitizeSettings(input, DEFAULT_SETTINGS, options),
   start: logic.start,
   handleAction: logic.handleAction,
   reset: logic.reset,

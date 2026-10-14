@@ -44,6 +44,10 @@
 }
 
 .fieldLabel {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
   font-size: 0.875rem;
   color: #cbd5e1;
 }
@@ -68,4 +72,27 @@
   margin: 0;
   font-size: 0.8rem;
   color: #94a3b8;
+}
+
+.premiumHint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #fbbf24;
+}
+
+.premiumLink {
+  color: #fde68a;
+  text-decoration: underline;
+}
+
+.badge {
+  margin-left: 0.4rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+  vertical-align: middle;
 }

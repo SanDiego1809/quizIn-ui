@@ -16,7 +16,9 @@ model UserProfile {
   id                       String       @id @default(cuid())
   clerkUserId              String       @unique
   displayName              String
-  avatarKey                String       @default("Idle")
+  avatarKey                String       @default("Joyful Jump")
+  skinKey                  String       @default("default")
+  unlockedCosmetics        Json         @default("[]")
   credits                  Int          @default(0)
   plan                     Plan         @default(free)
   stripeCustomerId         String?      @unique

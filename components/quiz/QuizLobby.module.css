@@ -15,6 +15,12 @@
   margin: 0 0 1rem;
   color: #94a3b8;
   font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.profileLink {
+  color: #c7d2fe;
+  text-decoration: underline;
 }
 
 .statusOk {

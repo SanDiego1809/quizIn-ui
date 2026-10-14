@@ -1,6 +1,7 @@
 const logic = require("./logic");
 const { buildPayload } = require("./payload");
 const COUNTRY_BANK = require("../../data/geography-questions.json");
+const { FREE_GEOGRAPHY_MAX_QUESTIONS } = require("../../lib/hostLimits");
 
 const DEFAULT_SETTINGS = {
   questionTimeSeconds: 20,
@@ -14,7 +15,9 @@ const SETTINGS_FIELDS = [
     type: "number",
     min: 1,
     max: COUNTRY_BANK.length,
+    freeMax: FREE_GEOGRAPHY_MAX_QUESTIONS,
     step: 1,
+    premiumHint: `Free hosts: up to ${FREE_GEOGRAPHY_MAX_QUESTIONS}. Premium: up to ${COUNTRY_BANK.length}.`,
   },
   {
     key: "questionTimeSeconds",
@@ -35,7 +38,8 @@ const geographyMode = {
   defaultSettings: DEFAULT_SETTINGS,
   settingsFields: SETTINGS_FIELDS,
   createInitialState: logic.createInitialState,
-  sanitizeSettings: (input) => logic.sanitizeSettings(input, DEFAULT_SETTINGS),
+  sanitizeSettings: (input, options) =>
+    logic.sanitizeSettings(input, DEFAULT_SETTINGS, options),
   start: logic.start,
   handleAction: logic.handleAction,
   reset: logic.reset,

@@ -1,16 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
+import Link from "next/link";
 import classes from "./QuizLobby.module.css";
 import Button from "@/components/button/Button";
-import { DEFAULT_ANIMATION } from "@/lib/quiz/animations";
 import { getTranslations } from "@/lib/i18n";
-
-const AvatarPicker = dynamic(() => import("@/components/avatar/AvatarPicker"), {
-  ssr: false,
-  loading: () => <div className={classes.avatarLoading}>Loading avatar preview…</div>,
-});
 
 export default function QuizLobby({
   onCreate,
@@ -20,10 +14,9 @@ export default function QuizLobby({
   defaultMode,
   defaultName = "",
   defaultRoomCode = "",
-  defaultAnimation = DEFAULT_ANIMATION,
+  isSignedIn = false,
   lang = "en",
 }) {
-  const [animation, setAnimation] = useState(defaultAnimation || DEFAULT_ANIMATION);
   const [name, setName] = useState(defaultName || "");
   const [roomCode, setRoomCode] = useState(
     String(defaultRoomCode || "")
@@ -36,10 +29,6 @@ export default function QuizLobby({
   useEffect(() => {
     if (defaultName) setName(defaultName);
   }, [defaultName]);
-
-  useEffect(() => {
-    if (defaultAnimation) setAnimation(defaultAnimation);
-  }, [defaultAnimation]);
 
   useEffect(() => {
     if (!defaultRoomCode) return;
@@ -72,14 +61,25 @@ export default function QuizLobby({
         <p className={classes.hint}>{t.connecting}</p>
       )}
 
-      <AvatarPicker value={animation} onChange={setAnimation} />
+      <p className={classes.hint}>
+        {isSignedIn
+          ? t.avatarFromProfile ??
+            "Your victory emote and skin come from your profile."
+          : t.avatarGuestDefault ??
+            "Guests use the default avatar. Sign in to set a victory emote and skin."}{" "}
+        {isSignedIn ? (
+          <Link href={`/profile?lang=${lang}`} className={classes.profileLink}>
+            {t.editAvatarProfile ?? "Edit on profile"}
+          </Link>
+        ) : null}
+      </p>
 
       <form
         className={classes.form}
         onSubmit={(e) => {
           e.preventDefault();
           const data = new FormData(e.currentTarget);
-          onCreate(String(data.get("name") || ""), animation, defaultMode);
+          onCreate(String(data.get("name") || ""), defaultMode);
         }}
       >
         <label className={classes.label}>
@@ -106,7 +106,10 @@ export default function QuizLobby({
         onSubmit={(e) => {
           e.preventDefault();
           const data = new FormData(e.currentTarget);
-          onJoin(String(data.get("roomCode") || ""), String(data.get("name") || ""), animation);
+          onJoin(
+            String(data.get("roomCode") || ""),
+            String(data.get("name") || "")
+          );
         }}
       >
         <label className={classes.label}>

@@ -1,7 +1,7 @@
 const { getPrisma, isDatabaseConfigured } = require("./db");
 
-const PLAY_CREDIT_REWARD = 10;
-const WIN_CREDIT_BONUS = 15;
+const PLAY_CREDIT_REWARD = 1;
+const WIN_CREDIT_BONUS = 3;
 
 async function persistGameResults(room) {
   if (!isDatabaseConfigured() || !room?.state?.result?.rankings) return;

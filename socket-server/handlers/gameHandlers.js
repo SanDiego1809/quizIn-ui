@@ -5,6 +5,8 @@ const {
   isHostSocket,
   resetRoomToLobby,
 } = require("../lib/roomLifecycle");
+const { buildSeatInfo } = require("../lib/premiumSeats");
+const { hostIsPremium } = require("../lib/hostLimits");
 
 function dispatchGameAction(socket, { roomCode, action }, ctx) {
   const code = normalizeRoomCode(roomCode);
@@ -61,8 +63,20 @@ function registerGameHandlers(socket, ctx) {
       return;
     }
 
+    const seats = buildSeatInfo(room.players);
+    if (seats.overCapacity) {
+      socket.emit("quiz:error", {
+        message:
+          "Too many players for current Premium seats. Need another Premium player, or someone must leave.",
+        code: "ROOM_SEAT_LIMIT",
+      });
+      return;
+    }
+
     const mode = getMode(room.mode);
-    room.settings = mode.sanitizeSettings(settings ?? room.settings);
+    room.settings = mode.sanitizeSettings(settings ?? room.settings, {
+      premium: hostIsPremium(room),
+    });
     mode.start(room, ctx);
     ctx.emitRoom(code);
   });

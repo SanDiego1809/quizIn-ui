@@ -17,7 +17,8 @@
     "saved": "Profil enregistré.",
     "retry": "Réessayer",
     "displayName": "Nom affiché",
-    "avatar": "Animation d'avatar par défaut",
+    "avatar": "Emote de victoire",
+    "avatarHint": "Joué quand vous gagnez un quiz. Pendant les parties tout le monde reste en Idle. Les invités utilisent toujours l'avatar par défaut.",
     "save": "Enregistrer le profil",
     "saving": "Enregistrement…",
     "credits": "Crédits",
@@ -40,7 +41,19 @@
     "signInRequired": "Connectez-vous pour gérer votre profil, historique et favoris.",
     "signIn": "Connexion",
     "authNotConfigured": "L'authentification n'est pas encore configurée sur ce serveur.",
-    "backHome": "← Retour à l'accueil"
+    "backHome": "← Retour à l'accueil",
+    "skin": "Skin du personnage",
+    "locked": "verrouillé",
+    "premiumPerks": "Premium : favoris illimités, +1 place en salle (jusqu'à 8), filtres de catégorie et parties plus longues, la plupart des cosmétiques (skin Gold uniquement en jouant).",
+    "shopHeading": "Boutique cosmétique",
+    "shopHint": "Dépensez les crédits gagnés en jeu, ou passez Premium pour la plupart des cosmétiques. Gold s'obtient uniquement en jouant.",
+    "shopPremiumNote": "Premium inclut la plupart des cosmétiques. Gold s'obtient en jouant — débloquez-la avec des crédits.",
+    "shopEmpty": "Vous possédez déjà tous les déblocages à crédits disponibles.",
+    "earnOnlyTag": "en jouant",
+    "unlock": "Débloquer",
+    "unlocking": "Déblocage…",
+    "unlockSuccess": "Cosmétique débloqué.",
+    "unlockError": "Impossible de débloquer le cosmétique."
   },
   "favorites": {
     "add": "Ajouter aux favoris",
@@ -85,7 +98,7 @@
       },
       {
         "question": "Combien de joueurs peuvent rejoindre une salle ?",
-        "answer": "Les amis rejoignent la même salle avec votre code et votre pseudonyme. L'hôte démarre la partie lorsque tout le monde est prêt."
+        "answer": "Les salles gratuites accueillent 4 joueurs. Chaque joueur Premium dans le lobby débloque +1 place, jusqu'à 8. Les invités et comptes gratuits remplissent les places libres."
       },
       {
         "question": "Quels modes de quiz sont disponibles ?",
@@ -182,7 +195,10 @@
     "divider": "ou",
     "roomCode": "Code de salle",
     "roomCodePlaceholder": "ABC123",
-    "joinRoom": "Rejoindre la salle"
+    "joinRoom": "Rejoindre la salle",
+    "avatarFromProfile": "Votre emote de victoire et votre skin viennent de votre profil.",
+    "avatarGuestDefault": "Les invités utilisent l'avatar par défaut. Connectez-vous pour choisir emote de victoire et skin.",
+    "editAvatarProfile": "Modifier dans le profil"
   },
   "roomSubtitle": "Répondez rapidement — les bonnes réponses les plus rapides rapportent le plus de points.",
   "results": {
@@ -199,7 +215,15 @@
     "modeLabel": "Mode",
     "start": "Démarrer",
     "backToLobby": "Retour au lobby",
-    "waitingForHost": "En attente de l'hôte…"
+    "waitingForHost": "En attente de l'hôte…",
+    "waitingForPlayers": "En attente de joueurs",
+    "gameInProgress": "Partie en cours",
+    "hostTag": "hôte",
+    "premiumHostHint": "L'hôte Premium débloque les filtres de catégorie et les parties plus longues.",
+    "upgradeLink": "Passer Premium",
+    "seatStatus": "{count} / {max} places · {premium} Premium (+1 chacune)",
+    "needPremiumSeat": "Il faut un autre Premium pour une plus grande salle",
+    "overCapacity": "Trop de joueurs pour les places Premium actuelles. Quelqu'un doit partir ou s'abonner avant de démarrer."
   },
   "settings_fields": {
     "questionsPerGame": {
@@ -209,6 +233,10 @@
     "questionTimeSeconds": {
       "label": "Temps par question (secondes)",
       "hint": "0 = pas de minuterie"
+    },
+    "category": {
+      "label": "Catégorie",
+      "hint": "Hôte Premium — filtrer la banque de trivia par catégorie."
     }
   },
   "modes": {

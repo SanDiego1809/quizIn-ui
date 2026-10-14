@@ -1,13 +1,24 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Show, SignInButton } from "@clerk/nextjs";
 import { useLang } from "@/components/site/LangProvider";
 import { getTranslations } from "@/lib/i18n";
-import { ANIMATIONS, DEFAULT_ANIMATION } from "@/lib/quiz/animations";
+import { DEFAULT_VICTORY_ANIMATION } from "@/lib/quiz/animations";
+import {
+  DEFAULT_SKIN,
+  listPurchasableShopItems,
+  sanitizeVictoryAnimationChoice,
+} from "@/lib/quiz/cosmetics";
 import classes from "./profile.module.css";
+
+const AvatarPicker = dynamic(() => import("@/components/avatar/AvatarPicker"), {
+  ssr: false,
+  loading: () => <p className={classes.hint}>Loading avatar…</p>,
+});
 
 function ProfilePanel() {
   const { lang } = useLang();
@@ -18,12 +29,15 @@ function ProfilePanel() {
   const [favorites, setFavorites] = useState([]);
   const [favoriteLimit, setFavoriteLimit] = useState(null);
   const [displayName, setDisplayName] = useState("");
-  const [avatarKey, setAvatarKey] = useState(DEFAULT_ANIMATION);
+  const [avatarKey, setAvatarKey] = useState(DEFAULT_VICTORY_ANIMATION);
+  const [skinKey, setSkinKey] = useState(DEFAULT_SKIN);
   const [status, setStatus] = useState("loading");
   const [message, setMessage] = useState("");
   const [billingMessage, setBillingMessage] = useState("");
+  const [shopMessage, setShopMessage] = useState("");
   const [saving, setSaving] = useState(false);
   const [billingBusy, setBillingBusy] = useState(false);
+  const [unlockingId, setUnlockingId] = useState(null);
 
   const load = useCallback(async () => {
     setStatus("loading");
@@ -43,7 +57,13 @@ function ProfilePanel() {
       const meData = await meRes.json();
       setProfile(meData.profile);
       setDisplayName(meData.profile.displayName || "");
-      setAvatarKey(meData.profile.avatarKey || DEFAULT_ANIMATION);
+      setAvatarKey(
+        sanitizeVictoryAnimationChoice(meData.profile.avatarKey, {
+          plan: meData.profile.plan,
+          unlockedCosmetics: meData.profile.unlockedCosmetics || [],
+        })
+      );
+      setSkinKey(meData.profile.skinKey || DEFAULT_SKIN);
 
       if (historyRes.ok) {
         const historyData = await historyRes.json();
@@ -100,7 +120,7 @@ function ProfilePanel() {
       const res = await fetch("/api/me", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ displayName, avatarKey }),
+        body: JSON.stringify({ displayName, avatarKey, skinKey }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || t.saveError);
@@ -110,6 +130,26 @@ function ProfilePanel() {
       setMessage(err?.message || t.saveError);
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function unlockCosmetic(catalogId) {
+    setUnlockingId(catalogId);
+    setShopMessage("");
+    try {
+      const res = await fetch("/api/me/cosmetics", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ catalogId }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || t.unlockError);
+      setProfile(data.profile);
+      setShopMessage(t.unlockSuccess);
+    } catch (err) {
+      setShopMessage(err?.message || t.unlockError);
+    } finally {
+      setUnlockingId(null);
     }
   }
 
@@ -145,6 +185,13 @@ function ProfilePanel() {
     );
   }
 
+  const access = {
+    plan: profile?.plan,
+    unlockedCosmetics: profile?.unlockedCosmetics || [],
+  };
+  const shopItems = listPurchasableShopItems(access);
+  const isPremium = profile?.plan === "premium";
+
   return (
     <div className={classes.stack}>
       <section className={classes.panel}>
@@ -152,11 +199,12 @@ function ProfilePanel() {
         <p className={classes.meta}>
           {t.credits}: <strong>{profile?.credits ?? 0}</strong>
           {" · "}
-          {t.plan}: <strong>{profile?.plan === "premium" ? t.premium : t.free}</strong>
+          {t.plan}: <strong>{isPremium ? t.premium : t.free}</strong>
         </p>
+        <p className={classes.hint}>{t.premiumPerks}</p>
 
         <div className={classes.billingRow}>
-          {profile?.plan !== "premium" ? (
+          {!isPremium ? (
             <button
               type="button"
               className={classes.primary}
@@ -201,25 +249,53 @@ function ProfilePanel() {
               required
             />
           </label>
-          <label className={classes.label}>
-            {t.avatar}
-            <select
-              className={classes.input}
-              value={avatarKey}
-              onChange={(e) => setAvatarKey(e.target.value)}
-            >
-              {ANIMATIONS.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </label>
+          <p className={classes.hint}>{t.avatarHint}</p>
+          <AvatarPicker
+            value={avatarKey}
+            onChange={setAvatarKey}
+            skinKey={skinKey}
+            onSkinChange={setSkinKey}
+            plan={access.plan}
+            unlockedCosmetics={access.unlockedCosmetics}
+            victoryLabel={t.avatar}
+            skinLabel={t.skin}
+          />
           <button type="submit" className={classes.primary} disabled={saving}>
             {saving ? t.saving : t.save}
           </button>
         </form>
         {message ? <p className={classes.message}>{message}</p> : null}
+      </section>
+
+      <section className={classes.panel}>
+        <h2 className={classes.sectionTitle}>{t.shopHeading}</h2>
+        <p className={classes.hint}>
+          {isPremium ? t.shopPremiumNote : t.shopHint}
+        </p>
+        {shopItems.length === 0 ? (
+          <p className={classes.hint}>{t.shopEmpty}</p>
+        ) : (
+          <ul className={classes.list}>
+            {shopItems.map((item) => (
+              <li key={item.catalogId} className={classes.listItem}>
+                <span>
+                  {item.kind === "skin" ? t.skin : t.avatar}: {item.label} ·{" "}
+                  {item.creditCost} {t.credits.toLowerCase()}
+                  {item.earnOnly ? ` · ${t.earnOnlyTag}` : ""}
+                </span>
+                <button
+                  type="button"
+                  className={classes.linkBtn}
+                  disabled={unlockingId === item.catalogId}
+                  onClick={() => unlockCosmetic(item.catalogId)}
+                >
+                  {unlockingId === item.catalogId ? t.unlocking : t.unlock}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+        {shopMessage ? <p className={classes.message}>{shopMessage}</p> : null}
       </section>
 
       <section className={classes.panel}>

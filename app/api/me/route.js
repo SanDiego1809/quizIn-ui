@@ -63,6 +63,7 @@ export async function PATCH(request) {
     const profile = await updateUserProfile(userId, {
       displayName: body.displayName,
       avatarKey: body.avatarKey,
+      skinKey: body.skinKey,
     });
     return Response.json({ profile: serializeProfile(profile) });
   } catch (err) {

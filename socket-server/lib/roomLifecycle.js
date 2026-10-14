@@ -82,6 +82,14 @@ function removeSocketFromAllRooms(socket, { rooms, emitRoom, leaveSocketRooms = 
     if (removed.id === room.hostId && room.players.length > 0) {
       room.players[0].isHost = true;
       room.hostId = room.players[0].id;
+      if (room.phase === "lobby") {
+        try {
+          const { applyRoomConfig } = require("../modes");
+          applyRoomConfig(room, { settings: room.settings });
+        } catch (err) {
+          console.error("[roomLifecycle] re-sanitize after host transfer", err);
+        }
+      }
     }
 
     if (room.phase !== "lobby" && room.players.length === 0) {

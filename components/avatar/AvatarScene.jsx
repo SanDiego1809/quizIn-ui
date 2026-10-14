@@ -13,13 +13,18 @@ import {
   ANIMATION_PREVIEW_MS,
   DEFAULT_ANIMATION,
 } from "@/lib/quiz/animations";
+import { DEFAULT_SKIN } from "@/lib/quiz/cosmetics";
+import { createSkinMaterial } from "@/lib/quiz/skinMaterial";
 import styles from "./AvatarScene.module.css";
 
 export default function AvatarScene({
   animation,
+  skinKey = DEFAULT_SKIN,
   className = "",
   showQuizPedestal = false,
   answered = false,
+  /** When false, keep playing the selected clip instead of restoring Idle after preview. */
+  restoreIdleAfterPreview = true,
   onIdleRestore,
   onError,
 }) {
@@ -54,7 +59,9 @@ export default function AvatarScene({
       return undefined;
     }
 
-    if (animation === DEFAULT_ANIMATION) return undefined;
+    if (!restoreIdleAfterPreview || animation === DEFAULT_ANIMATION) {
+      return undefined;
+    }
 
     const timeoutId = window.setTimeout(() => {
       animationRef.current = DEFAULT_ANIMATION;
@@ -63,7 +70,7 @@ export default function AvatarScene({
     }, ANIMATION_PREVIEW_MS);
 
     return () => window.clearTimeout(timeoutId);
-  }, [animation]);
+  }, [animation, restoreIdleAfterPreview]);
 
   useEffect(() => {
     if (screenMaterialRef.current) {
@@ -105,9 +112,7 @@ export default function AvatarScene({
       "/assets/animation/fire-edge-blue.jpg"
     );
     matcapTexture.colorSpace = THREE.SRGBColorSpace;
-    const characterMaterial = new THREE.MeshMatcapMaterial({
-      matcap: matcapTexture,
-    });
+    const characterMaterial = createSkinMaterial(matcapTexture, skinKey);
 
     const plane = new THREE.Mesh(
       new THREE.CircleGeometry(14, 48),
@@ -277,7 +282,7 @@ export default function AvatarScene({
         }
       });
     };
-  }, [showQuizPedestal]);
+  }, [showQuizPedestal, skinKey]);
 
   return (
     <div

@@ -17,7 +17,8 @@
     "saved": "Perfil guardado.",
     "retry": "Reintentar",
     "displayName": "Nombre visible",
-    "avatar": "Animación de avatar por defecto",
+    "avatar": "Emote de victoria",
+    "avatarHint": "Se reproduce cuando ganas un quiz. Durante la partida todos usan Idle. Los invitados siempre usan el avatar por defecto.",
     "save": "Guardar perfil",
     "saving": "Guardando…",
     "credits": "Créditos",
@@ -40,7 +41,19 @@
     "signInRequired": "Inicia sesión para gestionar tu perfil, historial y favoritos.",
     "signIn": "Iniciar sesión",
     "authNotConfigured": "La autenticación aún no está configurada en este servidor.",
-    "backHome": "← Volver al inicio"
+    "backHome": "← Volver al inicio",
+    "skin": "Skin del personaje",
+    "locked": "bloqueado",
+    "premiumPerks": "Premium: favoritos ilimitados, +1 plaza en sala (hasta 8), filtros de categoría y partidas más largas, la mayoría de cosméticos (la skin Gold solo se gana jugando).",
+    "shopHeading": "Tienda cosmética",
+    "shopHint": "Gasta créditos de las partidas, o pasa a Premium para la mayoría de cosméticos. Gold solo se gana jugando.",
+    "shopPremiumNote": "Premium incluye la mayoría de cosméticos. Gold solo se gana jugando — desbloquéala con créditos.",
+    "shopEmpty": "Ya tienes todos los desbloqueos por créditos disponibles.",
+    "earnOnlyTag": "solo jugando",
+    "unlock": "Desbloquear",
+    "unlocking": "Desbloqueando…",
+    "unlockSuccess": "Cosmético desbloqueado.",
+    "unlockError": "No se pudo desbloquear el cosmético."
   },
   "favorites": {
     "add": "Añadir a favoritos",
@@ -85,7 +98,7 @@
       },
       {
         "question": "¿Cuántos jugadores pueden unirse a una sala?",
-        "answer": "Los amigos se unen a la misma sala con tu código y nombre. El anfitrión inicia la partida cuando todos estén listos."
+        "answer": "Las salas gratis admiten 4 jugadores. Cada jugador Premium en el lobby desbloquea +1 plaza, hasta 8. Invitados y cuentas gratis ocupan las plazas libres."
       },
       {
         "question": "¿Qué modos de quiz están disponibles?",
@@ -182,7 +195,10 @@
     "divider": "o",
     "roomCode": "Código de sala",
     "roomCodePlaceholder": "ABC123",
-    "joinRoom": "Unirse a la sala"
+    "joinRoom": "Unirse a la sala",
+    "avatarFromProfile": "Tu emote de victoria y skin vienen de tu perfil.",
+    "avatarGuestDefault": "Los invitados usan el avatar por defecto. Inicia sesión para elegir emote de victoria y skin.",
+    "editAvatarProfile": "Editar en el perfil"
   },
   "roomSubtitle": "Responde rápido — las respuestas correctas más rápidas obtienen más puntos.",
   "results": {
@@ -199,7 +215,15 @@
     "modeLabel": "Modo",
     "start": "Iniciar",
     "backToLobby": "Volver al lobby",
-    "waitingForHost": "Esperando al anfitrión…"
+    "waitingForHost": "Esperando al anfitrión…",
+    "waitingForPlayers": "Esperando jugadores",
+    "gameInProgress": "Partida en curso",
+    "hostTag": "anfitrión",
+    "premiumHostHint": "El anfitrión Premium desbloquea filtros de categoría y partidas más largas.",
+    "upgradeLink": "Mejorar",
+    "seatStatus": "{count} / {max} plazas · {premium} Premium (+1 cada uno)",
+    "needPremiumSeat": "Hace falta otro Premium para una sala más grande",
+    "overCapacity": "Demasiados jugadores para las plazas Premium actuales. Alguien debe salir o mejorar antes de empezar."
   },
   "settings_fields": {
     "questionsPerGame": {
@@ -209,6 +233,10 @@
     "questionTimeSeconds": {
       "label": "Tiempo por pregunta (segundos)",
       "hint": "0 = sin temporizador"
+    },
+    "category": {
+      "label": "Categoría",
+      "hint": "Anfitrión Premium — filtra el banco de trivia por categoría."
     }
   },
   "modes": {

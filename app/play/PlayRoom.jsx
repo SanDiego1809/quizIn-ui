@@ -24,7 +24,7 @@ export default function PlayRoom() {
     .slice(0, 6);
   const { lang } = useLang();
   const { setImmersive } = useSiteChrome();
-  const { defaultName, defaultAnimation } = usePlayerProfile();
+  const { defaultName, isSignedIn } = usePlayerProfile();
   const {
     room,
     error,
@@ -84,7 +84,7 @@ export default function PlayRoom() {
           defaultMode={defaultMode}
           defaultName={defaultName}
           defaultRoomCode={defaultRoomCode}
-          defaultAnimation={defaultAnimation}
+          isSignedIn={Boolean(isSignedIn)}
           lang={lang}
         />
       ) : (
