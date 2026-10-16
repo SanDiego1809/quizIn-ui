@@ -5,9 +5,9 @@ import { DEFAULT_VICTORY_ANIMATION, VICTORY_ANIMATIONS } from "@/lib/quiz/animat
 import {
   CHARACTER_SKINS,
   DEFAULT_SKIN,
-  FREE_VICTORY_ANIMATIONS,
   canUseVictoryAnimation,
   canUseSkin,
+  resolveSkinId,
 } from "@/lib/quiz/cosmetics";
 import styles from "./AvatarPicker.module.css";
 
@@ -27,12 +27,13 @@ export default function AvatarPicker({
   skinLabel = "Character skin",
 }) {
   const access = { plan, unlockedCosmetics };
+  const resolvedSkinKey = resolveSkinId(skinKey);
 
   return (
     <div className={styles.wrapper}>
       <AvatarScene
         animation={value}
-        skinKey={skinKey}
+        skinKey={resolvedSkinKey}
         className={styles.preview}
         restoreIdleAfterPreview={false}
       />
@@ -45,11 +46,9 @@ export default function AvatarPicker({
         >
           {VICTORY_ANIMATIONS.map((anim) => {
             const allowed = canUseVictoryAnimation(anim, access);
-            const free = FREE_VICTORY_ANIMATIONS.includes(anim);
             return (
               <option key={anim} value={anim} disabled={!allowed}>
                 {anim}
-                {!free ? (allowed ? " ★" : " (Premium / credits)") : ""}
               </option>
             );
           })}
@@ -60,7 +59,7 @@ export default function AvatarPicker({
           {skinLabel}
           <select
             className={styles.select}
-            value={skinKey}
+            value={resolvedSkinKey}
             onChange={(e) => onSkinChange(e.target.value)}
           >
             {CHARACTER_SKINS.map((skin) => {

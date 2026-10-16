@@ -44,10 +44,10 @@
     "backHome": "← Retour à l'accueil",
     "skin": "Skin du personnage",
     "locked": "verrouillé",
-    "premiumPerks": "Premium : favoris illimités, +1 place en salle (jusqu'à 8), filtres de catégorie et parties plus longues, la plupart des cosmétiques (skin Gold uniquement en jouant).",
+    "premiumPerks": "Premium : favoris illimités, +1 place en salle (jusqu'à 8), filtres de catégorie et parties plus longues, skins Mixamo et emotes (Ember, Aurora et Gold uniquement en jouant).",
     "shopHeading": "Boutique cosmétique",
-    "shopHint": "Dépensez les crédits gagnés en jeu, ou passez Premium pour la plupart des cosmétiques. Gold s'obtient uniquement en jouant.",
-    "shopPremiumNote": "Premium inclut la plupart des cosmétiques. Gold s'obtient en jouant — débloquez-la avec des crédits.",
+    "shopHint": "Dépensez les crédits gagnés en jeu, ou passez Premium pour les skins Mixamo et emotes. Ember, Aurora et Gold s'obtiennent uniquement en jouant.",
+    "shopPremiumNote": "Premium inclut les skins Mixamo et emotes de victoire. Ember, Aurora et Gold s'obtiennent en jouant — débloquez-les avec des crédits.",
     "shopEmpty": "Vous possédez déjà tous les déblocages à crédits disponibles.",
     "earnOnlyTag": "en jouant",
     "unlock": "Débloquer",
@@ -142,7 +142,7 @@
       "d3geo": { "note": "Projection de la carte du monde en mode géographie" }
     },
     "assets": {
-      "mixamo": { "note": "Personnage Y Bot et clips d'animation dans /public/assets/animation" },
+      "mixamo": { "note": "Skins de personnages et clips d'animation dans /public/assets/animation" },
       "geoCountries": {
         "name": "GeoJSON des pays du monde",
         "note": "Frontières des pays pour la carte interactive"

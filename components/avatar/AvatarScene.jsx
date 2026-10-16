@@ -8,13 +8,17 @@ import {
   createQuizPedestal,
   setPedestalAnswered,
 } from "./libs/createQuizPedestal.js";
-import { CHARACTER_URL, animationUrl } from "@/lib/quiz/avatarAssets";
+import { skinUrl, animationUrl } from "@/lib/quiz/avatarAssets";
 import {
   ANIMATION_PREVIEW_MS,
   DEFAULT_ANIMATION,
 } from "@/lib/quiz/animations";
-import { DEFAULT_SKIN } from "@/lib/quiz/cosmetics";
-import { createSkinMaterial } from "@/lib/quiz/skinMaterial";
+import { DEFAULT_SKIN, getSkin, getSkinScale } from "@/lib/quiz/cosmetics";
+import {
+  detectMixamoPrefix,
+  remapMixamoClip,
+} from "@/lib/quiz/mixamoClip";
+import { createSkinMaterial, skinUsesMatcap } from "@/lib/quiz/skinMaterial";
 import styles from "./AvatarScene.module.css";
 
 export default function AvatarScene({
@@ -82,12 +86,17 @@ export default function AvatarScene({
     const mount = mountRef.current;
     if (!mount) return undefined;
 
+    setLoading(true);
+    setLoadError(null);
+
     let active = true;
     let animationId = null;
     let resizeObserver = null;
     let renderer = null;
     let mixer = null;
     let currentAction = null;
+    let characterRoot = null;
+    let mixamoPrefix = "mixamorig";
     const clipCache = new Map();
     const loader = new FBXLoader();
     const clock = new THREE.Clock();
@@ -107,12 +116,17 @@ export default function AvatarScene({
     renderer.domElement.style.display = "block";
     mount.appendChild(renderer.domElement);
 
-    const textureLoader = new THREE.TextureLoader();
-    const matcapTexture = textureLoader.load(
-      "/assets/animation/fire-edge-blue.jpg"
-    );
-    matcapTexture.colorSpace = THREE.SRGBColorSpace;
-    const characterMaterial = createSkinMaterial(matcapTexture, skinKey);
+    const skin = getSkin(skinKey);
+    const useMatcap = skinUsesMatcap(skinKey);
+    let characterMaterial = null;
+    if (useMatcap) {
+      const textureLoader = new THREE.TextureLoader();
+      const matcapTexture = textureLoader.load(
+        "/assets/animation/fire-edge-blue.jpg"
+      );
+      matcapTexture.colorSpace = THREE.SRGBColorSpace;
+      characterMaterial = createSkinMaterial(matcapTexture, skinKey);
+    }
 
     const plane = new THREE.Mesh(
       new THREE.CircleGeometry(14, 48),
@@ -175,71 +189,103 @@ export default function AvatarScene({
       characterParent = slot;
     }
 
-    function startClip(clip) {
+    function revealReady() {
+      if (!active) return;
+      if (characterRoot) characterRoot.visible = true;
+      setLoadError(null);
+      setLoading(false);
+    }
+
+    function startClip(clip, { snap = false } = {}) {
       if (!mixer || !active) return;
 
-      const nextAction = mixer.clipAction(clip);
+      const remapped = remapMixamoClip(clip, mixamoPrefix);
+      const nextAction = mixer.clipAction(remapped);
       if (currentAction === nextAction) {
         if (!nextAction.isRunning()) nextAction.play();
+        mixer.update(0);
         return;
       }
 
-      currentAction?.fadeOut(0.35);
-      nextAction.reset();
-      nextAction.fadeIn(0.35);
-      nextAction.play();
+      if (snap || !currentAction) {
+        currentAction?.stop();
+        nextAction.reset();
+        nextAction.play();
+        mixer.update(0);
+      } else {
+        currentAction.fadeOut(0.35);
+        nextAction.reset();
+        nextAction.fadeIn(0.35);
+        nextAction.play();
+      }
       currentAction = nextAction;
     }
 
-    function playAnimation(name) {
-      if (!mixer || !active) return;
+    function playAnimation(name, { snap = false } = {}) {
+      if (!mixer || !active) return Promise.resolve();
 
       const cached = clipCache.get(name);
       if (cached) {
-        startClip(cached);
-        return;
+        startClip(cached, { snap });
+        return Promise.resolve();
       }
 
-      loader.load(
-        animationUrl(name),
-        (fbx) => {
-          if (!active || !mixer) return;
-          const clip = fbx.animations[0];
-          if (!clip) return;
-          clip.name = name;
-          clipCache.set(name, clip);
-          startClip(clip);
-        },
-        undefined,
-        () => {
-          if (!active) return;
-          console.error("Avatar animation failed to load:", name);
-        }
-      );
+      return new Promise((resolve) => {
+        loader.load(
+          animationUrl(name),
+          (fbx) => {
+            if (!active || !mixer) {
+              resolve();
+              return;
+            }
+            const clip = fbx.animations[0];
+            if (!clip) {
+              resolve();
+              return;
+            }
+            clip.name = name;
+            clipCache.set(name, clip);
+            startClip(clip, { snap });
+            resolve();
+          },
+          undefined,
+          () => {
+            if (!active) {
+              resolve();
+              return;
+            }
+            console.error("Avatar animation failed to load:", name);
+            resolve();
+          }
+        );
+      });
     }
 
-    playAnimationRef.current = playAnimation;
+    playAnimationRef.current = (name) => playAnimation(name, { snap: false });
 
     loader.load(
-      CHARACTER_URL,
+      skinUrl(skin.file),
       (fbx) => {
         if (!active) return;
 
         const character = fbx;
-        character.scale.setScalar(0.02);
+        character.visible = false;
+        character.scale.setScalar(getSkinScale(skinKey));
         character.position.set(0, showQuizPedestal ? 0 : -1.5, showQuizPedestal ? -0.4 : 0);
         character.traverse((child) => {
           if (child.isMesh) {
-            child.material = characterMaterial;
+            if (characterMaterial) {
+              child.material = characterMaterial;
+            }
             child.castShadow = true;
           }
         });
 
+        characterRoot = character;
+        mixamoPrefix = detectMixamoPrefix(character);
         mixer = new THREE.AnimationMixer(character);
         characterParent.add(character);
-        playAnimation(animationRef.current);
-        setLoadError(null);
-        setLoading(false);
+        playAnimation(animationRef.current, { snap: true }).then(revealReady);
       },
       undefined,
       (error) => {
@@ -307,7 +353,12 @@ export default function AvatarScene({
       ref={mountRef}
       className={`${styles.mount} ${className}`.trim()}
     >
-      {loading ? <p className={styles.loading}>Loading avatar…</p> : null}
+      {loading ? (
+        <div className={styles.loading} aria-busy="true" aria-live="polite">
+          <span className={styles.loadingSpinner} aria-hidden="true" />
+          <span className={styles.loadingLabel}>Loading avatar…</span>
+        </div>
+      ) : null}
       {loadError ? (
         <p className={styles.error} role="alert">
           {loadError}

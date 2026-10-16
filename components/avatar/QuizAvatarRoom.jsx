@@ -12,10 +12,14 @@ import {
   setPedestalAnswered,
 } from "./libs/createQuizPedestal.js";
 import { layoutPlayersForArc } from "./libs/playerArcLayout.js";
-import { CHARACTER_URL, animationUrl } from "@/lib/quiz/avatarAssets";
+import { skinUrl, animationUrl } from "@/lib/quiz/avatarAssets";
 import { DEFAULT_ANIMATION } from "@/lib/quiz/animations";
-import { DEFAULT_SKIN } from "@/lib/quiz/cosmetics";
-import { createSkinMaterial } from "@/lib/quiz/skinMaterial";
+import { DEFAULT_SKIN, getSkin, getSkinScale } from "@/lib/quiz/cosmetics";
+import {
+  detectMixamoPrefix,
+  remapMixamoClip,
+} from "@/lib/quiz/mixamoClip";
+import { createSkinMaterial, skinUsesMatcap } from "@/lib/quiz/skinMaterial";
 import styles from "./AvatarScene.module.css";
 
 function prepareCharacter(root, material, scale) {
@@ -24,11 +28,19 @@ function prepareCharacter(root, material, scale) {
   character.position.set(0, 0, -0.4);
   character.traverse((child) => {
     if (child.isMesh) {
-      child.material = material;
+      if (material) {
+        child.material = material;
+      }
       child.castShadow = true;
     }
   });
   return character;
+}
+
+function loadFbx(loader, url) {
+  return new Promise((resolve, reject) => {
+    loader.load(url, resolve, undefined, reject);
+  });
 }
 
 export default function QuizAvatarRoom({
@@ -78,6 +90,9 @@ export default function QuizAvatarRoom({
     const mount = mountRef.current;
     if (!mount || !players.length) return undefined;
 
+    setLoading(true);
+    setLoadError(null);
+
     let active = true;
     let animationId = null;
     let resizeObserver = null;
@@ -112,10 +127,7 @@ export default function QuizAvatarRoom({
     mount.appendChild(labelRenderer.domElement);
 
     const textureLoader = new THREE.TextureLoader();
-    const matcapTexture = textureLoader.load(
-      "/assets/animation/fire-edge-blue.jpg"
-    );
-    matcapTexture.colorSpace = THREE.SRGBColorSpace;
+    let matcapTexture = null;
 
     const plane = new THREE.Mesh(
       new THREE.CircleGeometry(18, 64),
@@ -167,18 +179,19 @@ export default function QuizAvatarRoom({
       })
     );
 
-    const characterScale = playerCount > 4 ? 0.017 : 0.02;
+    const roomScaleFactor = playerCount > 4 ? 0.85 : 1;
     const slots = layoutPlayersForArc(players, yourPlayerId);
 
-    function startClip(mixer, currentActionRef, clip) {
-      const playerClip = clip.clone();
-      const nextAction = mixer.clipAction(playerClip);
+    function startClip(controller, clip) {
+      const remapped = remapMixamoClip(clip, controller.mixamoPrefix);
+      const playerClip = remapped.clone();
+      const nextAction = controller.mixer.clipAction(playerClip);
 
-      currentActionRef.current?.fadeOut(0.35);
+      controller.currentActionRef.current?.fadeOut(0.35);
       nextAction.reset();
       nextAction.fadeIn(0.35);
       nextAction.play();
-      currentActionRef.current = nextAction;
+      controller.currentActionRef.current = nextAction;
       return nextAction;
     }
 
@@ -188,7 +201,7 @@ export default function QuizAvatarRoom({
 
       const cached = clipCacheRef.current.get(name);
       if (cached) {
-        startClip(controller.mixer, controller.currentActionRef, cached);
+        startClip(controller, cached);
         return;
       }
 
@@ -203,11 +216,7 @@ export default function QuizAvatarRoom({
 
           const liveController = controllers.get(playerId);
           if (!liveController) return;
-          startClip(
-            liveController.mixer,
-            liveController.currentActionRef,
-            clip
-          );
+          startClip(liveController, clip);
         },
         undefined,
         () => {
@@ -219,23 +228,45 @@ export default function QuizAvatarRoom({
 
     playAnimationRef.current = playAnimationForPlayer;
 
-    loader.load(
-      CHARACTER_URL,
-      (fbx) => {
+    const uniqueSkinKeys = [
+      ...new Set(
+        slots.map((slot) => slot.player.skinKey ?? DEFAULT_SKIN)
+      ),
+    ];
+
+    (async () => {
+      try {
+        const templateBySkin = new Map();
+        await Promise.all(
+          uniqueSkinKeys.map(async (key) => {
+            const skin = getSkin(key);
+            const fbx = await loadFbx(loader, skinUrl(skin.file));
+            templateBySkin.set(key, fbx);
+          })
+        );
         if (!active) return;
+
+        if (uniqueSkinKeys.some((key) => skinUsesMatcap(key))) {
+          matcapTexture = textureLoader.load(
+            "/assets/animation/fire-edge-blue.jpg"
+          );
+          matcapTexture.colorSpace = THREE.SRGBColorSpace;
+        }
 
         for (const slot of slots) {
           const slotGroup = new THREE.Group();
           slotGroup.position.set(slot.x, -1.5, slot.z);
           slotGroup.rotation.y = slot.rotationY;
 
+          const skinKey = slot.player.skinKey ?? DEFAULT_SKIN;
+          const template = templateBySkin.get(skinKey);
+          const material = skinUsesMatcap(skinKey)
+            ? createSkinMaterial(matcapTexture, skinKey)
+            : null;
           const character = prepareCharacter(
-            cloneSkeleton(fbx),
-            createSkinMaterial(
-              matcapTexture,
-              slot.player.skinKey ?? DEFAULT_SKIN
-            ),
-            characterScale
+            cloneSkeleton(template),
+            material,
+            getSkinScale(skinKey) * roomScaleFactor
           );
           const mixer = new THREE.AnimationMixer(character);
           mixers.push(mixer);
@@ -261,6 +292,7 @@ export default function QuizAvatarRoom({
           const controller = {
             mixer,
             currentActionRef,
+            mixamoPrefix: detectMixamoPrefix(character),
             screenMaterial,
             playAnimation: (animationName) =>
               playAnimationForPlayer(slot.player.id, animationName),
@@ -272,15 +304,13 @@ export default function QuizAvatarRoom({
         controllersRef.current = controllers;
         setLoadError(null);
         setLoading(false);
-      },
-      undefined,
-      (error) => {
+      } catch (error) {
         if (!active) return;
         console.error("Avatar model failed to load:", error);
         setLoadError("Could not load avatar.");
         setLoading(false);
       }
-    );
+    })();
 
     function animate() {
       if (!active) return;
@@ -342,7 +372,12 @@ export default function QuizAvatarRoom({
 
   return (
     <div ref={mountRef} className={`${styles.mount} ${className}`.trim()}>
-      {loading ? <p className={styles.loading}>Loading avatars…</p> : null}
+      {loading ? (
+        <div className={styles.loading} aria-busy="true" aria-live="polite">
+          <span className={styles.loadingSpinner} aria-hidden="true" />
+          <span className={styles.loadingLabel}>Loading avatars…</span>
+        </div>
+      ) : null}
       {loadError ? (
         <p className={styles.error} role="alert">
           {loadError}

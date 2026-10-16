@@ -11,6 +11,7 @@ import { DEFAULT_VICTORY_ANIMATION } from "@/lib/quiz/animations";
 import {
   DEFAULT_SKIN,
   listPurchasableShopItems,
+  sanitizeSkinChoice,
   sanitizeVictoryAnimationChoice,
 } from "@/lib/quiz/cosmetics";
 import classes from "./profile.module.css";
@@ -63,7 +64,12 @@ function ProfilePanel() {
           unlockedCosmetics: meData.profile.unlockedCosmetics || [],
         })
       );
-      setSkinKey(meData.profile.skinKey || DEFAULT_SKIN);
+      setSkinKey(
+        sanitizeSkinChoice(meData.profile.skinKey || DEFAULT_SKIN, {
+          plan: meData.profile.plan,
+          unlockedCosmetics: meData.profile.unlockedCosmetics || [],
+        })
+      );
 
       if (historyRes.ok) {
         const historyData = await historyRes.json();

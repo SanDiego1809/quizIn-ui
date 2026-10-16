@@ -44,10 +44,10 @@
     "backHome": "← Back home",
     "skin": "Character skin",
     "locked": "locked",
-    "premiumPerks": "Premium: unlimited favorites, +1 room seat (stack to 8), host category filters & longer games, most cosmetics (Gold skin is play-to-earn only).",
+    "premiumPerks": "Premium: unlimited favorites, +1 room seat (stack to 8), host category filters & longer games, Mixamo skins & victory emotes (Ember, Aurora, and Gold are play-to-earn only).",
     "shopHeading": "Cosmetic shop",
-    "shopHint": "Spend credits earned from games, or upgrade to Premium for most cosmetics. Gold is play-to-earn only.",
-    "shopPremiumNote": "Premium includes most cosmetics. Gold is play-to-earn — unlock it with credits from matches.",
+    "shopHint": "Spend credits earned from games, or upgrade to Premium for Mixamo skins and emotes. Ember, Aurora, and Gold are play-to-earn only.",
+    "shopPremiumNote": "Premium includes Mixamo skins and victory emotes. Ember, Aurora, and Gold are play-to-earn — unlock them with credits from matches.",
     "shopEmpty": "You already own every credit unlock available to you.",
     "earnOnlyTag": "play to earn",
     "unlock": "Unlock",
@@ -142,7 +142,7 @@
       "d3geo": { "note": "Geography mode world map projection" }
     },
     "assets": {
-      "mixamo": { "note": "Y Bot character and animation clips in /public/assets/animation" },
+      "mixamo": { "note": "Character skins and animation clips in /public/assets/animation" },
       "geoCountries": {
         "name": "World countries GeoJSON",
         "note": "Country boundaries for the interactive map"
