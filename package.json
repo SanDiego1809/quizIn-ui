@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
     "dev:socket": "node socket-server/server.js",
     "dev:all": "node scripts/dev-all.js",
     "start:socket": "node socket-server/server.js",

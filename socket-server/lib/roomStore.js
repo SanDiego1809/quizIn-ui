@@ -30,6 +30,7 @@ function createEmptyRoom({
         userId: null,
         plan: "free",
         unlockedCosmetics: [],
+        teamKey: null,
       },
     ],
     settings: { ...gameMode.defaultSettings },

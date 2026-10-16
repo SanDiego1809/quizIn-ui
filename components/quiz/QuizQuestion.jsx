@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { DEFAULT_ANIMATION } from "@/lib/quiz/animations";
 import { DEFAULT_SKIN } from "@/lib/quiz/cosmetics";
+import { isTeamsVariant } from "@/lib/quiz/teams";
+import { getTranslations } from "@/lib/i18n";
 import classes from "./QuizQuestion.module.css";
 import Button from "@/components/button/Button";
 
@@ -18,9 +20,12 @@ function formatCountdown(deadline) {
   return `${seconds}s`;
 }
 
-export default function QuizQuestion({ room, onSubmit }) {
+export default function QuizQuestion({ room, onSubmit, lang = "en" }) {
   const [countdown, setCountdown] = useState(null);
   const questionNumber = (room.currentQuestionIndex ?? 0) + 1;
+  const t = getTranslations(lang);
+  const teamsMode = isTeamsVariant(room.settings?.variant);
+  const yourTeam = room.teams?.find((team) => team.id === room.yourTeamId);
 
   const scenePlayers = useMemo(() => {
     const answeredSet = new Set(room.answeredPlayerIds ?? []);
@@ -64,6 +69,23 @@ export default function QuizQuestion({ room, onSubmit }) {
           </span>
           {countdown ? <span className={classes.timer}>{countdown}</span> : null}
         </header>
+
+        {teamsMode && yourTeam ? (
+          <p
+            className={`${classes.teamBanner} ${
+              yourTeam.id === "red"
+                ? classes.teamBannerRed
+                : classes.teamBannerBlue
+            }`}
+          >
+            {(t.geoQuestion?.yourTeam ?? t.settings?.pickYourTeam ?? "Your team: {team}").replace(
+              "{team}",
+              yourTeam.id === "red"
+                ? t.results?.teamRed ?? t.settings?.teamRed ?? "Red"
+                : t.results?.teamBlue ?? t.settings?.teamBlue ?? "Blue"
+            )}
+          </p>
+        ) : null}
 
         <h2 className={classes.question}>{room.question?.text}</h2>
 

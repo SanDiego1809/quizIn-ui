@@ -6,6 +6,7 @@ const {
 } = require("../lib/utils");
 const { DEFAULT_MODE_ID, getMode, applyRoomConfig } = require("../modes");
 const { createEmptyRoom, setRoom } = require("../lib/roomStore");
+const { sanitizeTeamKey, isTeamsSettings } = require("../lib/teams");
 const {
   bindSocketToPlayer,
   removeSocketFromAllRooms,
@@ -82,6 +83,7 @@ function registerRoomHandlers(socket, ctx) {
     room.players[0].unlockedCosmetics = access.unlockedCosmetics;
     room.players[0].skinKey = cosmetics.skinKey;
     room.players[0].victoryAnimation = cosmetics.victoryAnimation;
+    room.players[0].teamKey = null;
     room.settings = getMode(mode).sanitizeSettings(room.settings, {
       premium: access.plan === "premium",
     });
@@ -142,10 +144,53 @@ function registerRoomHandlers(socket, ctx) {
       userId: socket.data?.userId || null,
       plan: access.plan,
       unlockedCosmetics: access.unlockedCosmetics,
+      teamKey: null,
     });
 
     socket.join(code);
     bindSocketToPlayer(socket, code, playerId);
+    emitRoom(code);
+  });
+
+  socket.on("quiz:player_team", ({ roomCode, team }) => {
+    const code = normalizeRoomCode(roomCode);
+    const room = rooms.get(code);
+
+    if (!room) {
+      socket.emit("quiz:error", { message: "Room not found." });
+      return;
+    }
+    if (room.phase !== "lobby") {
+      socket.emit("quiz:error", {
+        message: "Teams can only be chosen before the game starts.",
+      });
+      return;
+    }
+    if (!isTeamsSettings(room.settings)) {
+      socket.emit("quiz:error", {
+        message: "Team pick is only available in Teams mode.",
+      });
+      return;
+    }
+
+    const playerId = getPlayerIdForSocket(room, socket);
+    if (!playerId) {
+      socket.emit("quiz:error", {
+        message: "Your session is not in this room. Rejoin with the room code.",
+      });
+      return;
+    }
+
+    const teamKey = sanitizeTeamKey(team);
+    if (!teamKey) {
+      socket.emit("quiz:error", { message: "Pick Blue or Red." });
+      return;
+    }
+
+    const player = room.players.find((entry) => entry.id === playerId);
+    if (!player) return;
+
+    player.teamKey = teamKey;
     emitRoom(code);
   });
 
@@ -170,16 +215,16 @@ function registerRoomHandlers(socket, ctx) {
       return;
     }
 
-    if (mode) {
-      try {
-        getMode(mode);
-      } catch {
-        socket.emit("quiz:error", { message: "Unknown game mode." });
-        return;
-      }
+    // Mode is chosen when the room is created (home → play?mode=…).
+    // Lobby only adjusts settings for the locked mode.
+    if (mode && mode !== room.mode) {
+      socket.emit("quiz:error", {
+        message: "Mode is fixed for this room. Create a new room to switch.",
+      });
+      return;
     }
 
-    applyRoomConfig(room, { mode, settings });
+    applyRoomConfig(room, { settings });
     emitRoom(code);
   });
 

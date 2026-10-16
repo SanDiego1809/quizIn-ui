@@ -35,6 +35,7 @@ export default function PlayRoom() {
     joinRoom,
     startGame,
     updateRoomConfig,
+    pickTeam,
     submitAnswer,
     sendGameAction,
     resetGame,
@@ -96,6 +97,7 @@ export default function PlayRoom() {
           onSubmit={submitAnswer}
           onAction={sendGameAction}
           onUpdateConfig={updateRoomConfig}
+          onPickTeam={pickTeam}
           lang={lang}
         />
       )}

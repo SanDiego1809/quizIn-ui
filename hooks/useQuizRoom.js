@@ -97,6 +97,17 @@ export function useQuizRoom() {
     [room?.roomCode]
   );
 
+  const pickTeam = useCallback(
+    (team) => {
+      if (!room?.roomCode) return;
+      getQuizSocket()?.emit("quiz:player_team", {
+        roomCode: room.roomCode,
+        team,
+      });
+    },
+    [room?.roomCode]
+  );
+
   const startGame = useCallback(() => {
     if (!room?.roomCode) return;
     getQuizSocket()?.emit("quiz:game_start", {
@@ -139,6 +150,7 @@ export function useQuizRoom() {
     joinRoom,
     startGame,
     updateRoomConfig,
+    pickTeam,
     submitAnswer,
     sendGameAction,
     resetGame,

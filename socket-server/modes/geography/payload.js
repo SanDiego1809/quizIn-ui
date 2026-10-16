@@ -1,11 +1,21 @@
-const { findCountryByCode } = require("./logic");
+const {
+  findCountryByCode,
+} = require("./logic");
+const { isTeamsSettings, previewTeams } = require("../../lib/teams");
 
-function questionForClient(country) {
+function questionForClient(country, settings = {}) {
   if (!country) return null;
-  return {
+  const variant = String(settings.variant || "countries").toLowerCase();
+  const question = {
     id: country.id,
+    countryCode: country.countryCode,
     countryName: country.countryName,
+    variant,
   };
+  if (variant === "capitals") {
+    question.capitalName = country.capitalName || null;
+  }
+  return question;
 }
 
 function resolveAnswerLabel(countryCode) {
@@ -25,12 +35,27 @@ function buildPayload(room, playerId) {
       ? state.answersByQuestion[state.currentQuestionIndex] || {}
       : {};
 
+  const teams =
+    room.phase === "playing" || room.phase === "final_results"
+      ? state.teams
+      : isTeamsSettings(room.settings)
+        ? previewTeams(room.players)
+        : null;
+
+  const yourTeamId =
+    teams?.find((team) => team.playerIds.includes(playerId))?.id ?? null;
+
   const payload = {
     scores: state.scores,
+    teams,
+    yourTeamId,
     currentQuestionIndex:
       room.phase === "playing" ? state.currentQuestionIndex : null,
     totalQuestions: state.countries.length || room.settings.questionsPerGame,
-    question: room.phase === "playing" ? questionForClient(country) : null,
+    question:
+      room.phase === "playing"
+        ? questionForClient(country, room.settings)
+        : null,
     hasAnswered:
       room.phase === "playing"
         ? answersForCurrent[playerId] !== undefined
@@ -43,7 +68,7 @@ function buildPayload(room, playerId) {
   };
 
   if (room.phase === "final_results" && state.countries.length) {
-    payload.questionReview = state.countries.map((country, index) => {
+    payload.questionReview = state.countries.map((entry, index) => {
       const rawAnswers = state.answersByQuestion[index] || {};
       const answers = Object.fromEntries(
         Object.entries(rawAnswers)
@@ -51,9 +76,11 @@ function buildPayload(room, playerId) {
           .map(([pid, answer]) => [pid, resolveAnswerLabel(answer.countryCode)])
       );
       return {
-        id: country.id,
-        countryName: country.countryName,
-        correctCode: country.countryCode,
+        id: entry.id,
+        countryCode: entry.countryCode,
+        countryName: entry.countryName,
+        capitalName: entry.capitalName || null,
+        correctCode: entry.countryCode,
         answers,
       };
     });

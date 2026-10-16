@@ -116,27 +116,45 @@ export default function AvatarScene({
 
     const plane = new THREE.Mesh(
       new THREE.CircleGeometry(14, 48),
-      new THREE.MeshStandardMaterial({ color: 0x001020 })
+      new THREE.MeshStandardMaterial({
+        color: 0x0a1628,
+        metalness: 0.3,
+        roughness: 0.6,
+      })
     );
     plane.rotation.x = Math.PI * -0.5;
     plane.receiveShadow = true;
     plane.position.y = -1.5;
     scene.add(plane);
 
-    const sunLight = new THREE.DirectionalLight(0xffffff, 5);
-    sunLight.position.set(2, 5, 4);
+    const sunLight = new THREE.DirectionalLight(0xfff1c9, 5.5);
+    sunLight.position.set(2, 5.5, 4);
     sunLight.castShadow = true;
     scene.add(sunLight);
 
-    const fillLight = new THREE.DirectionalLight(0x6366f1, 1.5);
+    const fillLight = new THREE.DirectionalLight(0x7dd3fc, 1.6);
     fillLight.position.set(-3, 2, 2);
     scene.add(fillLight);
 
+    const rimLight = new THREE.DirectionalLight(0xfbbf24, 1.1);
+    rimLight.position.set(0, 3, -3.5);
+    scene.add(rimLight);
+
+    scene.add(
+      getLayer({
+        hue: 0.12,
+        numSprites: 8,
+        opacity: 0.14,
+        radius: 11,
+        size: 22,
+        z: -9.5,
+      })
+    );
     scene.add(
       getLayer({
         hue: 0.58,
-        numSprites: 12,
-        opacity: 0.22,
+        numSprites: 10,
+        opacity: 0.2,
         radius: 12,
         size: 28,
         z: -10.5,

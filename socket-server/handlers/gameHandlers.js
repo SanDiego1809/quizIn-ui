@@ -77,6 +77,17 @@ function registerGameHandlers(socket, ctx) {
     room.settings = mode.sanitizeSettings(settings ?? room.settings, {
       premium: hostIsPremium(room),
     });
+
+    if (typeof mode.validateStart === "function") {
+      const check = mode.validateStart(room);
+      if (!check?.ok) {
+        socket.emit("quiz:error", {
+          message: check?.message || "Cannot start this game yet.",
+        });
+        return;
+      }
+    }
+
     mode.start(room, ctx);
     ctx.emitRoom(code);
   });

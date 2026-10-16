@@ -1,11 +1,68 @@
 .stage {
+  position: relative;
   display: flex;
   flex-direction: column;
   flex: 1;
   width: 100%;
   min-height: 100dvh;
-  background: #0f172a;
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 12%, rgb(251 191 36 / 0.1), transparent 55%),
+    radial-gradient(ellipse 55% 40% at 10% 75%, rgb(56 189 248 / 0.08), transparent 50%),
+    radial-gradient(ellipse 50% 35% at 90% 70%, rgb(99 102 241 / 0.1), transparent 48%),
+    linear-gradient(180deg, #020617 0%, #0f172a 42%, #111827 100%);
   padding: 1rem 1.25rem;
+  overflow: hidden;
+}
+
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 40%,
+    rgb(2 6 23 / 0.5) 100%
+  );
+  z-index: 0;
+}
+
+.header,
+.teamBanner,
+.promptBlock,
+.mapArea,
+.hint {
+  position: relative;
+  z-index: 1;
+}
+
+.teamBanner {
+  margin: 0.35rem auto 0;
+  max-width: 64rem;
+  width: 100%;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.teamBannerBlue {
+  color: #7dd3fc;
+}
+
+.teamBannerRed {
+  color: #fca5a5;
+}
+
+.promptBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 64rem;
+  margin: 0.75rem auto 1rem;
 }
 
 .header {
@@ -29,7 +86,7 @@
 }
 
 .question {
-  margin: 0.75rem auto 1rem;
+  margin: 0;
   max-width: 64rem;
   width: 100%;
   font-size: clamp(1.1rem, 2.5vw, 1.35rem);
@@ -40,6 +97,15 @@
 .countryName {
   color: #fbbf24;
   font-weight: 700;
+}
+
+.flag {
+  width: min(100%, 16rem);
+  height: auto;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(251 191 36 / 0.35);
+  box-shadow: 0 12px 32px rgb(2 6 23 / 0.45);
+  background: #0f172a;
 }
 
 .mapArea {
@@ -58,9 +124,15 @@
   width: 100%;
   max-width: 72rem;
   margin: 0 auto;
-  border-radius: 0.75rem;
-  border: 1px solid #334155;
-  background: #172033;
+  border-radius: 0.85rem;
+  border: 1px solid rgb(251 191 36 / 0.28);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgb(251 191 36 / 0.08), transparent 45%),
+    #0f172a;
+  box-shadow:
+    0 0 0 1px rgb(15 23 42 / 0.8),
+    0 18px 48px rgb(2 6 23 / 0.55),
+    inset 0 1px 0 rgb(251 191 36 / 0.12);
   overflow: hidden;
 }
 

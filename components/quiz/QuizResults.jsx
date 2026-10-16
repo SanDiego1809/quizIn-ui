@@ -1,61 +1,37 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import classes from "./QuizResults.module.css";
 import Button from "@/components/button/Button";
 import { getTranslations } from "@/lib/i18n";
-import { DEFAULT_ANIMATION } from "@/lib/quiz/animations";
+import {
+  DEFAULT_ANIMATION,
+  DEFAULT_VICTORY_ANIMATION,
+} from "@/lib/quiz/animations";
 import { DEFAULT_SKIN } from "@/lib/quiz/cosmetics";
 
-const QuizAvatarRoom = dynamic(
-  () => import("@/components/avatar/QuizAvatarRoom"),
-  { ssr: false }
-);
+const AvatarScene = dynamic(() => import("@/components/avatar/AvatarScene"), {
+  ssr: false,
+});
 
-const REVEAL_DELAY_MS = 1200;
-const CELEBRATION_DELAY_MS = 500;
-const SLIDE_TRANSITION = "transform 0.65s cubic-bezier(0.22, 1, 0.36, 1)";
+const SUSPENSE_MS = 1800;
+const REVEAL_MS = 1200;
+const CELEBRATE_MS = 2800;
 
-function TrophyIcon({ className }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 64 64"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <path
-        d="M16 8h32v6c0 8.8-4.6 16.5-11.5 20.8L32 52l-4.5-17.2C20.6 30.5 16 22.8 16 14V8z"
-        fill="url(#trophyGradient)"
-        stroke="#fbbf24"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M16 10H8c0 6 3 10 8 11M48 10h8c0 6-3 10-8 11"
-        stroke="#fbbf24"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
-      <rect x="22" y="52" width="20" height="4" rx="1" fill="#b45309" />
-      <rect x="18" y="56" width="28" height="4" rx="1.5" fill="#92400e" />
-      <defs>
-        <linearGradient id="trophyGradient" x1="32" y1="8" x2="32" y2="44">
-          <stop stopColor="#fde68a" />
-          <stop offset="1" stopColor="#f59e0b" />
-        </linearGradient>
-      </defs>
-    </svg>
-  );
-}
+const PHASE = {
+  SUSPENSE: "suspense",
+  REVEAL: "reveal",
+  CELEBRATE: "celebrate",
+  DETAILS: "details",
+};
 
 function placeLabel(rank) {
-  if (rank === 1) return "1er";
-  return `${rank}e`;
+  if (rank === 1) return "1";
+  return String(rank);
 }
 
-function defaultRenderReviewItem(q, index, { yourPlayerId, classes }) {
+function defaultRenderReviewItem(q, index, { yourPlayerId, classes: css }) {
   const yourIndex = q.answers?.[yourPlayerId];
   const correctText = q.options[q.correctIndex];
   const pickedWrong =
@@ -63,18 +39,16 @@ function defaultRenderReviewItem(q, index, { yourPlayerId, classes }) {
   const missed = yourIndex === -1 || yourIndex === undefined;
 
   return (
-    <article key={q.id} className={classes.reviewItem}>
-      <p className={classes.reviewQuestion}>
+    <article key={q.id} className={css.reviewItem}>
+      <p className={css.reviewQuestion}>
         {index + 1}. {q.text}
       </p>
-      <div className={classes.answerCompare}>
-        <span className={classes.correct}>✅ {correctText}</span>
+      <div className={css.answerCompare}>
+        <span className={css.correct}>✅ {correctText}</span>
         {pickedWrong ? (
-          <span className={classes.wrong}>❌ {q.options[yourIndex]}</span>
+          <span className={css.wrong}>❌ {q.options[yourIndex]}</span>
         ) : null}
-        {missed ? (
-          <span className={classes.wrong}>❌ Pas de réponse</span>
-        ) : null}
+        {missed ? <span className={css.wrong}>❌ Pas de réponse</span> : null}
       </div>
     </article>
   );
@@ -91,230 +65,280 @@ export default function QuizResults({
   const all = getTranslations(lang);
   const t = all.results ?? {};
   const rankings = result?.rankings ?? [];
-  const total = rankings.length;
-
-  const [revealedCount, setRevealedCount] = useState(0);
-  const [showCelebration, setShowCelebration] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
-
-  const listRef = useRef(null);
-  const prevPositionsRef = useRef(new Map());
-  const skipFlipRef = useRef(true);
 
   const rankingsKey = useMemo(
     () => rankings.map((entry) => `${entry.playerId}:${entry.score}`).join("|"),
     [rankings]
   );
 
-  const visibleEntries = useMemo(
-    () => rankings.slice(Math.max(0, total - revealedCount)),
-    [rankings, total, revealedCount]
+  const winnerEntry = rankings[0] ?? null;
+  const winnerPlayer = useMemo(() => {
+    if (!winnerEntry) return null;
+    return (
+      room.players.find((player) => player.id === winnerEntry.playerId) ?? null
+    );
+  }, [room.players, winnerEntry]);
+
+  const [phase, setPhase] = useState(
+    rankings.length ? PHASE.SUSPENSE : PHASE.DETAILS
   );
 
-  const latestRevealedId = visibleEntries[0]?.playerId ?? null;
-  const winnerId = rankings[0]?.playerId ?? null;
-
-  const victoryPlayers = useMemo(() => {
-    if (!showCelebration || !winnerId) return [];
-    return room.players.map((player) => ({
-      id: player.id,
-      name: player.name,
-      skinKey: player.skinKey ?? DEFAULT_SKIN,
-      animation:
-        player.id === winnerId
-          ? player.victoryAnimation || DEFAULT_ANIMATION
-          : DEFAULT_ANIMATION,
-      answered: player.id === winnerId,
-    }));
-  }, [room.players, winnerId, showCelebration]);
-
   useEffect(() => {
-    setRevealedCount(0);
-    setShowCelebration(false);
-    setShowDetails(false);
-    skipFlipRef.current = true;
-    prevPositionsRef.current = new Map();
-  }, [rankingsKey]);
-
-  useLayoutEffect(() => {
-    const list = listRef.current;
-    if (!list) return;
-
-    const items = list.querySelectorAll("[data-podium-item]");
-    const nextPositions = new Map();
-
-    items.forEach((item) => {
-      const id = item.getAttribute("data-podium-item");
-      if (id) nextPositions.set(id, item.getBoundingClientRect().top);
-    });
-
-    if (skipFlipRef.current) {
-      skipFlipRef.current = false;
-      prevPositionsRef.current = nextPositions;
-      return;
-    }
-
-    items.forEach((item) => {
-      const id = item.getAttribute("data-podium-item");
-      if (!id) return;
-
-      const prevTop = prevPositionsRef.current.get(id);
-      const nextTop = nextPositions.get(id);
-      if (prevTop == null || nextTop == null) return;
-
-      const delta = prevTop - nextTop;
-      if (Math.abs(delta) < 1) return;
-
-      item.style.transition = "none";
-      item.style.transform = `translateY(${delta}px)`;
-
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          item.style.transition = SLIDE_TRANSITION;
-          item.style.transform = "";
-        });
-      });
-    });
-
-    prevPositionsRef.current = nextPositions;
-  }, [visibleEntries, revealedCount]);
-
-  useEffect(() => {
-    if (!total) {
-      setShowDetails(true);
+    if (!rankings.length) {
+      setPhase(PHASE.DETAILS);
       return undefined;
     }
 
-    if (revealedCount >= total) {
-      const celebrationTimer = window.setTimeout(() => {
-        setShowCelebration(true);
-      }, CELEBRATION_DELAY_MS);
-
-      const detailsTimer = window.setTimeout(() => {
-        setShowDetails(true);
-      }, CELEBRATION_DELAY_MS + 800);
-
-      return () => {
-        window.clearTimeout(celebrationTimer);
-        window.clearTimeout(detailsTimer);
-      };
-    }
+    setPhase(PHASE.SUSPENSE);
 
     const revealTimer = window.setTimeout(() => {
-      setRevealedCount((count) => count + 1);
-    }, REVEAL_DELAY_MS);
+      setPhase(PHASE.REVEAL);
+    }, SUSPENSE_MS);
 
-    return () => window.clearTimeout(revealTimer);
-  }, [revealedCount, total]);
+    const celebrateTimer = window.setTimeout(() => {
+      setPhase(PHASE.CELEBRATE);
+    }, SUSPENSE_MS + REVEAL_MS);
+
+    const detailsTimer = window.setTimeout(() => {
+      setPhase(PHASE.DETAILS);
+    }, SUSPENSE_MS + REVEAL_MS + CELEBRATE_MS);
+
+    return () => {
+      window.clearTimeout(revealTimer);
+      window.clearTimeout(celebrateTimer);
+      window.clearTimeout(detailsTimer);
+    };
+  }, [rankingsKey, rankings.length]);
+
+  const showWinnerName =
+    phase === PHASE.REVEAL ||
+    phase === PHASE.CELEBRATE ||
+    phase === PHASE.DETAILS;
+  const showCelebration =
+    phase === PHASE.CELEBRATE || phase === PHASE.DETAILS;
+  const showDetails = phase === PHASE.DETAILS;
+  const isYouWinner = winnerEntry?.playerId === yourPlayerId;
+
+  const victoryAnimation =
+    winnerPlayer?.victoryAnimation || DEFAULT_VICTORY_ANIMATION;
+  const victorySkin = winnerPlayer?.skinKey ?? DEFAULT_SKIN;
 
   return (
-    <section className={classes.stage}>
+    <section
+      className={[
+        classes.stage,
+        phase === PHASE.CELEBRATE ? classes.stageCelebrate : "",
+        showDetails ? classes.stageDetails : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <div className={classes.backdrop} aria-hidden="true">
+        <span className={classes.spotlight} />
         <span className={classes.glow} />
+        <span className={classes.vignette} />
         {showCelebration ? (
           <>
             <span className={`${classes.confetti} ${classes.confettiA}`} />
             <span className={`${classes.confetti} ${classes.confettiB}`} />
             <span className={`${classes.confetti} ${classes.confettiC}`} />
             <span className={`${classes.confetti} ${classes.confettiD}`} />
+            <span className={`${classes.confetti} ${classes.confettiE}`} />
+            <span className={`${classes.confetti} ${classes.confettiF}`} />
           </>
         ) : null}
       </div>
 
       <div className={classes.content}>
-        <header className={classes.intro}>
-          <p className={classes.eyebrow}>{t.matchEnded}</p>
-          <h2 className={classes.title}>{t.andTheWinnerIs}</h2>
-        </header>
-
-        {victoryPlayers.length ? (
-          <div className={classes.victoryScene}>
-            <QuizAvatarRoom
-              players={victoryPlayers}
-              yourPlayerId={yourPlayerId}
-              className={classes.victoryCanvas}
-            />
-          </div>
-        ) : null}
-
-        <ol ref={listRef} className={classes.podium} aria-label="Révélation du classement">
-          {visibleEntries.map((entry) => {
-            const rank = rankings.findIndex((item) => item.playerId === entry.playerId) + 1;
-            const isWinner = rank === 1;
-            const isYou = entry.playerId === yourPlayerId;
-            const justRevealed = entry.playerId === latestRevealedId;
-            const scoreLabel = `${entry.score} pts${result?.maxScore ? ` / ${result.maxScore}` : ""}`;
-
-            return (
-              <li
-                key={entry.playerId}
-                data-podium-item={entry.playerId}
-                className={classes.podiumItem}
+        {!showDetails ? (
+          <div className={classes.hero}>
+            <header className={classes.intro}>
+              <p className={classes.eyebrow}>{t.matchEnded}</p>
+              <h2
+                className={[
+                  classes.title,
+                  phase === PHASE.SUSPENSE ? classes.titleSuspense : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
               >
-                {isWinner ? (
-                  <div
-                    className={[
-                      classes.winnerRow,
-                      justRevealed ? classes.winnerRowEnter : "",
-                      showCelebration ? classes.winnerRowCelebrate : "",
-                    ]
-                      .filter(Boolean)
-                      .join(" ")}
-                  >
-                    <TrophyIcon className={classes.trophy} />
-                    <div className={classes.winnerBody}>
-                      <p className={classes.winnerLabel}>{t.winnerLabel}</p>
-                      <h3 className={classes.winnerName}>
-                        {entry.name}
-                        {isYou ? <span className={classes.youTag}> {t.youTag}</span> : null}
-                      </h3>
-                      <p className={classes.winnerScore}>{scoreLabel}</p>
-                    </div>
-                  </div>
-                ) : (
-                  <div
-                    className={[
-                      classes.podiumRow,
-                      justRevealed ? classes.podiumRowEnter : "",
-                    ]
-                      .filter(Boolean)
-                      .join(" ")}
-                  >
-                    <span className={classes.podiumPlace}>{placeLabel(rank)}</span>
-                    <span className={classes.podiumName}>
-                      {entry.name}
-                      {isYou ? <span className={classes.youTag}> (vous)</span> : null}
-                    </span>
-                    <span className={classes.podiumScore}>{scoreLabel}</span>
-                  </div>
-                )}
-              </li>
-            );
-          })}
-        </ol>
+                {t.andTheWinnerIs}
+              </h2>
+            </header>
 
-        {showDetails ? (
-          <div className={classes.details}>
-            {questionReview?.length ? (
-                  <details className={classes.review}>
-                <summary className={classes.reviewSummary}>{t.viewReview}</summary>
-                <div className={classes.reviewBody}>
-                  {questionReview.map((q, index) =>
-                    renderReviewItem(q, index, { yourPlayerId, classes })
-                  )}
+            {showWinnerName && winnerEntry ? (
+              <div
+                className={[
+                  classes.winnerReveal,
+                  phase === PHASE.REVEAL ? classes.winnerRevealEnter : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+              >
+                <p className={classes.winnerLabel}>{t.winnerLabel}</p>
+                <h3 className={classes.winnerName}>
+                  {winnerEntry.name}
+                  {isYouWinner ? (
+                    <span className={classes.youTag}> {t.youTag}</span>
+                  ) : null}
+                </h3>
+                <p className={classes.winnerScore}>
+                  {winnerEntry.score} pts
+                  {result?.maxScore ? ` / ${result.maxScore}` : ""}
+                </p>
+              </div>
+            ) : (
+              <div className={classes.suspensePulse} aria-hidden="true">
+                <span />
+                <span />
+                <span />
+              </div>
+            )}
+
+            {showCelebration && winnerEntry ? (
+              <div className={classes.victoryScene}>
+                <AvatarScene
+                  animation={victoryAnimation}
+                  skinKey={victorySkin}
+                  restoreIdleAfterPreview={false}
+                  className={classes.victoryCanvas}
+                />
+              </div>
+            ) : null}
+          </div>
+        ) : (
+          <>
+            <header className={classes.intro}>
+              <p className={classes.eyebrow}>{t.matchEnded}</p>
+              <h2 className={classes.title}>
+                {t.rankingsHeading ?? "Final ranking"}
+              </h2>
+            </header>
+
+            {winnerEntry ? (
+              <div className={classes.winnerSummary}>
+                <div className={classes.winnerSummaryScene}>
+                  <AvatarScene
+                    animation={DEFAULT_ANIMATION}
+                    skinKey={victorySkin}
+                    className={classes.victoryCanvasSmall}
+                  />
                 </div>
-              </details>
+                <div className={classes.winnerSummaryBody}>
+                  <p className={classes.winnerLabel}>{t.winnerLabel}</p>
+                  <h3 className={classes.winnerNameCompact}>
+                    {winnerEntry.name}
+                    {isYouWinner ? (
+                      <span className={classes.youTag}> {t.youTag}</span>
+                    ) : null}
+                  </h3>
+                  <p className={classes.winnerScore}>
+                    {winnerEntry.score} pts
+                    {result?.maxScore ? ` / ${result.maxScore}` : ""}
+                  </p>
+                </div>
+              </div>
             ) : null}
 
-            <footer className={classes.actions}>
-              {isHost ? (
-                <Button onClick={onReset}>{t.replay}</Button>
-              ) : (
-                <p className={classes.hint}>{t.waitingHostRestart}</p>
-              )}
-            </footer>
-          </div>
-        ) : null}
+            {result?.teamRankings?.length ? (
+              <ol className={classes.podium} aria-label={t.teamRankingsHeading}>
+                {result.teamRankings.map((team, index) => {
+                  const isWinner = index === 0;
+                  const memberNames = team.members
+                    .map((member) => member.name)
+                    .join(" · ");
+                  const teamLabel =
+                    team.teamId === "red"
+                      ? t.teamRed ?? all.settings?.teamRed ?? team.name
+                      : t.teamBlue ?? all.settings?.teamBlue ?? team.name;
+                  return (
+                    <li key={team.teamId} className={classes.podiumItem}>
+                      <div
+                        className={
+                          isWinner
+                            ? classes.winnerRowCompact
+                            : classes.podiumRow
+                        }
+                      >
+                        <span className={classes.podiumPlace}>
+                          {placeLabel(index + 1)}
+                        </span>
+                        <span className={classes.podiumName}>
+                          {teamLabel}
+                          <span className={classes.youTag}> — {memberNames}</span>
+                        </span>
+                        <span className={classes.podiumScore}>
+                          {team.score} pts
+                        </span>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
+            ) : (
+              <ol className={classes.podium} aria-label={t.rankingsHeading}>
+                {(result?.playerRankings ?? rankings).map((entry, index) => {
+                  const rank = index + 1;
+                  const isWinner = rank === 1;
+                  const isYou = entry.playerId === yourPlayerId;
+                  const scoreLabel = `${entry.score} pts${
+                    result?.maxScore ? ` / ${result.maxScore}` : ""
+                  }`;
+
+                  return (
+                    <li key={entry.playerId} className={classes.podiumItem}>
+                      <div
+                        className={
+                          isWinner
+                            ? classes.winnerRowCompact
+                            : classes.podiumRow
+                        }
+                      >
+                        <span className={classes.podiumPlace}>
+                          {placeLabel(rank)}
+                        </span>
+                        <span className={classes.podiumName}>
+                          {entry.name}
+                          {isYou ? (
+                            <span className={classes.youTag}> {t.youTag}</span>
+                          ) : null}
+                        </span>
+                        <span className={classes.podiumScore}>{scoreLabel}</span>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
+            )}
+
+            <div className={classes.details}>
+              {questionReview?.length ? (
+                <details className={classes.review}>
+                  <summary className={classes.reviewSummary}>
+                    {t.viewReview}
+                  </summary>
+                  <div className={classes.reviewBody}>
+                    {questionReview.map((q, index) =>
+                      renderReviewItem(q, index, {
+                        yourPlayerId,
+                        classes,
+                        lang,
+                      })
+                    )}
+                  </div>
+                </details>
+              ) : null}
+
+              <footer className={classes.actions}>
+                {isHost ? (
+                  <Button onClick={onReset}>{t.replay}</Button>
+                ) : (
+                  <p className={classes.hint}>{t.waitingHostRestart}</p>
+                )}
+              </footer>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

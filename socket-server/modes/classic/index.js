@@ -8,12 +8,23 @@ const {
 } = require("../../lib/hostLimits");
 
 const DEFAULT_SETTINGS = {
+  variant: "solo",
   questionTimeSeconds: 30,
   questionsPerGame: 4,
   category: "",
 };
 
 const SETTINGS_FIELDS = [
+  {
+    key: "variant",
+    label: "Teams mode",
+    type: "select",
+    options: [
+      { value: "solo", label: "Solo (no teams)" },
+      { value: "teams", label: "Teams (Blue vs Red)" },
+    ],
+    hint: "Turn on Teams so players pick Blue or Red in the lobby.",
+  },
   {
     key: "questionsPerGame",
     label: "Number of questions",
@@ -62,6 +73,7 @@ const classicMode = {
   createInitialState: logic.createInitialState,
   sanitizeSettings: (input, options) =>
     logic.sanitizeSettings(input, DEFAULT_SETTINGS, options),
+  validateStart: logic.validateStart,
   start: logic.start,
   handleAction: logic.handleAction,
   reset: logic.reset,

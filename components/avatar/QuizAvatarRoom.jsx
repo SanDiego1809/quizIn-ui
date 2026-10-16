@@ -119,30 +119,51 @@ export default function QuizAvatarRoom({
 
     const plane = new THREE.Mesh(
       new THREE.CircleGeometry(18, 64),
-      new THREE.MeshStandardMaterial({ color: 0x001020 })
+      new THREE.MeshStandardMaterial({
+        color: 0x0a1628,
+        metalness: 0.35,
+        roughness: 0.55,
+      })
     );
     plane.rotation.x = Math.PI * -0.5;
     plane.receiveShadow = true;
     plane.position.y = -1.5;
     scene.add(plane);
 
-    const sunLight = new THREE.DirectionalLight(0xffffff, 5);
-    sunLight.position.set(2, 5, 4);
+    const sunLight = new THREE.DirectionalLight(0xfff1c9, 5.8);
+    sunLight.position.set(2.2, 6, 3.5);
     sunLight.castShadow = true;
     scene.add(sunLight);
 
-    const fillLight = new THREE.DirectionalLight(0x6366f1, 1.5);
-    fillLight.position.set(-3, 2, 2);
+    const fillLight = new THREE.DirectionalLight(0x7dd3fc, 1.8);
+    fillLight.position.set(-3.5, 2.2, 2.5);
     scene.add(fillLight);
+
+    const rimLight = new THREE.DirectionalLight(0xfbbf24, 1.35);
+    rimLight.position.set(0, 3.5, -4);
+    scene.add(rimLight);
+
+    const studioGlow = new THREE.AmbientLight(0x1e293b, 0.55);
+    scene.add(studioGlow);
 
     scene.add(
       getLayer({
+        hue: 0.12,
+        numSprites: 10,
+        opacity: 0.16,
+        radius: 12,
+        size: 22,
+        z: -9.5,
+      })
+    );
+    scene.add(
+      getLayer({
         hue: 0.58,
-        numSprites: 14,
-        opacity: 0.22,
+        numSprites: 12,
+        opacity: 0.2,
         radius: 14,
         size: 28,
-        z: -10.5,
+        z: -11,
       })
     );
 

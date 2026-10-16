@@ -76,7 +76,16 @@ function buildRoomPayload(room, playerId) {
     roomCode: room.code,
     phase: room.phase,
     players: room.players.map(
-      ({ id, name, isHost, animation, victoryAnimation, plan, skinKey }) => ({
+      ({
+        id,
+        name,
+        isHost,
+        animation,
+        victoryAnimation,
+        plan,
+        skinKey,
+        teamKey,
+      }) => ({
         id,
         name,
         isHost,
@@ -84,6 +93,7 @@ function buildRoomPayload(room, playerId) {
         victoryAnimation: victoryAnimation || animation || "Idle",
         plan: plan === "premium" ? "premium" : "free",
         skinKey: skinKey || "default",
+        teamKey: teamKey === "blue" || teamKey === "red" ? teamKey : null,
       })
     ),
     hostId: room.hostId,

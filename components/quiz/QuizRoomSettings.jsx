@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   resolveAvailableModes,
@@ -9,12 +9,37 @@ import {
 import classes from "./QuizRoomSettings.module.css";
 import { getTranslations } from "@/lib/i18n";
 import { formatCategoryLabel } from "@/lib/quiz/classicCategories";
+import NumberStepper from "@/components/stepper/NumberStepper";
 
 function getModeMeta(room, modeId) {
   return resolveAvailableModes(room).find((m) => m.id === modeId) ?? null;
 }
 
-function formatSettingSummary(field, value) {
+function optionLabel(fieldKey, value, all, fallbackLabel) {
+  const options = all.settings_fields?.[fieldKey]?.options;
+  if (fieldKey === "category") {
+    if (!options) return fallbackLabel ?? formatCategoryLabel(value);
+    if (value === "" || value == null) {
+      return options.all ?? fallbackLabel ?? "All categories";
+    }
+    return options[value] ?? fallbackLabel ?? formatCategoryLabel(value);
+  }
+  if (options && value != null && value !== "") {
+    return options[value] ?? fallbackLabel;
+  }
+  return fallbackLabel ?? String(value ?? "");
+}
+
+function fieldIsVisible(field, settings) {
+  if (!field.visibleWhen) return true;
+  return Object.entries(field.visibleWhen).every(([key, allowed]) => {
+    const current = settings?.[key];
+    if (Array.isArray(allowed)) return allowed.includes(current);
+    return current === allowed;
+  });
+}
+
+function formatSettingSummary(field, value, all) {
   if (value === undefined || value === null || value === "") return null;
   if (field.key === "questionsPerGame") {
     return `${value} question${value === 1 ? "" : "s"}`;
@@ -22,8 +47,9 @@ function formatSettingSummary(field, value) {
   if (field.key === "questionTimeSeconds") {
     return value === 0 ? "no timer" : `${value}s each`;
   }
-  if (field.key === "category") {
-    return formatCategoryLabel(value);
+  if (field.type === "select") {
+    const match = (field.options || []).find((option) => option.value === value);
+    return optionLabel(field.key, value, all, match?.label ?? String(value));
   }
   return String(value);
 }
@@ -40,9 +66,11 @@ export function formatRoomSettingsSummary(room, lang = "en") {
 
   const all = getTranslations(lang);
   const modeName = all.modes?.[modeId]?.name ?? mode.label;
+  const settings = room.settings ?? {};
 
   const parts = mode.settingsFields
-    .map((field) => formatSettingSummary(field, room.settings?.[field.key]))
+    .filter((field) => fieldIsVisible(field, settings))
+    .map((field) => formatSettingSummary(field, settings[field.key], all))
     .filter(Boolean);
 
   return parts.length ? `${modeName} (${parts.join(", ")})` : modeName;
@@ -52,58 +80,43 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
   const all = getTranslations(lang);
   const t = all.settings ?? {};
   const roomMode = resolveRoomMode(room);
-  const availableModes = resolveAvailableModes(room);
   const hostPremium = room.hostPlan === "premium";
+  const baseId = useId();
 
   const activeMode = useMemo(
     () => getModeMeta(room, roomMode),
     [room, roomMode]
   );
 
-  const [draftMode, setDraftMode] = useState(roomMode);
   const [draftSettings, setDraftSettings] = useState(
     room.settings ?? activeMode?.defaultSettings ?? {}
   );
 
   useEffect(() => {
-    setDraftMode(resolveRoomMode(room));
     setDraftSettings(room.settings ?? activeMode?.defaultSettings ?? {});
   }, [room, room.mode, room.settings, activeMode?.defaultSettings]);
-
-  const draftModeMeta = useMemo(
-    () => availableModes.find((m) => m.id === draftMode) ?? null,
-    [availableModes, draftMode]
-  );
 
   if (!activeMode) {
     return null;
   }
 
   const canUpdate = typeof onUpdateConfig === "function";
+  const modeName = all.modes?.[roomMode]?.name ?? activeMode.label;
+  const modeDescription =
+    all.modes?.[roomMode]?.description ?? activeMode.description;
 
   if (!isHost) {
     return (
       <div className={classes.readOnly}>
         <p className={classes.readOnlyLabel}>{t.gameSetup ?? "Game setup"}</p>
         <p className={classes.readOnlyValue}>{formatRoomSettingsSummary(room, lang)}</p>
-        {activeMode.description ? <p className={classes.hint}>{activeMode.description}</p> : null}
+        {modeDescription ? <p className={classes.hint}>{modeDescription}</p> : null}
       </div>
     );
   }
 
-  const onModeChange = (nextMode) => {
-    setDraftMode(nextMode);
-    const meta = availableModes.find((m) => m.id === nextMode);
-    if (!meta) return;
-    const nextSettings = { ...meta.defaultSettings };
-    setDraftSettings(nextSettings);
-    if (canUpdate) {
-      onUpdateConfig({ mode: nextMode, settings: nextSettings });
-    }
-  };
-
   const onSettingChange = (key, rawValue) => {
-    const field = draftModeMeta?.settingsFields.find((f) => f.key === key);
+    const field = activeMode.settingsFields.find((f) => f.key === key);
     if (field?.premium && !hostPremium) return;
 
     let parsed = rawValue;
@@ -121,26 +134,23 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
     }
   };
 
+  const visibleFields = activeMode.settingsFields.filter((field) =>
+    fieldIsVisible(field, draftSettings)
+  );
+
   return (
     <div className={classes.form}>
       <p className={classes.formLabel}>{t.gameSetup ?? "Game setup"}</p>
 
-      <label className={classes.field}>
+      <div className={classes.field}>
         <span className={classes.fieldLabel}>{t.modeLabel ?? "Mode"}</span>
-        <select className={classes.select} value={draftMode} onChange={(e) => onModeChange(e.target.value)}>
-          {availableModes.map((mode) => (
-            <option key={mode.id} value={mode.id}>
-              {all.modes?.[mode.id]?.name ?? mode.label}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      {draftModeMeta ? (
+        <p className={classes.modeLocked}>{modeName}</p>
+        {modeDescription ? <p className={classes.hint}>{modeDescription}</p> : null}
         <p className={classes.hint}>
-          {all.modes?.[draftMode]?.description ?? draftModeMeta.description}
+          {t.modeLockedHint ??
+            "Mode was chosen on the home page. Create a new room to switch modes."}
         </p>
-      ) : null}
+      </div>
 
       {!hostPremium ? (
         <p className={classes.premiumHint}>
@@ -152,18 +162,28 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
         </p>
       ) : null}
 
-      {draftModeMeta?.settingsFields.map((field) => {
+      {visibleFields.map((field) => {
         const locked = Boolean(field.premium) && !hostPremium;
         const max = fieldMax(field, hostPremium);
+        const fieldCopy = all.settings_fields?.[field.key];
         const label =
-          all.settings_fields?.[field.key]?.label ?? field.label;
+          (field.labelKey === "settings_fields.variant.labelClassic"
+            ? fieldCopy?.labelClassic
+            : null) ??
+          fieldCopy?.label ??
+          field.label;
         const hint =
-          all.settings_fields?.[field.key]?.hint ??
+          (field.hintKey === "settings_fields.variant.hintClassic"
+            ? fieldCopy?.hintClassic
+            : null) ??
+          fieldCopy?.hint ??
           (locked
             ? field.hint
             : field.premiumHint && !hostPremium
               ? field.premiumHint
               : field.hint);
+        const fieldId = `${baseId}-${field.key}`;
+        const labelId = `${fieldId}-label`;
 
         if (field.type === "select") {
           return (
@@ -176,18 +196,46 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
               </span>
               <select
                 className={classes.select}
-                value={draftSettings[field.key] ?? ""}
+                value={
+                  draftSettings[field.key] ??
+                  activeMode.defaultSettings?.[field.key] ??
+                  ""
+                }
                 disabled={locked}
                 onChange={(e) => onSettingChange(field.key, e.target.value)}
               >
                 {(field.options || []).map((option) => (
                   <option key={option.value || "all"} value={option.value}>
-                    {option.label}
+                    {optionLabel(field.key, option.value, all, option.label)}
                   </option>
                 ))}
               </select>
               {hint ? <span className={classes.hint}>{hint}</span> : null}
             </label>
+          );
+        }
+
+        if (field.type === "number") {
+          return (
+            <div key={field.key} className={classes.field}>
+              <span className={classes.fieldLabel} id={labelId}>
+                {label}
+                {field.premium ? (
+                  <span className={classes.badge}>Premium</span>
+                ) : null}
+              </span>
+              <NumberStepper
+                id={fieldId}
+                aria-labelledby={labelId}
+                min={field.min}
+                max={max}
+                step={field.step}
+                value={draftSettings[field.key] ?? ""}
+                disabled={locked}
+                onChange={(next) => onSettingChange(field.key, next)}
+              />
+              {hint ? <span className={classes.hint}>{hint}</span> : null}
+            </div>
           );
         }
 

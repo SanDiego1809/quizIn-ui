@@ -11,6 +11,7 @@ export default function ClassicModeView({
   onReset,
   onSubmit,
   onUpdateConfig,
+  onPickTeam,
   lang = "en",
 }) {
   return (
@@ -22,6 +23,7 @@ export default function ClassicModeView({
           onStart={onStart}
           onReset={onReset}
           onUpdateConfig={onUpdateConfig}
+          onPickTeam={onPickTeam}
           lang={lang}
         />
       ) : null}

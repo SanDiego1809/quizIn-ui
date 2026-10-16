@@ -4,11 +4,24 @@ const COUNTRY_BANK = require("../../data/geography-questions.json");
 const { FREE_GEOGRAPHY_MAX_QUESTIONS } = require("../../lib/hostLimits");
 
 const DEFAULT_SETTINGS = {
+  variant: "countries",
   questionTimeSeconds: 20,
   questionsPerGame: Math.min(8, COUNTRY_BANK.length),
 };
 
 const SETTINGS_FIELDS = [
+  {
+    key: "variant",
+    label: "Variant",
+    type: "select",
+    options: [
+      { value: "countries", label: "Find the country" },
+      { value: "flags", label: "Find by flag" },
+      { value: "capitals", label: "Find by capital" },
+      { value: "teams", label: "Teams (Blue vs Red)" },
+    ],
+    hint: "How the prompt is shown each round. Teams: players pick Blue or Red.",
+  },
   {
     key: "questionsPerGame",
     label: "Number of countries",
@@ -40,6 +53,7 @@ const geographyMode = {
   createInitialState: logic.createInitialState,
   sanitizeSettings: (input, options) =>
     logic.sanitizeSettings(input, DEFAULT_SETTINGS, options),
+  validateStart: logic.validateStart,
   start: logic.start,
   handleAction: logic.handleAction,
   reset: logic.reset,

@@ -150,6 +150,10 @@
       "openTriviaQa": {
         "name": "OpenTriviaQA",
         "note": "Banque de questions du quiz classique (CC BY-SA 4.0)"
+      },
+      "flagcdn": {
+        "name": "FlagCDN",
+        "note": "Drapeaux des pays pour les manches géographie « Trouver via le drapeau »"
       }
     },
     "videos": {
@@ -185,6 +189,7 @@
   "play": {
     "joinHeading": "Rejoindre une salle de quiz",
     "newRoomsStart": "Les nouvelles salles démarrent en",
+    "modeLockedFromHome": "Configurez la variante et les règles dans la salle d'attente.",
     "geographyLabel": "Quiz de géographie",
     "classicLabel": "Quiz classique",
     "connected": "Connecté au serveur de jeu",
@@ -206,6 +211,10 @@
     "andTheWinnerIs": "Et le gagnant est…",
     "winnerLabel": "Vainqueur",
     "youTag": "(vous)",
+    "rankingsHeading": "Classement final",
+    "teamRankingsHeading": "Bleue vs Rouge",
+    "teamBlue": "Bleue",
+    "teamRed": "Rouge",
     "viewReview": "Voir le corrigé",
     "replay": "Rejouer",
     "waitingHostRestart": "En attente de l'hôte pour relancer une partie…"
@@ -213,6 +222,14 @@
   "settings": {
     "gameSetup": "Configuration de la partie",
     "modeLabel": "Mode",
+    "modeLockedHint": "Le mode a été choisi sur la page d'accueil. Créez une nouvelle salle pour en changer.",
+    "pickYourTeam": "Choisissez votre équipe",
+    "teamBlue": "Bleue",
+    "teamRed": "Rouge",
+    "teamUnset": "Sans équipe",
+    "joinTeam": "Touchez pour rejoindre",
+    "teamsNeedBothSides": "Tout le monde doit choisir une équipe, et Bleue et Rouge doivent avoir au moins un joueur.",
+    "teamsReady": "Les équipes sont prêtes — l'hôte peut démarrer.",
     "start": "Démarrer",
     "backToLobby": "Retour au lobby",
     "waitingForHost": "En attente de l'hôte…",
@@ -234,9 +251,46 @@
       "label": "Temps par question (secondes)",
       "hint": "0 = pas de minuterie"
     },
+    "variant": {
+      "label": "Format",
+      "labelClassic": "Mode équipes",
+      "hint": "Choisissez le déroulement de la manche. Équipes : chacun choisit Bleue ou Rouge.",
+      "hintClassic": "Activez Équipes pour que chacun choisisse Bleue ou Rouge dans le lobby.",
+      "options": {
+        "solo": "Solo (sans équipes)",
+        "countries": "Trouver le pays",
+        "flags": "Trouver via le drapeau",
+        "capitals": "Trouver via la capitale",
+        "teams": "Équipes (Bleue vs Rouge)"
+      }
+    },
     "category": {
       "label": "Catégorie",
-      "hint": "Hôte Premium — filtrer la banque de trivia par catégorie."
+      "hint": "Hôte Premium — filtrer la banque de trivia par catégorie.",
+      "options": {
+        "all": "Toutes les catégories",
+        "animals": "Animaux",
+        "brain-teasers": "Casse-têtes",
+        "celebrities": "Célébrités",
+        "entertainment": "Divertissement",
+        "for-kids": "Pour enfants",
+        "general": "Général",
+        "geography": "Géographie",
+        "history": "Histoire",
+        "hobbies": "Loisirs",
+        "humanities": "Sciences humaines",
+        "literature": "Littérature",
+        "movies": "Cinéma",
+        "music": "Musique",
+        "people": "Personnalités",
+        "rated": "Classé",
+        "religion-faith": "Religion et foi",
+        "science-technology": "Science et technologie",
+        "sports": "Sports",
+        "television": "Télévision",
+        "video-games": "Jeux vidéo",
+        "world": "Monde"
+      }
     }
   },
   "modes": {
@@ -256,8 +310,17 @@
   "geoQuestion": {
     "progress": "Pays {current} / {total}",
     "prompt": "Cliquez sur :",
+    "promptFlag": "Trouvez ce drapeau sur la carte :",
+    "promptCapital": "Capitale :",
+    "flagAlt": "Drapeau du pays",
+    "yourTeam": "Votre équipe : {team}",
+    "teamBlue": "Bleue",
+    "teamRed": "Rouge",
     "waiting": "Réponse enregistrée. En attente des autres ({answered}/{total})…",
-    "hint": "Touchez le pays sur la carte. Molette ou pincez pour zoomer, glissez pour vous déplacer."
+    "hint": "Touchez le pays sur la carte. Molette ou pincez pour zoomer, glissez pour vous déplacer.",
+    "hintFlag": "Regardez le drapeau, puis touchez le pays correspondant sur la carte.",
+    "hintCapital": "Lisez la capitale, puis touchez le pays correspondant sur la carte.",
+    "hintTeams": "Marquez des points pour votre équipe — touchez le pays avant l'autre camp."
   },
   "how": {
     "title": "Comment ça marche",

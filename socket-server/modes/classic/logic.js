@@ -6,8 +6,16 @@ const {
   FREE_CLASSIC_MAX_QUESTIONS,
   PREMIUM_CLASSIC_MAX_QUESTIONS,
 } = require("../../lib/hostLimits");
+const {
+  isTeamsSettings,
+  buildTeamsFromPlayers,
+  validateTeamsReady,
+  participatingPlayers,
+  buildFinalResult,
+} = require("../../lib/teams");
 
 const SPEED_POINTS = [10, 8, 7, 5];
+const CLASSIC_VARIANTS = new Set(["solo", "teams"]);
 
 function getOptionIndex(answer) {
   if (answer == null) return undefined;
@@ -25,6 +33,12 @@ function toBoundedNumber(value, fallback, min, max) {
   return Math.min(max, Math.max(min, n));
 }
 
+function sanitizeVariant(value, fallback = "solo") {
+  const normalized = String(value || "").trim().toLowerCase();
+  if (normalized === "versus") return "teams";
+  return CLASSIC_VARIANTS.has(normalized) ? normalized : fallback;
+}
+
 function sanitizeSettings(input = {}, defaults, options = {}) {
   const premium = Boolean(options.premium);
   const maxQuestions = premium
@@ -35,6 +49,7 @@ function sanitizeSettings(input = {}, defaults, options = {}) {
     premium && isKnownCategory(categoryRaw) ? categoryRaw : "";
 
   return {
+    variant: sanitizeVariant(input.variant, defaults.variant || "solo"),
     questionTimeSeconds: toBoundedNumber(
       input.questionTimeSeconds,
       defaults.questionTimeSeconds,
@@ -57,6 +72,7 @@ function createInitialState() {
     currentQuestionIndex: 0,
     answersByQuestion: [],
     scores: {},
+    teams: null,
     result: null,
   };
 }
@@ -78,10 +94,11 @@ function scoreQuestionBySpeed(question, answers, players) {
   const correctPlayers = players
     .map((player) => {
       const answer = answers[player.id];
-      const optionIndex = getOptionIndex(answer);
-      const answeredAt =
-        answer && typeof answer === "object" ? answer.answeredAt : Infinity;
-      return { playerId: player.id, optionIndex, answeredAt };
+      return {
+        playerId: player.id,
+        optionIndex: getOptionIndex(answer),
+        answeredAt: answer ? answer.answeredAt : Infinity,
+      };
     })
     .filter(
       (entry) =>
@@ -100,7 +117,8 @@ function scoreQuestionBySpeed(question, answers, players) {
 
 function allPlayersAnswered(room, state) {
   const answers = state.answersByQuestion[state.currentQuestionIndex] || {};
-  return room.players.every((p) => answers[p.id] !== undefined);
+  const participants = participatingPlayers(room, state.teams);
+  return participants.every((p) => answers[p.id] !== undefined);
 }
 
 function applyScoresForCurrentQuestion(room, state) {
@@ -108,9 +126,10 @@ function applyScoresForCurrentQuestion(room, state) {
   if (!question) return;
 
   const answers = state.answersByQuestion[state.currentQuestionIndex] || {};
-  const pointsByPlayer = scoreQuestionBySpeed(question, answers, room.players);
+  const participants = participatingPlayers(room, state.teams);
+  const pointsByPlayer = scoreQuestionBySpeed(question, answers, participants);
 
-  for (const player of room.players) {
+  for (const player of participants) {
     const points = pointsByPlayer[player.id] || 0;
     state.scores[player.id] = (state.scores[player.id] || 0) + points;
   }
@@ -121,19 +140,10 @@ function finalizeGame(room, state) {
   room.phase = "final_results";
   room.phaseDeadline = null;
 
-  const rankings = room.players
-    .map((p) => ({
-      playerId: p.id,
-      name: p.name,
-      score: state.scores[p.id] || 0,
-    }))
-    .sort((a, b) => b.score - a.score);
-
-  state.result = {
-    rankings,
+  state.result = buildFinalResult(room, state, {
     totalQuestions: state.questions.length,
-    maxScore: state.questions.length * SPEED_POINTS[0],
-  };
+    pointsPerWin: SPEED_POINTS[0],
+  });
 
   try {
     const { persistGameResults } = require("../../lib/persistGameResults");
@@ -183,7 +193,8 @@ function scheduleQuestionTimer(roomCode, ctx) {
 
     const answers = current.state.answersByQuestion[questionIndex] || {};
     const deadline = current.phaseDeadline ?? Date.now();
-    for (const player of current.players) {
+    const participants = participatingPlayers(current, current.state.teams);
+    for (const player of participants) {
       if (answers[player.id] === undefined) {
         answers[player.id] = { optionIndex: -1, answeredAt: deadline };
       }
@@ -193,6 +204,11 @@ function scheduleQuestionTimer(roomCode, ctx) {
   }, seconds * 1000);
 }
 
+function validateStart(room) {
+  if (!isTeamsSettings(room.settings)) return { ok: true };
+  return validateTeamsReady(room.players);
+}
+
 function beginGame(room) {
   clearRoomTimer(room);
   const state = room.state;
@@ -200,12 +216,18 @@ function beginGame(room) {
     room.settings.questionsPerGame,
     room.settings.category
   );
+  const teams = isTeamsSettings(room.settings)
+    ? buildTeamsFromPlayers(room.players)
+    : null;
 
   room.phase = "playing";
   state.questions = questions;
   state.currentQuestionIndex = 0;
   state.answersByQuestion = questions.map(() => ({}));
-  state.scores = Object.fromEntries(room.players.map((p) => [p.id, 0]));
+  state.teams = teams;
+  state.scores = Object.fromEntries(
+    participatingPlayers(room, teams).map((p) => [p.id, 0])
+  );
   state.result = null;
   room.phaseDeadline = null;
 }
@@ -228,6 +250,13 @@ function submitAnswer(room, playerId, optionIndex, ctx) {
   }
 
   const state = room.state;
+  if (
+    state.teams?.length &&
+    !state.teams.some((team) => team.playerIds.includes(playerId))
+  ) {
+    return { ok: false, message: "You are not on a team this round." };
+  }
+
   const question = state.questions[state.currentQuestionIndex];
   if (!question) return { ok: false, message: "No active question." };
 
@@ -263,6 +292,7 @@ function reset(room) {
 module.exports = {
   sanitizeSettings,
   createInitialState,
+  validateStart,
   start,
   handleAction,
   reset,

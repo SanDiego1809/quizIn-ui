@@ -1,3 +1,5 @@
+const { isTeamsSettings, previewTeams } = require("../../lib/teams");
+
 function getOptionIndex(answer) {
   if (answer == null) return undefined;
   if (typeof answer === "object") return answer.optionIndex;
@@ -21,8 +23,20 @@ function buildPayload(room, playerId) {
       ? state.answersByQuestion[state.currentQuestionIndex] || {}
       : {};
 
+  const teams =
+    room.phase === "playing" || room.phase === "final_results"
+      ? state.teams
+      : isTeamsSettings(room.settings)
+        ? previewTeams(room.players)
+        : null;
+
+  const yourTeamId =
+    teams?.find((team) => team.playerIds.includes(playerId))?.id ?? null;
+
   const payload = {
     scores: state.scores,
+    teams,
+    yourTeamId,
     currentQuestionIndex:
       room.phase === "playing" ? state.currentQuestionIndex : null,
     totalQuestions: state.questions.length || room.settings.questionsPerGame,
@@ -40,8 +54,8 @@ function buildPayload(room, playerId) {
     payload.questionReview = state.questions.map((q, index) => {
       const rawAnswers = state.answersByQuestion[index] || {};
       const answers = Object.fromEntries(
-        Object.entries(rawAnswers).map(([playerId, answer]) => [
-          playerId,
+        Object.entries(rawAnswers).map(([pid, answer]) => [
+          pid,
           getOptionIndex(answer),
         ])
       );

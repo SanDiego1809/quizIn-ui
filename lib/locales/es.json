@@ -150,6 +150,10 @@
       "openTriviaQa": {
         "name": "OpenTriviaQA",
         "note": "Banco de preguntas del quiz clásico (CC BY-SA 4.0)"
+      },
+      "flagcdn": {
+        "name": "FlagCDN",
+        "note": "Banderas de países para las rondas de geografía « Encontrar por bandera »"
       }
     },
     "videos": {
@@ -185,6 +189,7 @@
   "play": {
     "joinHeading": "Unirse a una sala de quiz",
     "newRoomsStart": "Las nuevas salas comienzan en",
+    "modeLockedFromHome": "Configura la variante y las reglas en la sala de espera.",
     "geographyLabel": "Quiz de geografía",
     "classicLabel": "Quiz clásico",
     "connected": "Conectado al servidor de juego",
@@ -206,6 +211,10 @@
     "andTheWinnerIs": "Y el ganador es…",
     "winnerLabel": "Ganador",
     "youTag": "(tú)",
+    "rankingsHeading": "Clasificación final",
+    "teamRankingsHeading": "Azul vs Rojo",
+    "teamBlue": "Azul",
+    "teamRed": "Rojo",
     "viewReview": "Ver corrección",
     "replay": "Jugar de nuevo",
     "waitingHostRestart": "Esperando al anfitrión para reiniciar la partida…"
@@ -213,6 +222,14 @@
   "settings": {
     "gameSetup": "Configuración del juego",
     "modeLabel": "Modo",
+    "modeLockedHint": "El modo se eligió en la página de inicio. Crea una sala nueva para cambiarlo.",
+    "pickYourTeam": "Elige tu equipo",
+    "teamBlue": "Azul",
+    "teamRed": "Rojo",
+    "teamUnset": "Sin equipo",
+    "joinTeam": "Toca para unirte",
+    "teamsNeedBothSides": "Todos deben elegir equipo, y Azul y Rojo necesitan al menos un jugador.",
+    "teamsReady": "Los equipos están listos — el anfitrión puede empezar.",
     "start": "Iniciar",
     "backToLobby": "Volver al lobby",
     "waitingForHost": "Esperando al anfitrión…",
@@ -234,9 +251,46 @@
       "label": "Tiempo por pregunta (segundos)",
       "hint": "0 = sin temporizador"
     },
+    "variant": {
+      "label": "Formato",
+      "labelClassic": "Modo equipos",
+      "hint": "Elige cómo funciona la ronda. Equipos: cada uno elige Azul o Rojo.",
+      "hintClassic": "Activa Equipos para que cada uno elija Azul o Rojo en el lobby.",
+      "options": {
+        "solo": "Solo (sin equipos)",
+        "countries": "Encontrar el país",
+        "flags": "Encontrar por bandera",
+        "capitals": "Encontrar por capital",
+        "teams": "Equipos (Azul vs Rojo)"
+      }
+    },
     "category": {
       "label": "Categoría",
-      "hint": "Anfitrión Premium — filtra el banco de trivia por categoría."
+      "hint": "Anfitrión Premium — filtra el banco de trivia por categoría.",
+      "options": {
+        "all": "Todas las categorías",
+        "animals": "Animales",
+        "brain-teasers": "Acertijos",
+        "celebrities": "Celebridades",
+        "entertainment": "Entretenimiento",
+        "for-kids": "Para niños",
+        "general": "General",
+        "geography": "Geografía",
+        "history": "Historia",
+        "hobbies": "Aficiones",
+        "humanities": "Humanidades",
+        "literature": "Literatura",
+        "movies": "Cine",
+        "music": "Música",
+        "people": "Personas",
+        "rated": "Clasificado",
+        "religion-faith": "Religión y fe",
+        "science-technology": "Ciencia y tecnología",
+        "sports": "Deportes",
+        "television": "Televisión",
+        "video-games": "Videojuegos",
+        "world": "Mundo"
+      }
     }
   },
   "modes": {
@@ -256,8 +310,17 @@
   "geoQuestion": {
     "progress": "País {current} / {total}",
     "prompt": "Haz clic en:",
+    "promptFlag": "Encuentra esta bandera en el mapa:",
+    "promptCapital": "Capital:",
+    "flagAlt": "Bandera del país",
+    "yourTeam": "Tu equipo: {team}",
+    "teamBlue": "Azul",
+    "teamRed": "Rojo",
     "waiting": "Respuesta registrada. Esperando a los demás ({answered}/{total})…",
-    "hint": "Toca el país en el mapa. Desplaza o pellizca para zoom, arrastra para moverte."
+    "hint": "Toca el país en el mapa. Desplaza o pellizca para zoom, arrastra para moverte.",
+    "hintFlag": "Mira la bandera y toca el país correspondiente en el mapa.",
+    "hintCapital": "Lee la capital y toca el país correspondiente en el mapa.",
+    "hintTeams": "Suma puntos para tu equipo — toca el país antes que el otro bando."
   },
   "how": {
     "title": "Cómo funciona",

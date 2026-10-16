@@ -7,9 +7,16 @@ async function persistGameResults(room) {
   if (!isDatabaseConfigured() || !room?.state?.result?.rankings) return;
 
   const prisma = getPrisma();
-  const rankings = room.state.result.rankings;
+  const rankings =
+    room.state.result.playerRankings ?? room.state.result.rankings;
+  const winningTeam = room.state.result.teamRankings?.[0] ?? null;
+  const winningTeamPlayerIds = new Set(
+    winningTeam?.members?.map((member) => member.playerId) ?? []
+  );
   const mode = room.mode || "classic";
   const roomCode = room.code;
+  // No credit farming alone — need at least one opponent.
+  const awardsCredits = (room.players?.length ?? 0) >= 2;
 
   const tasks = [];
 
@@ -20,8 +27,12 @@ async function persistGameResults(room) {
     if (!clerkUserId) continue;
 
     const rank = index + 1;
-    const creditDelta =
-      PLAY_CREDIT_REWARD + (rank === 1 ? WIN_CREDIT_BONUS : 0);
+    const isWinner = winningTeam
+      ? winningTeamPlayerIds.has(entry.playerId)
+      : rank === 1;
+    const creditDelta = awardsCredits
+      ? PLAY_CREDIT_REWARD + (isWinner ? WIN_CREDIT_BONUS : 0)
+      : 0;
 
     tasks.push(
       (async () => {
@@ -30,7 +41,7 @@ async function persistGameResults(room) {
         });
         if (!profile) return;
 
-        await prisma.$transaction([
+        const ops = [
           prisma.gameResult.create({
             data: {
               userId: profile.id,
@@ -41,14 +52,22 @@ async function persistGameResults(room) {
               summary: {
                 totalQuestions: room.state.result.totalQuestions ?? null,
                 maxScore: room.state.result.maxScore ?? null,
+                awardsCredits,
               },
             },
           }),
-          prisma.userProfile.update({
-            where: { id: profile.id },
-            data: { credits: { increment: creditDelta } },
-          }),
-        ]);
+        ];
+
+        if (creditDelta > 0) {
+          ops.push(
+            prisma.userProfile.update({
+              where: { id: profile.id },
+              data: { credits: { increment: creditDelta } },
+            })
+          );
+        }
+
+        await prisma.$transaction(ops);
       })()
     );
   }

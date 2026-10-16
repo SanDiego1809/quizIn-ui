@@ -1,9 +1,20 @@
 const COUNTRY_BANK = require("../../data/geography-questions.json");
+const CAPITALS = require("../../data/geography-capitals.json");
 const { shuffle } = require("../../lib/utils");
 const { clearRoomTimer } = require("../../lib/timers");
 const { FREE_GEOGRAPHY_MAX_QUESTIONS } = require("../../lib/hostLimits");
+const {
+  isTeamsSettings,
+  buildTeamsFromPlayers,
+  previewTeams,
+  validateTeamsReady,
+  participatingPlayers,
+  buildFinalResult,
+  sanitizeTeamKey,
+} = require("../../lib/teams");
 
 const SPEED_POINTS = [10, 8, 7, 5];
+const GEO_VARIANTS = new Set(["countries", "flags", "capitals", "teams"]);
 
 function createAnswer(countryCode) {
   return { countryCode, answeredAt: Date.now() };
@@ -15,13 +26,22 @@ function toBoundedNumber(value, fallback, min, max) {
   return Math.min(max, Math.max(min, n));
 }
 
+function sanitizeVariant(value, fallback = "countries") {
+  const normalized = String(value || "").trim().toLowerCase();
+  if (normalized === "versus") return "teams";
+  return GEO_VARIANTS.has(normalized) ? normalized : fallback;
+}
+
 function sanitizeSettings(input = {}, defaults, options = {}) {
   const premium = Boolean(options.premium);
   const maxQuestions = premium
     ? COUNTRY_BANK.length
     : Math.min(FREE_GEOGRAPHY_MAX_QUESTIONS, COUNTRY_BANK.length);
 
+  const variant = sanitizeVariant(input.variant, defaults.variant || "countries");
+
   return {
+    variant,
     questionTimeSeconds: toBoundedNumber(
       input.questionTimeSeconds,
       defaults.questionTimeSeconds,
@@ -43,12 +63,20 @@ function createInitialState() {
     currentQuestionIndex: 0,
     answersByQuestion: [],
     scores: {},
+    teams: null,
     result: null,
   };
 }
 
+function withCapital(country) {
+  return {
+    ...country,
+    capitalName: CAPITALS[country.countryCode] || null,
+  };
+}
+
 function pickCountries(count) {
-  const pool = shuffle(COUNTRY_BANK);
+  const pool = shuffle(COUNTRY_BANK.map(withCapital));
   return pool.slice(0, Math.min(count, pool.length));
 }
 
@@ -59,7 +87,8 @@ function pointsForRank(rank) {
 function findCountryByCode(code) {
   const normalized = String(code || "").toLowerCase();
   if (!normalized) return null;
-  return COUNTRY_BANK.find((c) => c.countryCode === normalized) || null;
+  const country = COUNTRY_BANK.find((c) => c.countryCode === normalized);
+  return country ? withCapital(country) : null;
 }
 
 function scoreQuestionBySpeed(country, answers, players) {
@@ -87,7 +116,8 @@ function scoreQuestionBySpeed(country, answers, players) {
 
 function allPlayersAnswered(room, state) {
   const answers = state.answersByQuestion[state.currentQuestionIndex] || {};
-  return room.players.every((p) => answers[p.id] !== undefined);
+  const participants = participatingPlayers(room, state.teams);
+  return participants.every((p) => answers[p.id] !== undefined);
 }
 
 function applyScoresForCurrentQuestion(room, state) {
@@ -95,9 +125,10 @@ function applyScoresForCurrentQuestion(room, state) {
   if (!country) return;
 
   const answers = state.answersByQuestion[state.currentQuestionIndex] || {};
-  const pointsByPlayer = scoreQuestionBySpeed(country, answers, room.players);
+  const participants = participatingPlayers(room, state.teams);
+  const pointsByPlayer = scoreQuestionBySpeed(country, answers, participants);
 
-  for (const player of room.players) {
+  for (const player of participants) {
     const points = pointsByPlayer[player.id] || 0;
     state.scores[player.id] = (state.scores[player.id] || 0) + points;
   }
@@ -108,19 +139,10 @@ function finalizeGame(room, state) {
   room.phase = "final_results";
   room.phaseDeadline = null;
 
-  const rankings = room.players
-    .map((p) => ({
-      playerId: p.id,
-      name: p.name,
-      score: state.scores[p.id] || 0,
-    }))
-    .sort((a, b) => b.score - a.score);
-
-  state.result = {
-    rankings,
+  state.result = buildFinalResult(room, state, {
     totalQuestions: state.countries.length,
-    maxScore: state.countries.length * SPEED_POINTS[0],
-  };
+    pointsPerWin: SPEED_POINTS[0],
+  });
 
   try {
     const { persistGameResults } = require("../../lib/persistGameResults");
@@ -170,7 +192,8 @@ function scheduleQuestionTimer(roomCode, ctx) {
 
     const answers = current.state.answersByQuestion[questionIndex] || {};
     const deadline = current.phaseDeadline ?? Date.now();
-    for (const player of current.players) {
+    const participants = participatingPlayers(current, current.state.teams);
+    for (const player of participants) {
       if (answers[player.id] === undefined) {
         answers[player.id] = { countryCode: null, answeredAt: deadline };
       }
@@ -180,16 +203,27 @@ function scheduleQuestionTimer(roomCode, ctx) {
   }, seconds * 1000);
 }
 
+function validateStart(room) {
+  if (!isTeamsSettings(room.settings)) return { ok: true };
+  return validateTeamsReady(room.players);
+}
+
 function beginGame(room) {
   clearRoomTimer(room);
   const state = room.state;
   const countries = pickCountries(room.settings.questionsPerGame);
+  const teams = isTeamsSettings(room.settings)
+    ? buildTeamsFromPlayers(room.players)
+    : null;
 
   room.phase = "playing";
   state.countries = countries;
   state.currentQuestionIndex = 0;
   state.answersByQuestion = countries.map(() => ({}));
-  state.scores = Object.fromEntries(room.players.map((p) => [p.id, 0]));
+  state.teams = teams;
+  state.scores = Object.fromEntries(
+    participatingPlayers(room, teams).map((p) => [p.id, 0])
+  );
   state.result = null;
   room.phaseDeadline = null;
 }
@@ -212,6 +246,13 @@ function submitAnswer(room, playerId, countryCode, ctx) {
   }
 
   const state = room.state;
+  if (
+    state.teams?.length &&
+    !state.teams.some((team) => team.playerIds.includes(playerId))
+  ) {
+    return { ok: false, message: "You are not on a team this round." };
+  }
+
   const country = state.countries[state.currentQuestionIndex];
   if (!country) return { ok: false, message: "No active question." };
 
@@ -247,10 +288,13 @@ function reset(room) {
 module.exports = {
   sanitizeSettings,
   createInitialState,
+  validateStart,
   start,
   handleAction,
   reset,
   findCountryByCode,
   advanceQuestion,
   scheduleQuestionTimer,
+  previewTeams,
+  sanitizeTeamKey,
 };

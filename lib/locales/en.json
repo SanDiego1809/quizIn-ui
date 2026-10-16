@@ -150,6 +150,10 @@
       "openTriviaQa": {
         "name": "OpenTriviaQA",
         "note": "Classic quiz question bank (CC BY-SA 4.0)"
+      },
+      "flagcdn": {
+        "name": "FlagCDN",
+        "note": "Country flag images for Geography “Find by flag” rounds"
       }
     },
     "videos": {
@@ -185,6 +189,7 @@
   "play": {
     "joinHeading": "Join a quiz room",
     "newRoomsStart": "New rooms start in",
+    "modeLockedFromHome": "Configure variant and rules in the waiting room.",
     "geographyLabel": "Geography Quiz",
     "classicLabel": "Classic Quiz",
     "connected": "Connected to game server",
@@ -206,6 +211,10 @@
     "andTheWinnerIs": "And the winner is…",
     "winnerLabel": "Winner",
     "youTag": "(you)",
+    "rankingsHeading": "Final ranking",
+    "teamRankingsHeading": "Blue vs Red",
+    "teamBlue": "Blue",
+    "teamRed": "Red",
     "viewReview": "View review",
     "replay": "Play again",
     "waitingHostRestart": "Waiting for the host to start a new game…"
@@ -213,6 +222,14 @@
   "settings": {
     "gameSetup": "Game setup",
     "modeLabel": "Mode",
+    "modeLockedHint": "Mode was chosen on the home page. Create a new room to switch modes.",
+    "pickYourTeam": "Pick your team",
+    "teamBlue": "Blue",
+    "teamRed": "Red",
+    "teamUnset": "No team",
+    "joinTeam": "Tap to join",
+    "teamsNeedBothSides": "Everyone must pick a team, and both Blue and Red need at least one player.",
+    "teamsReady": "Teams are ready — the host can start.",
     "start": "Start",
     "backToLobby": "Back to lobby",
     "waitingForHost": "Waiting for the host to start…",
@@ -234,9 +251,46 @@
       "label": "Time per question (seconds)",
       "hint": "0 = no timer"
     },
+    "variant": {
+      "label": "Format",
+      "labelClassic": "Teams mode",
+      "hint": "Choose how the round works. Teams: players pick Blue or Red.",
+      "hintClassic": "Turn on Teams so players pick Blue or Red in the lobby.",
+      "options": {
+        "solo": "Solo (no teams)",
+        "countries": "Find the country",
+        "flags": "Find by flag",
+        "capitals": "Find by capital",
+        "teams": "Teams (Blue vs Red)"
+      }
+    },
     "category": {
       "label": "Category",
-      "hint": "Premium host — filter the trivia bank by category."
+      "hint": "Premium host — filter the trivia bank by category.",
+      "options": {
+        "all": "All categories",
+        "animals": "Animals",
+        "brain-teasers": "Brain Teasers",
+        "celebrities": "Celebrities",
+        "entertainment": "Entertainment",
+        "for-kids": "For Kids",
+        "general": "General",
+        "geography": "Geography",
+        "history": "History",
+        "hobbies": "Hobbies",
+        "humanities": "Humanities",
+        "literature": "Literature",
+        "movies": "Movies",
+        "music": "Music",
+        "people": "People",
+        "rated": "Rated",
+        "religion-faith": "Religion Faith",
+        "science-technology": "Science Technology",
+        "sports": "Sports",
+        "television": "Television",
+        "video-games": "Video Games",
+        "world": "World"
+      }
     }
   },
   "modes": {
@@ -256,8 +310,17 @@
   "geoQuestion": {
     "progress": "Country {current} / {total}",
     "prompt": "Click on:",
+    "promptFlag": "Find this flag on the map:",
+    "promptCapital": "Capital city:",
+    "flagAlt": "Country flag",
+    "yourTeam": "Your team: {team}",
+    "teamBlue": "Blue",
+    "teamRed": "Red",
     "waiting": "Answer locked in. Waiting for others ({answered}/{total})…",
-    "hint": "Tap the country on the map. Scroll or pinch to zoom, drag to pan."
+    "hint": "Tap the country on the map. Scroll or pinch to zoom, drag to pan.",
+    "hintFlag": "Look at the flag, then tap the matching country on the map.",
+    "hintCapital": "Read the capital, then tap the matching country on the map.",
+    "hintTeams": "Score for your team — tap the country before the other side does."
   },
   "how": {
     "title": "How it works",

@@ -47,8 +47,10 @@ export default function QuizLobby({
       {defaultMode ? (
         <p className={classes.hint}>
           {t.newRoomsStart}{" "}
-          <strong>{defaultMode === "geography" ? t.geographyLabel : t.classicLabel}</strong>{" "}
-          mode (host can change before starting).
+          <strong>
+            {defaultMode === "geography" ? t.geographyLabel : t.classicLabel}
+          </strong>
+          . {t.modeLockedFromHome ?? "Mode settings are chosen in the waiting room."}
         </p>
       ) : null}
       {connected ? (

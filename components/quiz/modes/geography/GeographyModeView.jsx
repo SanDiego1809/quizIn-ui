@@ -12,6 +12,7 @@ export default function GeographyModeView({
   onReset,
   onAction,
   onUpdateConfig,
+  onPickTeam,
   lang = "en",
 }) {
   return (
@@ -23,6 +24,7 @@ export default function GeographyModeView({
           onStart={onStart}
           onReset={onReset}
           onUpdateConfig={onUpdateConfig}
+          onPickTeam={onPickTeam}
           lang={lang}
         />
       ) : null}

@@ -3,10 +3,12 @@
 import Link from "next/link";
 import classes from "./QuizWaitingRoom.module.css";
 import Button from "@/components/button/Button";
+import TeamPicker from "@/components/team/TeamPicker";
 import QuizRoomSettings, {
   formatRoomSettingsSummary,
 } from "@/components/quiz/QuizRoomSettings";
 import { getTranslations } from "@/lib/i18n";
+import { isTeamsVariant } from "@/lib/quiz/teams";
 
 export default function QuizWaitingRoom({
   room,
@@ -14,6 +16,7 @@ export default function QuizWaitingRoom({
   onStart,
   onReset,
   onUpdateConfig,
+  onPickTeam,
   lang = "en",
 }) {
   const inLobby = room.phase === "lobby";
@@ -21,6 +24,21 @@ export default function QuizWaitingRoom({
   const t = { ...all.settings, ...all.play };
   const seats = room.seatInfo;
   const overCapacity = Boolean(seats?.overCapacity);
+  const teamsMode = isTeamsVariant(room.settings?.variant);
+  const yourPlayer = room.players.find(
+    (player) => player.id === room.yourPlayerId
+  );
+  const yourTeamKey = yourPlayer?.teamKey ?? null;
+  const blueCount = room.players.filter((player) => player.teamKey === "blue")
+    .length;
+  const redCount = room.players.filter((player) => player.teamKey === "red")
+    .length;
+  const unassignedCount = room.players.filter(
+    (player) => player.teamKey !== "blue" && player.teamKey !== "red"
+  ).length;
+  const teamsNotReady =
+    teamsMode && (blueCount < 1 || redCount < 1 || unassignedCount > 0);
+  const startBlocked = overCapacity || teamsNotReady;
 
   return (
     <section className={classes.panel}>
@@ -74,11 +92,39 @@ export default function QuizWaitingRoom({
       </ul>
 
       {inLobby ? (
-        <QuizRoomSettings room={room} isHost={isHost} onUpdateConfig={onUpdateConfig} lang={lang} />
+        <QuizRoomSettings
+          room={room}
+          isHost={isHost}
+          onUpdateConfig={onUpdateConfig}
+          lang={lang}
+        />
+      ) : null}
+
+      {inLobby && teamsMode ? (
+        <>
+          <TeamPicker
+            players={room.players}
+            yourPlayerId={room.yourPlayerId}
+            yourTeamKey={yourTeamKey}
+            onPickTeam={onPickTeam}
+            labels={{
+              pickYourTeam: t.pickYourTeam ?? "Pick your team",
+              teamBlue: t.teamBlue ?? "Blue",
+              teamRed: t.teamRed ?? "Red",
+              joinTeam: t.joinTeam ?? "Tap to join",
+            }}
+          />
+          <p className={classes.hint}>
+            {teamsNotReady
+              ? t.teamsNeedBothSides ??
+                "Everyone must pick a team, and both Blue and Red need at least one player."
+              : t.teamsReady ?? "Teams are ready — the host can start."}
+          </p>
+        </>
       ) : null}
 
       {inLobby && isHost ? (
-        <Button onClick={() => onStart()} disabled={overCapacity}>
+        <Button onClick={() => onStart()} disabled={startBlocked}>
           {t.start ?? "Start"} {formatRoomSettingsSummary(room, lang)}
         </Button>
       ) : null}
@@ -90,7 +136,9 @@ export default function QuizWaitingRoom({
       ) : null}
 
       {inLobby && !isHost ? (
-        <p className={classes.hint}>{t.waitingForHost ?? "Waiting for the host to start…"}</p>
+        <p className={classes.hint}>
+          {t.waitingForHost ?? "Waiting for the host to start…"}
+        </p>
       ) : null}
     </section>
   );

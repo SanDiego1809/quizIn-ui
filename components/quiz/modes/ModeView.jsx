@@ -8,6 +8,7 @@ export default function ModeView({
   onSubmit,
   onAction,
   onUpdateConfig,
+  onPickTeam,
   lang = "en",
 }) {
   const View = getModeView(room.mode);
@@ -21,6 +22,7 @@ export default function ModeView({
       onSubmit={onSubmit}
       onAction={onAction}
       onUpdateConfig={onUpdateConfig}
+      onPickTeam={onPickTeam}
       lang={lang}
     />
   );

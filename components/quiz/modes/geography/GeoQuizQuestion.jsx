@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { getTranslations } from "@/lib/i18n";
+import { getCapitalLabel, getCountryLabel } from "@/lib/quiz/geoLabels";
 import classes from "./GeoQuizQuestion.module.css";
 
 // d3-geo touches the DOM-free geometry math only, but we still load it
@@ -22,11 +23,26 @@ function fill(template, vars) {
   );
 }
 
+function flagUrl(countryCode) {
+  const code = String(countryCode || "").trim().toLowerCase();
+  if (!code) return null;
+  return `https://flagcdn.com/w320/${code}.png`;
+}
+
 export default function GeoQuizQuestion({ room, onSubmit, lang = "en" }) {
   const [countdown, setCountdown] = useState(null);
   const [pendingCode, setPendingCode] = useState(null);
   const questionNumber = (room.currentQuestionIndex ?? 0) + 1;
   const t = getTranslations(lang).geoQuestion;
+  const variant =
+    room.question?.variant ||
+    room.settings?.variant ||
+    "countries";
+  const isFlags = variant === "flags";
+  const isCapitals = variant === "capitals";
+  const isTeams = variant === "teams" || variant === "versus";
+  const flagSrc = isFlags ? flagUrl(room.question?.countryCode) : null;
+  const yourTeam = room.teams?.find((team) => team.id === room.yourTeamId);
 
   useEffect(() => {
     setPendingCode(null);
@@ -50,6 +66,36 @@ export default function GeoQuizQuestion({ room, onSubmit, lang = "en" }) {
     onSubmit(code);
   }
 
+  const countryCode = room.question?.countryCode;
+  const localizedCountry = getCountryLabel(
+    countryCode,
+    lang,
+    room.question?.countryName
+  );
+  const localizedCapital = getCapitalLabel(
+    countryCode,
+    lang,
+    room.question?.capitalName
+  );
+
+  let promptText = t.prompt;
+  let promptValue = localizedCountry;
+  let hintText = t.hint;
+
+  if (isFlags) {
+    promptText = t.promptFlag ?? t.prompt;
+    promptValue = null;
+    hintText = t.hintFlag ?? t.hint;
+  } else if (isCapitals) {
+    promptText = t.promptCapital ?? t.prompt;
+    promptValue = localizedCapital || localizedCountry;
+    hintText = t.hintCapital ?? t.hint;
+  } else if (isTeams) {
+    promptText = t.prompt;
+    promptValue = localizedCountry;
+    hintText = t.hintTeams ?? t.hintVersus ?? t.hint;
+  }
+
   return (
     <section className={classes.stage}>
       <header className={classes.header}>
@@ -62,12 +108,42 @@ export default function GeoQuizQuestion({ room, onSubmit, lang = "en" }) {
         {countdown ? <span className={classes.timer}>{countdown}</span> : null}
       </header>
 
-      <h2 className={classes.question}>
-        {t.prompt}{" "}
-        <span className={classes.countryName}>
-          {room.question?.countryName}
-        </span>
-      </h2>
+      {isTeams && yourTeam ? (
+        <p
+          className={`${classes.teamBanner} ${
+            yourTeam.id === "red" ? classes.teamBannerRed : classes.teamBannerBlue
+          }`}
+        >
+          {(t.yourTeam ?? "Your team: {team}").replace(
+            "{team}",
+            yourTeam.id === "red"
+              ? t.teamRed ?? yourTeam.name
+              : t.teamBlue ?? yourTeam.name
+          )}
+        </p>
+      ) : null}
+
+      <div className={classes.promptBlock}>
+        <h2 className={classes.question}>
+          {promptText}
+          {promptValue ? (
+            <>
+              {" "}
+              <span className={classes.countryName}>{promptValue}</span>
+            </>
+          ) : null}
+        </h2>
+        {flagSrc ? (
+          <img
+            className={classes.flag}
+            src={flagSrc}
+            alt={t.flagAlt ?? "Country flag"}
+            width={320}
+            height={213}
+            decoding="async"
+          />
+        ) : null}
+      </div>
 
       <div className={classes.mapArea}>
         <WorldMap
@@ -83,7 +159,7 @@ export default function GeoQuizQuestion({ room, onSubmit, lang = "en" }) {
               answered: room.answeredCount,
               total: room.players.length,
             })
-          : t.hint}
+          : hintText}
       </p>
     </section>
   );

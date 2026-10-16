@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-const SCREEN_IDLE = 0x1e3a5f;
+const SCREEN_IDLE = 0x2563eb;
 const SCREEN_ANSWERED = 0x22c55e;
 
 export function createQuizPedestal() {
@@ -13,9 +13,11 @@ export function createQuizPedestal() {
     roughness: 0.5,
   });
   const trimMaterial = new THREE.MeshStandardMaterial({
-    color: 0x6366f1,
-    metalness: 0.65,
-    roughness: 0.3,
+    color: 0xfbbf24,
+    metalness: 0.7,
+    roughness: 0.28,
+    emissive: 0xb45309,
+    emissiveIntensity: 0.25,
   });
 
   const base = new THREE.Mesh(
@@ -46,7 +48,7 @@ export function createQuizPedestal() {
   const screenMaterial = new THREE.MeshStandardMaterial({
     color: SCREEN_IDLE,
     emissive: SCREEN_IDLE,
-    emissiveIntensity: 0.4,
+    emissiveIntensity: 0.65,
     metalness: 0.15,
     roughness: 0.75,
   });
@@ -72,5 +74,5 @@ export function setPedestalAnswered(screenMaterial, answered) {
   const color = answered ? SCREEN_ANSWERED : SCREEN_IDLE;
   screenMaterial.color.setHex(color);
   screenMaterial.emissive.setHex(color);
-  screenMaterial.emissiveIntensity = answered ? 0.9 : 0.4;
+  screenMaterial.emissiveIntensity = answered ? 1.15 : 0.65;
 }
