@@ -29,6 +29,72 @@
   background: #0f172a;
 }
 
+.geoForm {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-height: 0;
+  margin-bottom: 0.35rem;
+  padding: 0.75rem;
+}
+
+.geoTitle {
+  margin: 0;
+  flex-shrink: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f8fafc;
+  letter-spacing: 0.01em;
+}
+
+.geoContinents {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  width: 100%;
+  margin: 0.15rem 0 0.25rem;
+}
+
+.geoContinents .fieldLabel {
+  justify-content: center;
+}
+
+.geoSteppers {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.35rem 0;
+  min-height: 0;
+}
+
+.geoSteppers .field {
+  width: 100%;
+  max-width: 14rem;
+  align-items: center;
+  text-align: center;
+  gap: 0.2rem;
+}
+
+.geoSteppers .hint {
+  font-size: 0.75rem;
+}
+
+.geoForm .premiumHint {
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  text-align: center;
+  font-size: 0.75rem;
+}
+
+.geoForm .formLabel {
+  flex-shrink: 0;
+}
+
 .formLabel {
   margin: 0;
   font-size: 0.75rem;

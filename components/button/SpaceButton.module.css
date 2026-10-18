@@ -1,0 +1,200 @@
+/* Adapted from https://uiverse.io/Yaksh37/stale-goat-96 (MIT).
+   See SpaceButton.LICENSE.txt for copyright & permission notice. */
+
+.container {
+  width: 160px;
+  height: 48px;
+  position: relative;
+  overflow: visible;
+}
+
+.container::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 20px;
+  z-index: -1;
+  background: linear-gradient(80deg, #ffcbf2, #ec38bc, #7303c0, #03001e);
+  filter: blur(20px);
+  opacity: 0;
+}
+
+.container:hover:not(:has(.button:disabled)) {
+  transform: scale(1.1);
+  transition: all 0.6s cubic-bezier(0.15, 0.83, 0.66, 1);
+}
+
+.container:hover:not(:has(.button:disabled))::after {
+  transition: all 0.6s cubic-bezier(0.15, 0.83, 0.66, 1);
+  opacity: 1;
+}
+
+.container:has(.button:active:not(:disabled)) {
+  transform: scale(1);
+}
+
+.container:has(.button:active:not(:disabled))::after {
+  opacity: 0;
+}
+
+.button {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  border: 0;
+  outline: 0;
+  border-radius: 9px;
+  background: linear-gradient(80deg, #ffcbf2, #ec38bc, #7303c0, #03001e);
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+.button:focus-visible {
+  outline: 2px solid #ffcbf2;
+  outline-offset: 3px;
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.label {
+  position: relative;
+  z-index: 1;
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+}
+
+.star {
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  animation: spaceBtnBlink 2s cubic-bezier(0.15, 0.83, 0.66, 1) infinite;
+  pointer-events: none;
+}
+
+.shootingStar {
+  width: 80px;
+  height: 1px;
+  position: absolute;
+  background: linear-gradient(80deg, #ffffffff, #ffffff00);
+  border-radius: 50%;
+  transform: rotate(-40deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.shootingStar1 {
+  animation: spaceBtnFallingStar1 4s 6s cubic-bezier(0.15, 0.83, 0.66, 1) infinite;
+}
+
+.shootingStar2 {
+  animation: spaceBtnFallingStar2 2s 10s cubic-bezier(0.15, 0.83, 0.66, 1) infinite;
+}
+
+.shootingStar3 {
+  animation: spaceBtnFallingStar3 8s 20s cubic-bezier(0.15, 0.83, 0.66, 1) infinite;
+}
+
+.shootingStar4 {
+  animation: spaceBtnFallingStar4 4s 6s cubic-bezier(0.15, 0.83, 0.66, 1) infinite;
+}
+
+@keyframes spaceBtnBlink {
+  0% {
+    box-shadow: 0 0 10px 0 white;
+  }
+
+  50% {
+    box-shadow: 0 0 10px 2px white;
+  }
+
+  100% {
+    box-shadow: 0 0 10px 0 white;
+  }
+}
+
+@keyframes spaceBtnFallingStar1 {
+  0% {
+    top: -10px;
+    left: 220px;
+    opacity: 1;
+  }
+
+  100% {
+    top: 200px;
+    left: -20px;
+    opacity: 1;
+  }
+}
+
+@keyframes spaceBtnFallingStar2 {
+  0% {
+    top: -10px;
+    left: 150px;
+    opacity: 1;
+  }
+
+  100% {
+    top: 200px;
+    left: -90px;
+    opacity: 1;
+  }
+}
+
+@keyframes spaceBtnFallingStar3 {
+  0% {
+    top: -10px;
+    left: 80px;
+    opacity: 1;
+  }
+
+  100% {
+    top: 200px;
+    left: -160px;
+    opacity: 1;
+  }
+}
+
+@keyframes spaceBtnFallingStar4 {
+  0% {
+    top: -10px;
+    left: 0;
+    opacity: 1;
+  }
+
+  100% {
+    top: 200px;
+    left: -240px;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .container:hover:not(:has(.button:disabled)),
+  .container:hover:not(:has(.button:disabled))::after {
+    transition: none;
+    transform: none;
+  }
+
+  .star,
+  .shootingStar1,
+  .shootingStar2,
+  .shootingStar3,
+  .shootingStar4 {
+    animation: none;
+  }
+
+  .shootingStar {
+    opacity: 0;
+  }
+}

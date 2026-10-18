@@ -24,9 +24,11 @@ export default function NumberStepper({
   const numeric = Number(value);
   const current = Number.isFinite(numeric) ? numeric : Number(min) || 0;
   const stepSize = Number(step) || 1;
+  const hasMin = Number.isFinite(min);
+  const hasMax = Number.isFinite(max);
 
-  const atMin = Number.isFinite(min) && current <= min;
-  const atMax = Number.isFinite(max) && current >= max;
+  const atMin = hasMin && current <= min;
+  const atMax = hasMax && current >= max;
 
   function commit(next) {
     if (disabled || typeof onChange !== "function") return;
@@ -42,7 +44,23 @@ export default function NumberStepper({
   }
 
   return (
-    <div className={`${classes.stepper} ${className}`.trim()}>
+    <div
+      className={`${classes.stepper} ${hasMin || hasMax ? classes.withEnds : ""} ${className}`.trim()}
+    >
+      {hasMin ? (
+        <button
+          type="button"
+          className={`${classes.btn} ${classes.endBtn}`}
+          onClick={() => commit(min)}
+          disabled={disabled || atMin}
+          aria-label="Set to minimum"
+          tabIndex={-1}
+        >
+          <span className={classes.glyph} aria-hidden="true">
+            «
+          </span>
+        </button>
+      ) : null}
       <button
         type="button"
         className={classes.btn}
@@ -81,6 +99,20 @@ export default function NumberStepper({
           +
         </span>
       </button>
+      {hasMax ? (
+        <button
+          type="button"
+          className={`${classes.btn} ${classes.endBtn}`}
+          onClick={() => commit(max)}
+          disabled={disabled || atMax}
+          aria-label="Set to maximum"
+          tabIndex={-1}
+        >
+          <span className={classes.glyph} aria-hidden="true">
+            »
+          </span>
+        </button>
+      ) : null}
     </div>
   );
 }

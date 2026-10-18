@@ -8,12 +8,14 @@ import LanguageDropdown from "./LanguageDropdown";
 import { useLang } from "./LangProvider";
 import classes from "./SiteHeader.module.css";
 
-export default function SiteHeader() {
+export default function SiteHeader({ overlay = false }) {
   const { lang } = useLang();
   const t = getTranslations(lang).site;
 
   return (
-    <header className={classes.header}>
+    <header
+      className={`${classes.header} ${overlay ? classes.headerOverlay : ""}`.trim()}
+    >
       <div className={classes.inner}>
         <Link
           href={`/?lang=${lang}`}

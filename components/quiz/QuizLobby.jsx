@@ -16,6 +16,7 @@ export default function QuizLobby({
   defaultRoomCode = "",
   isSignedIn = false,
   lang = "en",
+  variant = "default",
 }) {
   const [name, setName] = useState(defaultName || "");
   const [roomCode, setRoomCode] = useState(
@@ -25,6 +26,7 @@ export default function QuizLobby({
       .slice(0, 6)
   );
   const t = getTranslations(lang).play;
+  const geo = variant === "geo";
 
   useEffect(() => {
     if (defaultName) setName(defaultName);
@@ -42,15 +44,22 @@ export default function QuizLobby({
   }, [defaultRoomCode]);
 
   return (
-    <section className={classes.panel}>
+    <section className={`${classes.panel} ${geo ? classes.geoPanel : ""}`.trim()}>
       <h2 className={classes.heading}>{t.joinHeading}</h2>
-      {defaultMode ? (
+      {defaultMode && !geo ? (
         <p className={classes.hint}>
           {t.newRoomsStart}{" "}
           <strong>
             {defaultMode === "geography" ? t.geographyLabel : t.classicLabel}
           </strong>
           . {t.modeLockedFromHome ?? "Mode settings are chosen in the waiting room."}
+        </p>
+      ) : null}
+      {geo ? (
+        <p className={classes.hint}>
+          <strong>{t.geographyLabel}</strong>
+          {" — "}
+          {t.modeLockedFromHome ?? "Mode settings are chosen in the waiting room."}
         </p>
       ) : null}
       {connected ? (

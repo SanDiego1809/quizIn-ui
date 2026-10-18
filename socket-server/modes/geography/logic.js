@@ -1,5 +1,6 @@
 const COUNTRY_BANK = require("../../data/geography-questions.json");
 const CAPITALS = require("../../data/geography-capitals.json");
+const CONTINENT_DATA = require("../../data/geography-continents.json");
 const { shuffle } = require("../../lib/utils");
 const { clearRoomTimer } = require("../../lib/timers");
 const { FREE_GEOGRAPHY_MAX_QUESTIONS } = require("../../lib/hostLimits");
@@ -15,6 +16,8 @@ const {
 
 const SPEED_POINTS = [10, 8, 7, 5];
 const GEO_VARIANTS = new Set(["countries", "flags", "capitals", "teams"]);
+const CONTINENT_IDS = new Set(CONTINENT_DATA.continents || []);
+const COUNTRY_CONTINENT = CONTINENT_DATA.byCountryCode || {};
 
 function createAnswer(countryCode) {
   return { countryCode, answeredAt: Date.now() };
@@ -32,6 +35,19 @@ function sanitizeVariant(value, fallback = "countries") {
   return GEO_VARIANTS.has(normalized) ? normalized : fallback;
 }
 
+function sanitizeContinents(input) {
+  if (!Array.isArray(input)) return [];
+  const seen = new Set();
+  const next = [];
+  for (const raw of input) {
+    const id = String(raw || "").trim().toLowerCase();
+    if (!CONTINENT_IDS.has(id) || seen.has(id)) continue;
+    seen.add(id);
+    next.push(id);
+  }
+  return next;
+}
+
 function sanitizeSettings(input = {}, defaults, options = {}) {
   const premium = Boolean(options.premium);
   const maxQuestions = premium
@@ -42,6 +58,10 @@ function sanitizeSettings(input = {}, defaults, options = {}) {
 
   return {
     variant,
+    // Continent filter is Premium-only; free/guest hosts always use the full pool.
+    continents: premium
+      ? sanitizeContinents(input.continents ?? defaults.continents)
+      : [],
     questionTimeSeconds: toBoundedNumber(
       input.questionTimeSeconds,
       defaults.questionTimeSeconds,
@@ -75,8 +95,17 @@ function withCapital(country) {
   };
 }
 
-function pickCountries(count) {
-  const pool = shuffle(COUNTRY_BANK.map(withCapital));
+function pickCountries(count, continents = []) {
+  const selected = Array.isArray(continents) ? continents : [];
+  let source = COUNTRY_BANK;
+  if (selected.length > 0) {
+    const wanted = new Set(selected);
+    const filtered = COUNTRY_BANK.filter((country) =>
+      wanted.has(COUNTRY_CONTINENT[String(country.countryCode || "").toLowerCase()])
+    );
+    if (filtered.length > 0) source = filtered;
+  }
+  const pool = shuffle(source.map(withCapital));
   return pool.slice(0, Math.min(count, pool.length));
 }
 
@@ -211,7 +240,10 @@ function validateStart(room) {
 function beginGame(room) {
   clearRoomTimer(room);
   const state = room.state;
-  const countries = pickCountries(room.settings.questionsPerGame);
+  const countries = pickCountries(
+    room.settings.questionsPerGame,
+    room.settings.continents
+  );
   const teams = isTeamsSettings(room.settings)
     ? buildTeamsFromPlayers(room.players)
     : null;

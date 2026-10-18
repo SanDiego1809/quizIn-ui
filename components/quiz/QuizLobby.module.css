@@ -6,6 +6,23 @@
   border: 1px solid #334155;
 }
 
+.geoPanel {
+  width: min(100%, 22rem);
+  max-height: calc(100dvh - 2rem);
+  overflow: auto;
+  background: rgba(15, 23, 42, 0.78);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 40px rgba(2, 6, 23, 0.45);
+}
+
+@media (max-width: 900px) {
+  .geoPanel {
+    width: 100%;
+    max-height: none;
+  }
+}
+
 .heading {
   margin: 0 0 1rem;
   font-size: 1.25rem;

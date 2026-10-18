@@ -4,11 +4,20 @@
   min-height: 100dvh;
 }
 
+.shellFullBleed {
+  position: relative;
+}
+
 .content {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+
+.contentFullBleed {
+  flex: 1 1 auto;
+  min-height: 100dvh;
 }
 
 .footer {

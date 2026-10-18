@@ -162,6 +162,10 @@
       "nasaEarthMaps": {
         "name": "Imagerie terrestre NASA / ESA",
         "note": "Cartes Blue Marble (albédo, relief, nuages, lumières nocturnes, océan) et ciel Gaia"
+      },
+      "uiverseSpaceButton": {
+        "name": "Bouton Space Uiverse (Yaksh37 / zanina-yassine)",
+        "note": "Bouton CTA animé (MIT) — https://uiverse.io/Yaksh37/stale-goat-96"
       }
     },
     "videos": {
@@ -229,6 +233,7 @@
   },
   "settings": {
     "gameSetup": "Configuration de la partie",
+    "chooseMode": "Choisir le mode",
     "modeLabel": "Mode",
     "modeLockedHint": "Le mode a été choisi sur la page d'accueil. Créez une nouvelle salle pour en changer.",
     "pickYourTeam": "Choisissez votre équipe",
@@ -244,7 +249,7 @@
     "waitingForPlayers": "En attente de joueurs",
     "gameInProgress": "Partie en cours",
     "hostTag": "hôte",
-    "premiumHostHint": "L'hôte Premium débloque les filtres de catégorie et les parties plus longues.",
+    "premiumHostHint": "L'hôte Premium débloque les filtres de catégorie, les filtres par continent et les parties plus longues.",
     "upgradeLink": "Passer Premium",
     "seatStatus": "{count} / {max} places · {premium} Premium (+1 chacune)",
     "needPremiumSeat": "Il faut un autre Premium pour une plus grande salle",
@@ -270,6 +275,22 @@
         "flags": "Trouver via le drapeau",
         "capitals": "Trouver via la capitale",
         "teams": "Équipes (Bleue vs Rouge)"
+      }
+    },
+    "continents": {
+      "label": "Continents",
+      "hint": "Limite le pool de pays aux continents choisis. Vide = tous.",
+      "premiumHint": "Hôte Premium — filtre le pool de pays par continent.",
+      "all": "Tous les continents",
+      "selectAll": "Tous",
+      "clear": "Effacer",
+      "options": {
+        "africa": "Afrique",
+        "asia": "Asie",
+        "europe": "Europe",
+        "north_america": "Amérique du Nord",
+        "south_america": "Amérique du Sud",
+        "oceania": "Océanie"
       }
     },
     "category": {

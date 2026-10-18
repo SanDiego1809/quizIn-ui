@@ -9,6 +9,7 @@ import { useSiteChrome } from "@/components/site/SiteChrome";
 import { getTranslations } from "@/lib/i18n";
 import QuizLobby from "@/components/quiz/QuizLobby";
 import ModeView from "@/components/quiz/modes/ModeView";
+import GeographyModeView from "@/components/quiz/modes/geography/GeographyModeView";
 import { parsePlayModeParam } from "@/lib/quiz/playMode";
 import { useQuizRoom } from "@/hooks/useQuizRoom";
 import { usePlayerProfile } from "@/hooks/usePlayerProfile";
@@ -23,7 +24,7 @@ export default function PlayRoom() {
     .replace(/[^A-Z0-9]/g, "")
     .slice(0, 6);
   const { lang } = useLang();
-  const { setImmersive } = useSiteChrome();
+  const { setChromeMode } = useSiteChrome();
   const { defaultName, isSignedIn } = usePlayerProfile();
   const {
     room,
@@ -44,14 +45,24 @@ export default function PlayRoom() {
 
   const isPlaying = room?.phase === "playing";
   const isFinalResults = room?.phase === "final_results";
-  const isGeoLobby =
-    room?.mode === "geography" && room?.phase === "lobby";
-  const hidePageChrome = isPlaying || isFinalResults || isGeoLobby;
+  const isGeoEntry = !room && defaultMode === "geography";
+  const isGeoSession = room?.mode === "geography";
+  const isGeoLobby = isGeoSession && room?.phase === "lobby";
+  const useGeoShell = isGeoEntry || isGeoSession;
+  const hidePlayTitle =
+    isPlaying || isFinalResults || isGeoEntry || isGeoLobby;
 
   useEffect(() => {
-    setImmersive(hidePageChrome);
-    return () => setImmersive(false);
-  }, [hidePageChrome, setImmersive]);
+    if (isPlaying || isFinalResults) {
+      setChromeMode("immersive");
+    } else if (isGeoEntry || isGeoLobby) {
+      // Full-bleed planet with transparent header overlaid on top.
+      setChromeMode("overlay");
+    } else {
+      setChromeMode("default");
+    }
+    return () => setChromeMode("default");
+  }, [isPlaying, isFinalResults, isGeoEntry, isGeoLobby, setChromeMode]);
 
   return (
     <main
@@ -60,12 +71,12 @@ export default function PlayRoom() {
           ? classes.playingMain
           : isFinalResults
             ? classes.resultsMain
-            : isGeoLobby
+            : isGeoEntry || isGeoLobby
               ? classes.geoLobbyMain
               : undefined
       }
     >
-      {!hidePageChrome ? (
+      {!hidePlayTitle ? (
         <Title subtitle={getTranslations(lang).play.roomSubtitle}>
           Quiz room
         </Title>
@@ -80,7 +91,25 @@ export default function PlayRoom() {
         </div>
       ) : null}
 
-      {!room ? (
+      {useGeoShell ? (
+        <GeographyModeView
+          room={room}
+          isHost={isHost}
+          onStart={startGame}
+          onReset={resetGame}
+          onAction={sendGameAction}
+          onUpdateConfig={updateRoomConfig}
+          onPickTeam={pickTeam}
+          onCreate={createRoom}
+          onJoin={joinRoom}
+          connected={connected}
+          connectionError={connectionError}
+          defaultName={defaultName}
+          defaultRoomCode={defaultRoomCode}
+          isSignedIn={Boolean(isSignedIn)}
+          lang={lang}
+        />
+      ) : !room ? (
         <QuizLobby
           connected={connected}
           connectionError={connectionError}
@@ -106,7 +135,7 @@ export default function PlayRoom() {
         />
       )}
 
-      {!hidePageChrome ? (
+      {!hidePlayTitle ? (
         <Link href={`/?lang=${lang}`} className={classes.backLink}>
           ← Back home
         </Link>

@@ -3,12 +3,27 @@
 import Link from "next/link";
 import classes from "./QuizWaitingRoom.module.css";
 import Button from "@/components/button/Button";
+import SpaceButton from "@/components/button/SpaceButton";
 import TeamPicker from "@/components/team/TeamPicker";
+import ExpandableModePicker from "@/components/quiz/ExpandableModePicker";
 import QuizRoomSettings, {
   formatRoomSettingsSummary,
 } from "@/components/quiz/QuizRoomSettings";
+import geographyModePickerTheme from "@/components/quiz/modePickerThemes/geography";
 import { getTranslations } from "@/lib/i18n";
+import {
+  resolveAvailableModes,
+  resolveRoomMode,
+} from "@/lib/quiz/modes/registry";
 import { isTeamsVariant } from "@/lib/quiz/teams";
+
+function variantOptionLabel(value, all, fallbackLabel) {
+  const options = all.settings_fields?.variant?.options;
+  if (options && value != null && value !== "") {
+    return options[value] ?? fallbackLabel;
+  }
+  return fallbackLabel ?? String(value ?? "");
+}
 
 export default function QuizWaitingRoom({
   room,
@@ -24,6 +39,18 @@ export default function QuizWaitingRoom({
   const inLobby = room.phase === "lobby";
   const all = getTranslations(lang);
   const t = { ...all.settings, ...all.play };
+  const roomMode = resolveRoomMode(room);
+  const activeMode =
+    resolveAvailableModes(room).find((mode) => mode.id === roomMode) ?? null;
+  const variantField = activeMode?.settingsFields?.find(
+    (field) => field.key === "variant"
+  );
+  const variantOptions = (variantField?.options ?? []).map((option) => ({
+    value: option.value,
+    label: variantOptionLabel(option.value, all, option.label),
+  }));
+  const showGeoModePicker =
+    geoLobby && inLobby && isHost && roomMode === "geography";
   const seats = room.seatInfo;
   const overCapacity = Boolean(seats?.overCapacity);
   const teamsMode = isTeamsVariant(room.settings?.variant);
@@ -135,13 +162,24 @@ export default function QuizWaitingRoom({
       </>
     ) : null;
 
-  const actionsBlock = (
-    <>
-      {inLobby && isHost ? (
+  const startControl =
+    inLobby && isHost ? (
+      geoLobby ? (
+        <div className={classes.geoPlayWrap}>
+          <SpaceButton onClick={() => onStart()} disabled={startBlocked}>
+            {all.site?.play ?? "Play"}
+          </SpaceButton>
+        </div>
+      ) : (
         <Button onClick={() => onStart()} disabled={startBlocked}>
           {t.start ?? "Start"} {formatRoomSettingsSummary(room, lang)}
         </Button>
-      ) : null}
+      )
+    ) : null;
+
+  const actionsBlock = (
+    <>
+      {startControl}
 
       {!inLobby && isHost ? (
         <Button variant="secondary" onClick={onReset}>
@@ -157,6 +195,16 @@ export default function QuizWaitingRoom({
     </>
   );
 
+  const onVariantChange = (nextVariant) => {
+    if (typeof onUpdateConfig !== "function") return;
+    onUpdateConfig({
+      settings: {
+        ...(room.settings ?? activeMode?.defaultSettings ?? {}),
+        variant: nextVariant,
+      },
+    });
+  };
+
   if (geoLobby) {
     return (
       <>
@@ -166,8 +214,25 @@ export default function QuizWaitingRoom({
           {seatBlock}
           {playerList}
         </section>
-        <div className={classes.geoCenter} aria-hidden="true" />
-        <section className={`${classes.panel} ${classes.geoPanel}`}>
+        <div className={classes.geoCenter}>
+          {showGeoModePicker ? (
+            <ExpandableModePicker
+              value={
+                room.settings?.variant ??
+                activeMode?.defaultSettings?.variant ??
+                "countries"
+              }
+              options={variantOptions}
+              onChange={onVariantChange}
+              placeholder={t.chooseMode ?? "Choose mode"}
+              ariaLabel={t.chooseMode ?? "Choose mode"}
+              theme={geographyModePickerTheme}
+            />
+          ) : null}
+        </div>
+        <section
+          className={`${classes.panel} ${classes.geoPanel} ${classes.geoPanelRight}`}
+        >
           {settingsBlock}
           {teamsBlock}
           {actionsBlock}

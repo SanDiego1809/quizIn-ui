@@ -13,6 +13,11 @@
   overflow: hidden;
 }
 
+.withEnds {
+  grid-template-columns: 2.15rem 2.35rem minmax(3.25rem, 1fr) 2.35rem 2.15rem;
+  max-width: 15rem;
+}
+
 .btn {
   display: grid;
   place-items: center;
@@ -26,6 +31,19 @@
     background 0.15s ease,
     color 0.15s ease,
     transform 0.12s ease;
+}
+
+.endBtn {
+  color: #94a3b8;
+}
+
+.endBtn .glyph {
+  font-size: 1.05rem;
+  letter-spacing: -0.06em;
+}
+
+.endBtn:hover:not(:disabled) {
+  color: #e2e8f0;
 }
 
 .btn:hover:not(:disabled) {

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",
-    "dev:socket": "node socket-server/server.js",
+    "dev:socket": "node --watch socket-server/server.js",
     "dev:all": "node scripts/dev-all.js",
     "start:socket": "node socket-server/server.js",
     "import:trivia": "node socket-server/scripts/import-opentriviaqa.js",

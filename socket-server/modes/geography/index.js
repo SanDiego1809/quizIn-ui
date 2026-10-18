@@ -5,6 +5,7 @@ const { FREE_GEOGRAPHY_MAX_QUESTIONS } = require("../../lib/hostLimits");
 
 const DEFAULT_SETTINGS = {
   variant: "countries",
+  continents: [],
   questionTimeSeconds: 20,
   questionsPerGame: Math.min(8, COUNTRY_BANK.length),
 };
@@ -21,6 +22,21 @@ const SETTINGS_FIELDS = [
       { value: "teams", label: "Teams (Blue vs Red)" },
     ],
     hint: "How the prompt is shown each round. Teams: players pick Blue or Red.",
+  },
+  {
+    key: "continents",
+    label: "Continents",
+    type: "multiselect",
+    premium: true,
+    options: [
+      { value: "africa", label: "Africa" },
+      { value: "asia", label: "Asia" },
+      { value: "europe", label: "Europe" },
+      { value: "north_america", label: "North America" },
+      { value: "south_america", label: "South America" },
+      { value: "oceania", label: "Oceania" },
+    ],
+    hint: "Limit the country pool to selected continents. Empty = all.",
   },
   {
     key: "questionsPerGame",
