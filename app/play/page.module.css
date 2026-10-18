@@ -50,3 +50,13 @@
   gap: 0;
   min-height: 100dvh;
 }
+
+.geoLobbyMain {
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: 0;
+  gap: 0;
+  min-height: 100dvh;
+  width: 100%;
+  max-width: none;
+}

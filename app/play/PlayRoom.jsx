@@ -44,7 +44,9 @@ export default function PlayRoom() {
 
   const isPlaying = room?.phase === "playing";
   const isFinalResults = room?.phase === "final_results";
-  const hidePageChrome = isPlaying || isFinalResults;
+  const isGeoLobby =
+    room?.mode === "geography" && room?.phase === "lobby";
+  const hidePageChrome = isPlaying || isFinalResults || isGeoLobby;
 
   useEffect(() => {
     setImmersive(hidePageChrome);
@@ -58,7 +60,9 @@ export default function PlayRoom() {
           ? classes.playingMain
           : isFinalResults
             ? classes.resultsMain
-            : undefined
+            : isGeoLobby
+              ? classes.geoLobbyMain
+              : undefined
       }
     >
       {!hidePageChrome ? (

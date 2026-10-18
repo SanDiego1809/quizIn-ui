@@ -138,7 +138,7 @@
       "socketio": { "note": "Salas de quiz multijugador en tiempo real" },
       "clerk": { "note": "Autenticación gestionada y sesiones de usuario" },
       "prisma": { "note": "Acceso a Postgres para perfiles, historial y favoritos" },
-      "threejs": { "note": "Lobby de avatares 3D y animaciones (cargador FBX)" },
+      "threejs": { "note": "Avatares 3D, animaciones y Tierra del lobby de Geografía" },
       "d3geo": { "note": "Proyección del mapa mundial en modo geografía" }
     },
     "assets": {
@@ -154,6 +154,14 @@
       "flagcdn": {
         "name": "FlagCDN",
         "note": "Banderas de países para las rondas de geografía « Encontrar por bandera »"
+      },
+      "threejsEarth": {
+        "name": "threejs-earth (franky-adl)",
+        "note": "Globo terrestre decorativo en la sala de espera de Geografía (MIT)"
+      },
+      "nasaEarthMaps": {
+        "name": "Imágenes terrestres NASA / ESA",
+        "note": "Mapas Blue Marble (albedo, relieve, nubes, luces nocturnas, océano) y cielo Gaia"
       }
     },
     "videos": {

@@ -138,7 +138,7 @@
       "socketio": { "note": "Real-time multiplayer quiz rooms" },
       "clerk": { "note": "Managed authentication and user sessions" },
       "prisma": { "note": "Postgres access for profiles, history, and favorites" },
-      "threejs": { "note": "3D avatar lobby and animations (FBX loader)" },
+      "threejs": { "note": "3D avatars, animations, and Geography lobby Earth" },
       "d3geo": { "note": "Geography mode world map projection" }
     },
     "assets": {
@@ -154,6 +154,14 @@
       "flagcdn": {
         "name": "FlagCDN",
         "note": "Country flag images for Geography “Find by flag” rounds"
+      },
+      "threejsEarth": {
+        "name": "threejs-earth (franky-adl)",
+        "note": "Decorative Earth globe in the Geography waiting room (MIT)"
+      },
+      "nasaEarthMaps": {
+        "name": "NASA / ESA Earth imagery",
+        "note": "Blue Marble albedo, topography, clouds, night lights, ocean, and Gaia sky maps"
       }
     },
     "videos": {
