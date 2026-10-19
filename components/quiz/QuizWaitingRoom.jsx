@@ -4,12 +4,15 @@ import Link from "next/link";
 import classes from "./QuizWaitingRoom.module.css";
 import Button from "@/components/button/Button";
 import SpaceButton from "@/components/button/SpaceButton";
+import TvPlayButton from "@/components/button/TvPlayButton";
 import TeamPicker from "@/components/team/TeamPicker";
 import ExpandableModePicker from "@/components/quiz/ExpandableModePicker";
 import QuizRoomSettings, {
   formatRoomSettingsSummary,
 } from "@/components/quiz/QuizRoomSettings";
 import geographyModePickerTheme from "@/components/quiz/modePickerThemes/geography";
+import classicModePickerTheme from "@/components/quiz/modePickerThemes/classic";
+import ContestantRow from "@/components/quiz/modes/classic/ContestantRow";
 import { getTranslations } from "@/lib/i18n";
 import {
   resolveAvailableModes,
@@ -36,6 +39,8 @@ export default function QuizWaitingRoom({
   variant = "default",
 }) {
   const geoLobby = variant === "geoLobby";
+  const classicLobby = variant === "classicLobby";
+  const immersiveLobby = geoLobby || classicLobby;
   const inLobby = room.phase === "lobby";
   const all = getTranslations(lang);
   const t = { ...all.settings, ...all.play };
@@ -53,6 +58,11 @@ export default function QuizWaitingRoom({
   }));
   const showGeoModePicker =
     geoLobby && inLobby && isHost && roomMode === "geography";
+  const showClassicModePicker =
+    classicLobby &&
+    inLobby &&
+    isHost &&
+    (roomMode === "classic" || roomMode === "picture");
   const seats = room.seatInfo;
   const overCapacity = Boolean(seats?.overCapacity);
   const teamsMode = isTeamsVariant(room.settings?.variant);
@@ -114,7 +124,17 @@ export default function QuizWaitingRoom({
     </>
   );
 
-  const playerList = (
+  const playerList = immersiveLobby ? (
+    <ContestantRow
+      players={room.players}
+      maxSeats={seats?.max ?? Math.max(4, room.players.length)}
+      yourPlayerId={room.yourPlayerId}
+      hostTag={t.hostTag ?? "host"}
+      emptyLabel={t.emptySeat ?? "Empty seat"}
+      youLabel={t.youTag ?? all.results?.youTag ?? "you"}
+      pulpitKit={room.settings?.pulpitKit || "gold"}
+    />
+  ) : (
     <ul className={classes.playerList}>
       {room.players.map((player) => (
         <li key={player.id} className={classes.player}>
@@ -164,12 +184,19 @@ export default function QuizWaitingRoom({
       </>
     ) : null;
 
+  const playLabel = all.site?.play ?? "Play";
   const startControl =
     inLobby && isHost ? (
-      geoLobby ? (
+      classicLobby ? (
+        <div className={classes.geoPlayWrap}>
+          <TvPlayButton onClick={() => onStart()} disabled={startBlocked}>
+            {playLabel}
+          </TvPlayButton>
+        </div>
+      ) : immersiveLobby ? (
         <div className={classes.geoPlayWrap}>
           <SpaceButton onClick={() => onStart()} disabled={startBlocked}>
-            {all.site?.play ?? "Play"}
+            {playLabel}
           </SpaceButton>
         </div>
       ) : (
@@ -209,14 +236,36 @@ export default function QuizWaitingRoom({
     });
   };
 
-  if (geoLobby) {
+  if (immersiveLobby) {
+    const leftPanelClass = [
+      classes.panel,
+      geoLobby ? classes.geoPanel : "",
+      classicLobby ? classes.classicPanel : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+    const rightPanelClass = [
+      classes.panel,
+      geoLobby ? classes.geoPanel : "",
+      classicLobby ? classes.classicPanel : "",
+      classes.geoPanelRight,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
     return (
       <>
-        <section className={`${classes.panel} ${classes.geoPanel}`}>
+        <section className={leftPanelClass}>
           {roomCodeBlock}
           {heading}
           {seatBlock}
           {playerList}
+          {classicLobby ? (
+            <p className={classes.hint}>
+              {t.speedScoringHint ??
+                "Faster correct answers earn more points."}
+            </p>
+          ) : null}
         </section>
         <div className={classes.geoCenter}>
           {showGeoModePicker ? (
@@ -234,10 +283,23 @@ export default function QuizWaitingRoom({
               hostPremium={hostPremium}
             />
           ) : null}
+          {showClassicModePicker ? (
+            <ExpandableModePicker
+              value={
+                room.settings?.variant ??
+                activeMode?.defaultSettings?.variant ??
+                "solo"
+              }
+              options={variantOptions}
+              onChange={onVariantChange}
+              placeholder={t.chooseMode ?? "Choose mode"}
+              ariaLabel={t.chooseMode ?? "Choose mode"}
+              theme={classicModePickerTheme}
+              hostPremium={hostPremium}
+            />
+          ) : null}
         </div>
-        <section
-          className={`${classes.panel} ${classes.geoPanel} ${classes.geoPanelRight}`}
-        >
+        <section className={rightPanelClass}>
           {settingsBlock}
           {teamsBlock}
           {actionsBlock}

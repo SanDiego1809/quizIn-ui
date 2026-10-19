@@ -5,7 +5,10 @@ export default function ModeView({
   isHost,
   onStart,
   onReset,
+  onRematch,
   onSubmit,
+  onAdvance,
+  onQuestionFeedback,
   onAction,
   onUpdateConfig,
   onPickTeam,
@@ -19,7 +22,10 @@ export default function ModeView({
       isHost={isHost}
       onStart={onStart}
       onReset={onReset}
+      onRematch={onRematch}
       onSubmit={onSubmit}
+      onAdvance={onAdvance}
+      onQuestionFeedback={onQuestionFeedback}
       onAction={onAction}
       onUpdateConfig={onUpdateConfig}
       onPickTeam={onPickTeam}

@@ -8,11 +8,12 @@ import {
 } from "@/lib/quiz/modes/registry";
 import classes from "./QuizRoomSettings.module.css";
 import { getTranslations } from "@/lib/i18n";
-import { formatCategoryLabel } from "@/lib/quiz/classicCategories";
 import { CONTINENT_OPTIONS } from "@/lib/quiz/continents";
 import NumberStepper from "@/components/stepper/NumberStepper";
 import ExpandableMultiSelect from "@/components/ui/ExpandableMultiSelect";
 import SettingInfoTip from "@/components/ui/SettingInfoTip";
+import CategoryCardPicker from "@/components/quiz/CategoryCardPicker";
+import { CLASSIC_CATEGORIES, formatCategoryLabel } from "@/lib/quiz/classicCategories";
 
 function settingsSyncKey(settings) {
   if (!settings || typeof settings !== "object") return "";
@@ -32,7 +33,12 @@ function optionLabel(fieldKey, value, all, fallbackLabel) {
   if (fieldKey === "category") {
     if (!options) return fallbackLabel ?? formatCategoryLabel(value);
     if (value === "" || value == null) {
-      return options.all ?? fallbackLabel ?? "All categories";
+      return (
+        all.settings_fields?.category?.all ??
+        options.all ??
+        fallbackLabel ??
+        "All categories"
+      );
     }
     return options[value] ?? fallbackLabel ?? formatCategoryLabel(value);
   }
@@ -40,6 +46,16 @@ function optionLabel(fieldKey, value, all, fallbackLabel) {
     return options[value] ?? fallbackLabel;
   }
   return fallbackLabel ?? String(value ?? "");
+}
+
+function normalizeCategorySetting(value) {
+  if (Array.isArray(value)) {
+    return value.map((id) => String(id || "").trim()).filter(Boolean);
+  }
+  if (typeof value === "string" && value.trim()) {
+    return [value.trim()];
+  }
+  return [];
 }
 
 function fieldIsVisible(field, settings) {
@@ -59,11 +75,10 @@ function formatSettingSummary(field, value, all) {
   if (field.key === "questionTimeSeconds") {
     return value === 0 ? "no timer" : `${value}s each`;
   }
-  if (field.key === "continents") {
-    if (!Array.isArray(value) || value.length === 0) return null;
-    const names = value.map((id) =>
-      optionLabel(field.key, id, all, id)
-    );
+  if (field.key === "continents" || field.key === "category") {
+    const list = normalizeCategorySetting(value);
+    if (!list.length) return null;
+    const names = list.map((id) => optionLabel(field.key, id, all, id));
     return names.join(", ");
   }
   if (field.type === "checkbox") {
@@ -93,7 +108,13 @@ export function formatRoomSettingsSummary(room, lang = "en") {
 
   const parts = mode.settingsFields
     .filter((field) => fieldIsVisible(field, settings))
-    .filter((field) => !(modeId === "geography" && field.key === "variant"))
+    .filter(
+      (field) =>
+        !(
+          (modeId === "geography" || modeId === "classic") &&
+          field.key === "variant"
+        )
+    )
     .map((field) => formatSettingSummary(field, settings[field.key], all))
     .filter(Boolean);
 
@@ -151,6 +172,7 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
   const hostPremium = room.hostPlan === "premium";
   const baseId = useId();
   const isGeography = roomMode === "geography";
+  const isClassic = roomMode === "classic" || roomMode === "picture";
 
   const activeMode = useMemo(
     () => getModeMeta(room, roomMode),
@@ -162,6 +184,7 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
     return {
       ...next,
       continents: Array.isArray(next.continents) ? next.continents : [],
+      category: normalizeCategorySetting(next.category),
     };
   });
   const lastSyncedSettingsKey = useRef(settingsSyncKey(room.settings));
@@ -214,7 +237,11 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
         continents = serverContinents;
       }
 
-      return { ...next, continents };
+      return {
+        ...next,
+        continents,
+        category: normalizeCategorySetting(next.category),
+      };
     });
   }, [room.settings, room.mode, activeMode?.defaultSettings, hostPremium]);
 
@@ -231,13 +258,10 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
     return (
       <div className={classes.readOnly}>
         <p className={classes.readOnlyLabel}>{t.gameSetup ?? "Game setup"}</p>
-        {isGeography ? (
+        {isGeography || isClassic ? (
           <p className={classes.geoTitle}>{modeName}</p>
         ) : null}
         <p className={classes.readOnlyValue}>{formatRoomSettingsSummary(room, lang)}</p>
-        {!isGeography && modeDescription ? (
-          <p className={classes.hint}>{modeDescription}</p>
-        ) : null}
       </div>
     );
   }
@@ -256,7 +280,7 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
     if (field?.type === "checkbox") {
       parsed = Boolean(rawValue);
     }
-    if (field?.type === "multiselect" || key === "continents") {
+    if (field?.type === "multiselect" || key === "continents" || key === "category") {
       parsed = Array.isArray(rawValue) ? [...rawValue] : [];
       if (key === "continents") {
         pendingContinentsRef.current = parsed;
@@ -271,9 +295,9 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
     }
   };
 
-  const visibleFields = activeMode.settingsFields.filter((field) =>
-    fieldIsVisible(field, draftSettings)
-  );
+  const visibleFields = activeMode.settingsFields
+    .filter((field) => fieldIsVisible(field, draftSettings))
+    .filter((field) => !(isClassic && field.key === "variant"));
 
   if (isGeography) {
     const numberFields = visibleFields.filter((field) => field.type === "number");
@@ -384,6 +408,157 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
     );
   }
 
+  if (isClassic) {
+    const numberFields = visibleFields.filter((field) => field.type === "number");
+    const selectFields = visibleFields.filter(
+      (field) =>
+        field.type === "select" &&
+        field.key !== "variant" &&
+        field.key !== "category"
+    );
+    const checkboxFields = visibleFields.filter(
+      (field) => field.type === "checkbox"
+    );
+    const categoryCopy = all.settings_fields?.category;
+    const categoryField = visibleFields.find((field) => field.key === "category");
+    const categoryLabels = Object.fromEntries(
+      CLASSIC_CATEGORIES.map((id) => [
+        id,
+        categoryCopy?.options?.[id] ?? formatCategoryLabel(id),
+      ])
+    );
+
+    return (
+      <div className={`${classes.form} ${classes.geoForm}`}>
+        <p className={classes.formLabel}>{t.gameSetup ?? "Game setup"}</p>
+        <h3 className={classes.geoTitle}>{modeName}</h3>
+
+        {categoryField ? (
+          <div className={classes.geoContinents}>
+            <span className={classes.fieldLabel}>
+              {categoryCopy?.label ?? "Categories"}
+              <span className={classes.badge}>Premium</span>
+              <SettingInfoTip
+                text={
+                  categoryCopy?.hint ??
+                  "Limit the trivia bank to selected categories. Empty = all."
+                }
+              />
+            </span>
+            <CategoryCardPicker
+              multi
+              value={normalizeCategorySetting(draftSettings.category)}
+              onChange={(next) => onSettingChange("category", next)}
+              disabled={!hostPremium}
+              allLabel={categoryCopy?.all ?? "All categories"}
+              ariaLabel={categoryCopy?.label ?? "Categories"}
+              optionLabels={categoryLabels}
+            />
+          </div>
+        ) : null}
+
+        <div className={classes.geoSteppers}>
+          {numberFields.map((field) =>
+            renderNumberField({
+              field,
+              draftSettings,
+              hostPremium,
+              baseId,
+              all,
+              onSettingChange,
+            })
+          )}
+        </div>
+
+        {selectFields.map((field) => {
+          const locked = Boolean(field.premium) && !hostPremium;
+          const fieldCopy = all.settings_fields?.[field.key];
+          const label = fieldCopy?.label ?? field.label;
+          const hint = fieldCopy?.hint ?? field.hint;
+          return (
+            <label
+              key={field.key}
+              className={`${classes.field} ${locked ? classes.checkRowLocked : ""}`}
+            >
+              <span className={classes.fieldLabel}>
+                {label}
+                {field.premium ? (
+                  <span className={classes.badge}>Premium</span>
+                ) : null}
+              </span>
+              <select
+                className={classes.select}
+                value={
+                  draftSettings[field.key] ??
+                  activeMode.defaultSettings?.[field.key] ??
+                  ""
+                }
+                disabled={locked}
+                onChange={(e) => onSettingChange(field.key, e.target.value)}
+              >
+                {(field.options || []).map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {optionLabel(field.key, option.value, all, option.label)}
+                  </option>
+                ))}
+              </select>
+              {hint ? <span className={classes.hint}>{hint}</span> : null}
+            </label>
+          );
+        })}
+
+        {checkboxFields.length ? (
+          <div className={classes.geoChecks}>
+            {checkboxFields.map((field) => {
+              const locked = Boolean(field.premium) && !hostPremium;
+              const fieldCopy = all.settings_fields?.[field.key];
+              const label = fieldCopy?.label ?? field.label;
+              const info = fieldCopy?.info ?? field.info;
+              const fieldId = `${baseId}-${field.key}`;
+              return (
+                <label
+                  key={field.key}
+                  className={`${classes.checkRow} ${
+                    locked ? classes.checkRowLocked : ""
+                  }`}
+                  htmlFor={fieldId}
+                >
+                  <input
+                    id={fieldId}
+                    type="checkbox"
+                    className={classes.checkbox}
+                    checked={Boolean(draftSettings[field.key])}
+                    disabled={locked}
+                    onChange={(event) =>
+                      onSettingChange(field.key, event.target.checked)
+                    }
+                  />
+                  <span className={classes.checkLabel}>
+                    {label}
+                    {field.premium ? (
+                      <span className={classes.badge}>Premium</span>
+                    ) : null}
+                    {info ? <SettingInfoTip text={info} /> : null}
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+        ) : null}
+
+        {!hostPremium ? (
+          <p className={classes.premiumHint}>
+            {t.premiumClassicHint ??
+              "Premium host unlocks difficulty, scoring rules, buzzer race, host pacing, pulpit styles, sound effects, categories, and longer games."}{" "}
+            <Link href={`/profile?lang=${lang}`} className={classes.premiumLink}>
+              {t.upgradeLink ?? "Upgrade"}
+            </Link>
+          </p>
+        ) : null}
+      </div>
+    );
+  }
+
   return (
     <div className={classes.form}>
       <p className={classes.formLabel}>{t.gameSetup ?? "Game setup"}</p>
@@ -429,7 +604,6 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
               ? field.premiumHint
               : field.hint);
         const fieldId = `${baseId}-${field.key}`;
-        const labelId = `${fieldId}-label`;
 
         if (field.type === "select") {
           return (

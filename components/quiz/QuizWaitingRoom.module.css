@@ -115,7 +115,21 @@
   box-shadow: 0 12px 40px rgba(2, 6, 23, 0.45);
 }
 
-.geoPanelRight.geoPanel {
+.classicPanel {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 22rem);
+  max-height: calc(100% - 0.5rem);
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: rgba(20, 14, 28, 0.82);
+  border: 1px solid rgba(251, 191, 36, 0.28);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 40px rgba(7, 6, 10, 0.55);
+}
+
+.geoPanelRight.geoPanel,
+.geoPanelRight.classicPanel {
   /* Keep expanded continent picker clickable above the panel. */
   overflow: visible;
 }
@@ -179,7 +193,8 @@
 }
 
 @media (max-width: 900px) {
-  .geoPanel {
+  .geoPanel,
+  .classicPanel {
     width: 100%;
     max-height: none;
   }

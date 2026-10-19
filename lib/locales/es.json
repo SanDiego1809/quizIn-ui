@@ -74,9 +74,18 @@
     "hostCta": "Crear una sala",
     "stepsHeading": "Cómo funciona",
     "steps": [
-      { "title": "Crear", "body": "Abre una sala" },
-      { "title": "Compartir", "body": "Envía el código" },
-      { "title": "Jugar", "body": "Compite en vivo" }
+      {
+        "title": "Crear",
+        "body": "Abre una sala"
+      },
+      {
+        "title": "Compartir",
+        "body": "Envía el código"
+      },
+      {
+        "title": "Jugar",
+        "body": "Compite en vivo"
+      }
     ],
     "recentHeading": "Partidas recientes",
     "recentSeeProfile": "Perfil",
@@ -133,16 +142,32 @@
   },
   "credits": {
     "libraries": {
-      "nextjs": { "note": "Enrutado App, interfaz y build de producción" },
-      "react": { "note": "Componentes y estado del cliente" },
-      "socketio": { "note": "Salas de quiz multijugador en tiempo real" },
-      "clerk": { "note": "Autenticación gestionada y sesiones de usuario" },
-      "prisma": { "note": "Acceso a Postgres para perfiles, historial y favoritos" },
-      "threejs": { "note": "Avatares 3D, animaciones y Tierra del lobby de Geografía" },
-      "d3geo": { "note": "Proyección del mapa mundial en modo geografía" }
+      "nextjs": {
+        "note": "Enrutado App, interfaz y build de producción"
+      },
+      "react": {
+        "note": "Componentes y estado del cliente"
+      },
+      "socketio": {
+        "note": "Salas de quiz multijugador en tiempo real"
+      },
+      "clerk": {
+        "note": "Autenticación gestionada y sesiones de usuario"
+      },
+      "prisma": {
+        "note": "Acceso a Postgres para perfiles, historial y favoritos"
+      },
+      "threejs": {
+        "note": "Avatares 3D, animaciones, Tierra del lobby de Geografía y estudio del quiz clásico"
+      },
+      "d3geo": {
+        "note": "Proyección del mapa mundial en modo geografía"
+      }
     },
     "assets": {
-      "mixamo": { "note": "Skins de personajes y clips de animación en /public/assets/animation" },
+      "mixamo": {
+        "note": "Skins de personajes y clips de animación en /public/assets/animation"
+      },
       "geoCountries": {
         "name": "GeoJSON de países del mundo",
         "note": "Fronteras de países para el mapa interactivo"
@@ -170,6 +195,10 @@
       "uiverseEarthCard": {
         "name": "Tarjeta Tierra de Uiverse (Lakshay-art)",
         "note": "Tierra giratoria en la tarjeta de Geografía del inicio, de Lakshay Gupta (MIT) — https://uiverse.io/Lakshay-art/soft-dingo-98"
+      },
+      "uiverseTvPlayButton": {
+        "name": "Botón TV Uiverse (Sophiek9h / Praashoo7)",
+        "note": "Botón Play con tele retro en el lobby Classic, de Kalagbor Sophia tras Prashant (MIT) — https://uiverse.io/Sophiek9h/black-pug-58"
       },
       "lottieShowTime": {
         "name": "Icono show time (Ahmad Halawani)",
@@ -223,7 +252,34 @@
     "joinRoom": "Unirse a la sala",
     "avatarFromProfile": "Tu emote de victoria y skin vienen de tu perfil.",
     "avatarGuestDefault": "Los invitados usan el avatar por defecto. Inicia sesión para elegir emote de victoria y skin.",
-    "editAvatarProfile": "Editar en el perfil"
+    "editAvatarProfile": "Editar en el perfil",
+    "speedScoringHint": "Las respuestas correctas más rápidas dan más puntos.",
+    "emptySeat": "Asiento vacío",
+    "liveRanking": "Ranking",
+    "revealBeat": "Actualizando puntuaciones…",
+    "questionProgress": "Pregunta {n} / {total}",
+    "answerLockedHint": "Respuesta bloqueada. Esperando a los demás ({count}/{total})…",
+    "eliminatedHint": "Estás eliminado en esta ronda (muerte súbita).",
+    "buzzerLockedHint": "Alguien acertó — los buzzers están cerrados.",
+    "hostAdvance": "Siguiente pregunta",
+    "youTag": "tú",
+    "pictureLabel": "Ronda de imágenes",
+    "feedbackCaption": "Valorar esta pregunta",
+    "feedbackHarder": "Difícil",
+    "feedbackEasier": "Fácil",
+    "feedbackReport": "Reportar error",
+    "feedbackReported": "Gracias — marcada para revisión.",
+    "feedbackReportedShort": "Reportada",
+    "feedbackVotedHarder": "Marcada difícil",
+    "feedbackVotedEasier": "Marcada fácil",
+    "feedbackError": "No se pudo guardar.",
+    "feedbackHarderTitle": "Esta pregunta es difícil",
+    "feedbackEasierTitle": "Esta pregunta es fácil",
+    "feedbackReportTitle": "Reportar una pregunta incorrecta",
+    "feedbackNoteLabel": "Nota opcional (¿qué falla?)",
+    "feedbackNotePlaceholder": "ej. respuesta incorrecta, typo, poco clara…",
+    "feedbackSendReport": "Enviar reporte",
+    "feedbackCancel": "Cancelar"
   },
   "roomSubtitle": "Responde rápido — las respuestas correctas más rápidas obtienen más puntos.",
   "results": {
@@ -237,7 +293,10 @@
     "teamRed": "Rojo",
     "viewReview": "Ver corrección",
     "replay": "Jugar de nuevo",
-    "waitingHostRestart": "Esperando al anfitrión para reiniciar la partida…"
+    "waitingHostRestart": "Esperando al anfitrión para reiniciar la partida…",
+    "rematch": "Revancha (misma config)",
+    "backToLobby": "Volver al lobby",
+    "noAnswer": "Sin respuesta"
   },
   "settings": {
     "gameSetup": "Configuración del juego",
@@ -258,6 +317,7 @@
     "gameInProgress": "Partida en curso",
     "hostTag": "anfitrión",
     "premiumHostHint": "El anfitrión Premium desbloquea filtros por continente, modificadores de mapa, vidas y partidas más largas.",
+    "premiumClassicHint": "El anfitrión Premium desbloquea dificultad, reglas de puntuación, carrera de buzzer, ritmo del anfitrión, estilos de atril, sonidos, categorías y partidas más largas.",
     "upgradeLink": "Mejorar",
     "seatStatus": "{count} / {max} plazas · {premium} Premium (+1 cada uno)",
     "needPremiumSeat": "Hace falta otro Premium para una sala más grande",
@@ -324,10 +384,12 @@
       }
     },
     "category": {
-      "label": "Categoría",
-      "hint": "Anfitrión Premium — filtra el banco de trivia por categoría.",
+      "label": "Categorías",
+      "hint": "Limita el banco de trivia a las categorías elegidas. Vacío = todas.",
+      "all": "Todas las categorías",
+      "selectAll": "Todas",
+      "clear": "Limpiar",
       "options": {
-        "all": "Todas las categorías",
         "animals": "Animales",
         "brain-teasers": "Acertijos",
         "celebrities": "Celebridades",
@@ -350,6 +412,44 @@
         "video-games": "Videojuegos",
         "world": "Mundo"
       }
+    },
+    "difficulty": {
+      "label": "Dificultad",
+      "options": {
+        "all": "Todas",
+        "easy": "Fácil",
+        "medium": "Media",
+        "hard": "Difícil"
+      }
+    },
+    "scoringMode": {
+      "label": "Puntuación",
+      "options": {
+        "speed": "Velocidad",
+        "flat": "Fija (10 pts)",
+        "sudden_death": "Muerte súbita"
+      }
+    },
+    "buzzerRace": {
+      "label": "Carrera de buzzer",
+      "info": "La primera respuesta correcta bloquea a los demás."
+    },
+    "hostPacing": {
+      "label": "El anfitrión avanza",
+      "info": "El anfitrión pulsa Siguiente tras la revelación."
+    },
+    "pulpitKit": {
+      "label": "Estilo de atril",
+      "options": {
+        "gold": "Oro",
+        "neon": "Neón",
+        "wood": "Madera",
+        "chrome": "Cromo"
+      }
+    },
+    "audioPack": {
+      "label": "Efectos de sonido",
+      "info": "Sonidos de bloqueo / acierto / fallo (desactivados por defecto)."
     }
   },
   "modes": {
@@ -364,6 +464,12 @@
       "vibe": "Mapas",
       "description": "Aparece el nombre de un país — haz clic en él en el mapa interactivo antes que tus amigos. Perfecto para amantes de los mapas y aulas.",
       "learnMore": "Más información →"
+    },
+    "picture": {
+      "name": "Ronda de imágenes",
+      "vibe": "Visual",
+      "description": "Identifica lo que hay en la imagen — mismo escenario y buzzers que Classic.",
+      "learnMore": "Jugar ronda de imágenes →"
     }
   },
   "geoQuestion": {
@@ -411,9 +517,18 @@
         "Funciona en navegadores de escritorio y móviles"
       ],
       "howItWorks": [
-        { "title": "Crea una sala", "body": "Introduce tu nombre y pulsa Crear sala. Te conviertes en el anfitrión." },
-        { "title": "Invita a amigos", "body": "Comparte el código de la sala. Los amigos se unen con el mismo código y su nombre." },
-        { "title": "Elige un modo y comienza", "body": "El anfitrión elige Classic o Geography, ajusta la configuración y empieza el quiz." }
+        {
+          "title": "Crea una sala",
+          "body": "Introduce tu nombre y pulsa Crear sala. Te conviertes en el anfitrión."
+        },
+        {
+          "title": "Invita a amigos",
+          "body": "Comparte el código de la sala. Los amigos se unen con el mismo código y su nombre."
+        },
+        {
+          "title": "Elige un modo y comienza",
+          "body": "El anfitrión elige Classic o Geography, ajusta la configuración y empieza el quiz."
+        }
       ]
     },
     "classic-quiz": {
@@ -427,9 +542,18 @@
         "Revisión al final"
       ],
       "howItWorks": [
-        { "title": "Unirse o alojar", "body": "Abre la sala, crea una partida o únase con el código de un amigo." },
-        { "title": "Seleccionar Classic", "body": "El anfitrión ajusta las opciones como el número de preguntas." },
-        { "title": "Responde antes de que acabe el tiempo", "body": "Elige rápidamente la opción correcta — las respuestas más rápidas puntúan más." }
+        {
+          "title": "Unirse o alojar",
+          "body": "Abre la sala, crea una partida o únase con el código de un amigo."
+        },
+        {
+          "title": "Seleccionar Classic",
+          "body": "El anfitrión ajusta las opciones como el número de preguntas."
+        },
+        {
+          "title": "Responde antes de que acabe el tiempo",
+          "body": "Elige rápidamente la opción correcta — las respuestas más rápidas puntúan más."
+        }
       ]
     },
     "geography-quiz": {
@@ -443,11 +567,19 @@
         "Acércate y desplázate para explorar el mapa"
       ],
       "howItWorks": [
-        { "title": "Iniciar una sala de geografía", "body": "Crea una sala y selecciona el modo Geography en el lobby." },
-        { "title": "Lee el país", "body": "Cada ronda muestra un país. Encuéntralo antes que los demás." },
-        { "title": "Gana la ronda", "body": "El primer clic correcto marca el punto. Consulta la clasificación final." }
+        {
+          "title": "Iniciar una sala de geografía",
+          "body": "Crea una sala y selecciona el modo Geography en el lobby."
+        },
+        {
+          "title": "Lee el país",
+          "body": "Cada ronda muestra un país. Encuéntralo antes que los demás."
+        },
+        {
+          "title": "Gana la ronda",
+          "body": "El primer clic correcto marca el punto. Consulta la clasificación final."
+        }
       ]
     }
   }
 }
-

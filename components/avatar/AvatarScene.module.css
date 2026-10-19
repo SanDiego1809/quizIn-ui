@@ -6,6 +6,11 @@
   background: #0f172a;
 }
 
+.mountStage {
+  background: transparent;
+  overflow: visible;
+}
+
 .loading,
 .error {
   position: absolute;
@@ -17,6 +22,11 @@
   background: #0f172a;
   z-index: 1;
   pointer-events: none;
+}
+
+.loadingStage {
+  background: rgb(8 12 28 / 0.28);
+  backdrop-filter: blur(2px);
 }
 
 .loading {

@@ -13,6 +13,7 @@ export default function GeographyModeView({
   isHost = false,
   onStart,
   onReset,
+  onRematch,
   onAction,
   onUpdateConfig,
   onPickTeam,
@@ -86,6 +87,7 @@ export default function GeographyModeView({
           room={room}
           isHost={isHost}
           onReset={onReset}
+          onRematch={onRematch}
           renderReviewItem={renderGeoReviewItem}
           lang={lang}
         />

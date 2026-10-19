@@ -11,7 +11,13 @@ const DEFAULT_SETTINGS = {
   variant: "solo",
   questionTimeSeconds: 30,
   questionsPerGame: 4,
-  category: "",
+  category: [],
+  difficulty: "all",
+  scoringMode: "speed",
+  buzzerRace: false,
+  hostPacing: false,
+  pulpitKit: "gold",
+  audioPack: false,
 };
 
 const SETTINGS_FIELDS = [
@@ -45,21 +51,75 @@ const SETTINGS_FIELDS = [
     hint: "0 = no timer",
   },
   {
-    key: "category",
-    label: "Category",
+    key: "difficulty",
+    label: "Difficulty mix",
     type: "select",
     premium: true,
     options: [
-      { value: "", label: "All categories" },
-      ...CLASSIC_CATEGORIES.map((id) => ({
-        value: id,
-        label: id
-          .split("-")
-          .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-          .join(" "),
-      })),
+      { value: "all", label: "All difficulties" },
+      { value: "easy", label: "Easy" },
+      { value: "medium", label: "Medium" },
+      { value: "hard", label: "Hard" },
     ],
-    hint: "Premium host — filter the trivia bank by category.",
+    hint: "Filter the question bank by difficulty band.",
+  },
+  {
+    key: "scoringMode",
+    label: "Scoring",
+    type: "select",
+    premium: true,
+    options: [
+      { value: "speed", label: "Speed (faster correct = more points)" },
+      { value: "flat", label: "Flat (10 pts per correct)" },
+      { value: "sudden_death", label: "Sudden death (wrong = out)" },
+    ],
+  },
+  {
+    key: "buzzerRace",
+    label: "Buzzer race",
+    type: "checkbox",
+    premium: true,
+    info: "First correct answer locks everyone else out and ends the round.",
+  },
+  {
+    key: "hostPacing",
+    label: "Host advances",
+    type: "checkbox",
+    premium: true,
+    info: "Host clicks Next instead of auto-advancing after the reveal.",
+  },
+  {
+    key: "pulpitKit",
+    label: "Pulpit style",
+    type: "select",
+    premium: true,
+    options: [
+      { value: "gold", label: "Gold" },
+      { value: "neon", label: "Neon" },
+      { value: "wood", label: "Wood" },
+      { value: "chrome", label: "Chrome" },
+    ],
+  },
+  {
+    key: "audioPack",
+    label: "Sound effects",
+    type: "checkbox",
+    premium: true,
+    info: "Play lock-in / correct / wrong stings (off by default).",
+  },
+  {
+    key: "category",
+    label: "Categories",
+    type: "multiselect",
+    premium: true,
+    options: CLASSIC_CATEGORIES.map((id) => ({
+      value: id,
+      label: id
+        .split("-")
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(" "),
+    })),
+    hint: "Limit the trivia bank to selected categories. Empty = all.",
   },
 ];
 

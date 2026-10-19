@@ -36,3 +36,6 @@ next-env.d.ts
 
 # Neon / Cursor agent skills (reinstall with: neon skills -y)
 .agents/
+
+# local question error report dump from the socket server
+socket-server/data/question-error-reports.jsonl

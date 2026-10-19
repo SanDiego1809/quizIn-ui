@@ -55,3 +55,43 @@ model Favorite {
   @@unique([userId, targetType, targetId])
   @@index([userId])
 }
+
+/** Community difficulty: up = harder (+1), down = easier (-1). */
+model QuestionDifficultyVote {
+  id         String   @id @default(cuid())
+  questionId String
+  playerKey  String
+  delta      Int
+  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @default(now())
+
+  @@unique([questionId, playerKey])
+  @@index([questionId])
+}
+
+/** Cached sum of difficulty votes for fast filtering. */
+model QuestionDifficultyScore {
+  questionId  String   @id
+  score       Int      @default(0)
+  upVotes     Int      @default(0)
+  downVotes   Int      @default(0)
+  reportCount Int      @default(0)
+  updatedAt   DateTime @updatedAt
+}
+
+/** Player flagged a bad / wrong question — review in Prisma Studio or /api/admin/question-reports. */
+model QuestionErrorReport {
+  id           String   @id @default(cuid())
+  questionId   String
+  playerKey    String
+  mode         String   @default("classic")
+  questionText String?
+  note         String?
+  optionsJson  Json?
+  correctIndex Int?
+  createdAt    DateTime @default(now())
+
+  @@unique([questionId, playerKey])
+  @@index([createdAt])
+  @@index([questionId])
+}

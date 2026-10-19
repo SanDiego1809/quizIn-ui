@@ -205,8 +205,219 @@
   text-align: center;
 }
 
+.classicShow {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background: transparent;
+  overflow: hidden;
+  /* Overlay is pointer-events:none; chrome + ranking stay interactive. */
+  pointer-events: none;
+}
+
+.classicShow::before,
+.classicShow::after {
+  display: none;
+}
+
+/* Sit directly above the question block (overlay, not stage-frame floor). */
+.classicShow .sceneArea {
+  position: relative;
+  flex: 0 0 auto;
+  width: min(100%, 64rem);
+  height: clamp(11rem, 30vh, 18rem);
+  margin: 0 auto -0.65rem;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  overflow: visible;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.classicShow .room {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.classicShow .questionBarChrome {
+  position: relative;
+  z-index: 3;
+  width: min(100%, 64rem);
+  max-width: 64rem;
+  margin: 0 auto;
+  transform: none;
+  pointer-events: auto;
+  padding-top: 0.85rem;
+  background:
+    linear-gradient(
+      180deg,
+      rgb(15 23 42 / 0.78) 0%,
+      rgb(15 23 42 / 0.94) 100%
+    );
+  backdrop-filter: blur(10px);
+  border-top-color: rgb(251 191 36 / 0.45);
+  box-shadow: 0 -10px 32px rgb(2 6 23 / 0.35);
+}
+
+.headerLowerThird {
+  margin-bottom: 0.55rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.classicShow .question {
+  margin: 0.35rem 0 0.85rem;
+  font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+  line-height: 1.3;
+}
+
+.pictureFrame {
+  width: min(100%, 22rem);
+  margin: 0 auto 0.75rem;
+  border-radius: 0.55rem;
+  overflow: hidden;
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  background: #020617;
+  aspect-ratio: 16 / 10;
+}
+
+.pictureImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hostAdvance {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.85rem;
+}
+
+.revealBadge {
+  margin-left: auto;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #5eead4;
+}
+
+.buzzerGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.buzzer {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 3.4rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 0.75rem;
+  border: 2px solid transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  color: #f8fafc;
+  transform: translateY(0);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+  box-shadow:
+    0 6px 0 rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.buzzer:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+.buzzer:focus-visible {
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
+
+.buzzer:disabled {
+  cursor: default;
+}
+
+.buzzerPressed {
+  transform: translateY(4px);
+  box-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.buzzerCorrect {
+  outline: 2px solid #4ade80;
+  filter: brightness(1.1);
+}
+
+.buzzerWrong {
+  filter: grayscale(0.35) brightness(0.75);
+}
+
+.buzzer_amber {
+  background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
+  border-color: #fcd34d;
+  color: #111827;
+}
+
+.buzzer_sky {
+  background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+  border-color: #7dd3fc;
+}
+
+.buzzer_rose {
+  background: linear-gradient(180deg, #fb7185 0%, #e11d48 100%);
+  border-color: #fda4af;
+}
+
+.buzzer_violet {
+  background: linear-gradient(180deg, #a78bfa 0%, #7c3aed 100%);
+  border-color: #c4b5fd;
+}
+
+.buzzerKey {
+  flex-shrink: 0;
+  width: 1.7rem;
+  height: 1.7rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0.35rem;
+  background: rgba(15, 23, 42, 0.28);
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.buzzer_amber .buzzerKey {
+  background: rgba(15, 23, 42, 0.18);
+}
+
+.buzzerText {
+  font-weight: 650;
+  line-height: 1.25;
+}
+
 @media (max-width: 640px) {
-  .options {
+  .options,
+  .buzzerGrid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .buzzer,
+  .buzzerPressed {
+    transition: none;
   }
 }

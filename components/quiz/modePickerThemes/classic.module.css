@@ -1,0 +1,54 @@
+.icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  color: #f8fafc;
+}
+
+.solo {
+  background:
+    radial-gradient(ellipse 80% 70% at 20% 0%, rgba(251, 191, 36, 0.35), transparent 55%),
+    linear-gradient(160deg, #1e293b 0%, #0f172a 100%);
+}
+
+.teams {
+  background:
+    radial-gradient(ellipse 50% 60% at 15% 40%, rgba(56, 189, 248, 0.35), transparent 55%),
+    radial-gradient(ellipse 50% 60% at 85% 40%, rgba(248, 113, 113, 0.35), transparent 55%),
+    linear-gradient(160deg, #1e293b 0%, #0f172a 100%);
+}
+
+.buzzPulse {
+  transform-origin: center;
+  animation: buzzPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes buzzPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+.vsFlash {
+  animation: vsFlash 2s ease-in-out infinite;
+}
+
+@keyframes vsFlash {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .buzzPulse,
+  .vsFlash {
+    animation: none;
+  }
+}

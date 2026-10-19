@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 export default function PrivacyPage() {
-  const contactEmail = CONTACT.email || "triaxisit@gmail.com";
+  const contactEmail = CONTACT.email || "quizinmail@gmail.com";
   const effectiveDate = "2026-09-27";
 
   return (

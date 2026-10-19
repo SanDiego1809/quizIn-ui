@@ -133,10 +133,53 @@ export function useQuizRoom() {
     [sendGameAction]
   );
 
+  const advanceRound = useCallback(() => {
+    sendGameAction({ type: "advance_round" });
+  }, [sendGameAction]);
+
   const resetGame = useCallback(() => {
     if (!room?.roomCode) return;
     getQuizSocket()?.emit("quiz:game_reset", { roomCode: room.roomCode });
   }, [room?.roomCode]);
+
+  const rematchGame = useCallback(() => {
+    if (!room?.roomCode) return;
+    getQuizSocket()?.emit("quiz:game_rematch", { roomCode: room.roomCode });
+  }, [room?.roomCode]);
+
+  const sendQuestionFeedback = useCallback(
+    ({ questionId, kind, note }) =>
+      new Promise((resolve) => {
+        const socket = getQuizSocket();
+        if (!socket || !room?.roomCode) {
+          resolve({ ok: false, message: "Not connected." });
+          return;
+        }
+
+        const onResult = (result) => {
+          socket.off("quiz:question_feedback_result", onResult);
+          resolve(result || { ok: false, message: "No response." });
+        };
+
+        const timer = setTimeout(() => {
+          socket.off("quiz:question_feedback_result", onResult);
+          resolve({ ok: false, message: "Feedback timed out." });
+        }, 8000);
+
+        socket.on("quiz:question_feedback_result", (result) => {
+          clearTimeout(timer);
+          onResult(result);
+        });
+
+        socket.emit("quiz:question_feedback", {
+          roomCode: room.roomCode,
+          questionId,
+          kind,
+          note,
+        });
+      }),
+    [room?.roomCode]
+  );
 
   const isHost = room?.yourPlayerId === room?.hostId;
 
@@ -152,8 +195,11 @@ export function useQuizRoom() {
     updateRoomConfig,
     pickTeam,
     submitAnswer,
+    advanceRound,
     sendGameAction,
+    sendQuestionFeedback,
     resetGame,
+    rematchGame,
     clearError: () => setError(null),
   };
 }

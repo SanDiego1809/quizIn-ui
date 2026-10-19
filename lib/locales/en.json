@@ -138,7 +138,7 @@
       "socketio": { "note": "Real-time multiplayer quiz rooms" },
       "clerk": { "note": "Managed authentication and user sessions" },
       "prisma": { "note": "Postgres access for profiles, history, and favorites" },
-      "threejs": { "note": "3D avatars, animations, and Geography lobby Earth" },
+      "threejs": { "note": "3D avatars, animations, Geography lobby Earth, and Classic studio lobby" },
       "d3geo": { "note": "Geography mode world map projection" }
     },
     "assets": {
@@ -170,6 +170,10 @@
       "uiverseEarthCard": {
         "name": "Uiverse Earth card (Lakshay-art)",
         "note": "Rotating Earth on the home Geography card, by Lakshay Gupta (MIT) — https://uiverse.io/Lakshay-art/soft-dingo-98"
+      },
+      "uiverseTvPlayButton": {
+        "name": "Uiverse TV button (Sophiek9h / Praashoo7)",
+        "note": "Retro TV Play button in Classic lobby, by Kalagbor Sophia after Prashant (MIT) — https://uiverse.io/Sophiek9h/black-pug-58"
       },
       "lottieShowTime": {
         "name": "Show time icon (Ahmad Halawani)",
@@ -212,6 +216,7 @@
     "modeLockedFromHome": "Configure variant and rules in the waiting room.",
     "geographyLabel": "Geography Quiz",
     "classicLabel": "Classic Quiz",
+    "pictureLabel": "Picture Round",
     "connected": "Connected to game server",
     "connecting": "Connecting to game server…",
     "yourName": "Your name",
@@ -223,7 +228,33 @@
     "joinRoom": "Join room",
     "avatarFromProfile": "Your victory emote and skin come from your profile.",
     "avatarGuestDefault": "Guests use the default avatar. Sign in to set a victory emote and skin.",
-    "editAvatarProfile": "Edit on profile"
+    "editAvatarProfile": "Edit on profile",
+    "speedScoringHint": "Faster correct answers earn more points.",
+    "emptySeat": "Empty seat",
+    "liveRanking": "Ranking",
+    "revealBeat": "Scores updating…",
+    "questionProgress": "Question {n} / {total}",
+    "answerLockedHint": "Answer locked in. Waiting for others ({count}/{total})…",
+    "eliminatedHint": "You’re out for this round (sudden death).",
+    "buzzerLockedHint": "Someone locked in the correct answer — buzzers are closed.",
+    "hostAdvance": "Next question",
+    "youTag": "you",
+    "feedbackCaption": "Rate this question",
+    "feedbackHarder": "Hard",
+    "feedbackEasier": "Easy",
+    "feedbackReport": "Report error",
+    "feedbackReported": "Thanks — flagged for review.",
+    "feedbackReportedShort": "Reported",
+    "feedbackVotedHarder": "Marked hard",
+    "feedbackVotedEasier": "Marked easy",
+    "feedbackError": "Could not save.",
+    "feedbackHarderTitle": "This question is hard",
+    "feedbackEasierTitle": "This question is easy",
+    "feedbackReportTitle": "Report a wrong or broken question",
+    "feedbackNoteLabel": "Optional note (what’s wrong?)",
+    "feedbackNotePlaceholder": "e.g. Wrong answer, typo, unclear…",
+    "feedbackSendReport": "Send report",
+    "feedbackCancel": "Cancel"
   },
   "roomSubtitle": "Answer quickly — fastest correct answers earn the most points.",
   "results": {
@@ -237,6 +268,9 @@
     "teamRed": "Red",
     "viewReview": "View review",
     "replay": "Play again",
+    "rematch": "Rematch (same settings)",
+    "backToLobby": "Back to lobby",
+    "noAnswer": "No answer",
     "waitingHostRestart": "Waiting for the host to start a new game…"
   },
   "settings": {
@@ -258,6 +292,7 @@
     "gameInProgress": "Game in progress",
     "hostTag": "host",
     "premiumHostHint": "Premium host unlocks continent filters, map modifiers, lives, and longer games.",
+    "premiumClassicHint": "Premium host unlocks difficulty, scoring rules, buzzer race, host pacing, pulpit styles, sound effects, categories, and longer games.",
     "upgradeLink": "Upgrade",
     "seatStatus": "{count} / {max} seats · {premium} Premium (+1 each)",
     "needPremiumSeat": "Need another Premium for a larger room",
@@ -323,11 +358,51 @@
         "oceania": "Oceania"
       }
     },
-    "category": {
-      "label": "Category",
-      "hint": "Premium host — filter the trivia bank by category.",
+    "difficulty": {
+      "label": "Difficulty mix",
       "options": {
-        "all": "All categories",
+        "all": "All difficulties",
+        "easy": "Easy",
+        "medium": "Medium",
+        "hard": "Hard"
+      }
+    },
+    "scoringMode": {
+      "label": "Scoring",
+      "options": {
+        "speed": "Speed (faster correct = more points)",
+        "flat": "Flat (10 pts per correct)",
+        "sudden_death": "Sudden death (wrong = out)"
+      }
+    },
+    "buzzerRace": {
+      "label": "Buzzer race",
+      "info": "First correct answer locks everyone else out and ends the round."
+    },
+    "hostPacing": {
+      "label": "Host advances",
+      "info": "Host clicks Next instead of auto-advancing after the reveal."
+    },
+    "pulpitKit": {
+      "label": "Pulpit style",
+      "options": {
+        "gold": "Gold",
+        "neon": "Neon",
+        "wood": "Wood",
+        "chrome": "Chrome"
+      }
+    },
+    "audioPack": {
+      "label": "Sound effects",
+      "info": "Play lock-in / correct / wrong stings (off by default)."
+    },
+    "category": {
+      "label": "Categories",
+      "hint": "Limit the trivia bank to selected categories. Empty = all.",
+      "all": "All categories",
+      "selectAll": "All",
+      "clear": "Clear",
+      "options": {
         "animals": "Animals",
         "brain-teasers": "Brain Teasers",
         "celebrities": "Celebrities",
@@ -358,6 +433,12 @@
       "vibe": "Speed",
       "description": "Shared multiple-choice questions, timed rounds, and speed-based scoring. Great for trivia nights and quick party games.",
       "learnMore": "Learn more →"
+    },
+    "picture": {
+      "name": "Picture Round",
+      "vibe": "Visual",
+      "description": "Identify what’s in the picture on the quiz-show stage — same buzzers and pulpits as Classic.",
+      "learnMore": "Play Picture Round →"
     },
     "geography": {
       "name": "Geography Quiz",

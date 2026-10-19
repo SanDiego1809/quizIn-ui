@@ -1,0 +1,110 @@
+[
+  {
+    "id": "picture-eiffel",
+    "category": "general-knowledge",
+    "difficulty": "easy",
+    "text": "Which landmark is shown?",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg/640px-Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg",
+    "options": ["Statue of Liberty", "Eiffel Tower", "Big Ben", "Colosseum"],
+    "correctIndex": 1
+  },
+  {
+    "id": "picture-saturn",
+    "category": "science-and-nature",
+    "difficulty": "easy",
+    "text": "Which planet is in this image?",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Saturn_during_Equinox.jpg/640px-Saturn_during_Equinox.jpg",
+    "options": ["Jupiter", "Neptune", "Saturn", "Uranus"],
+    "correctIndex": 2
+  },
+  {
+    "id": "picture-mona",
+    "category": "art",
+    "difficulty": "easy",
+    "text": "Who painted this?",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/400px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg",
+    "options": ["Michelangelo", "Raphael", "Leonardo da Vinci", "Van Gogh"],
+    "correctIndex": 2
+  },
+  {
+    "id": "picture-panda",
+    "category": "animals",
+    "difficulty": "easy",
+    "text": "What animal is this?",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Grosser_Panda.JPG/640px-Grosser_Panda.JPG",
+    "options": ["Polar bear", "Giant panda", "Koala", "Red panda"],
+    "correctIndex": 1
+  },
+  {
+    "id": "picture-pyramids",
+    "category": "history",
+    "difficulty": "medium",
+    "text": "Where were these built?",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Kheops-Pyramid.jpg/640px-Kheops-Pyramid.jpg",
+    "options": ["Mexico", "Peru", "Egypt", "Sudan"],
+    "correctIndex": 2
+  },
+  {
+    "id": "picture-guitar",
+    "category": "music",
+    "difficulty": "medium",
+    "text": "What instrument is shown?",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/GuitareClassique5.png/480px-GuitareClassique5.png",
+    "options": ["Violin", "Ukulele", "Classical guitar", "Banjo"],
+    "correctIndex": 2
+  },
+  {
+    "id": "picture-dna",
+    "category": "science-and-nature",
+    "difficulty": "medium",
+    "text": "What structure is illustrated?",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/DNA_Structure%2BKey%2BLabelled.pn_NoBB.png/480px-DNA_Structure%2BKey%2BLabelled.pn_NoBB.png",
+    "options": ["Cell membrane", "DNA double helix", "Protein fold", "RNA strand"],
+    "correctIndex": 1
+  },
+  {
+    "id": "picture-fuji",
+    "category": "geography",
+    "difficulty": "medium",
+    "text": "Which mountain is this?",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/080103_hakkai_fuji.jpg/640px-080103_hakkai_fuji.jpg",
+    "options": ["Mount Fuji", "Mount Everest", "Kilimanjaro", "Matterhorn"],
+    "correctIndex": 0
+  },
+  {
+    "id": "picture-soccer",
+    "category": "sports",
+    "difficulty": "easy",
+    "text": "Which sport uses this ball?",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Football_%28soccer_ball%29.svg/480px-Football_%28soccer_ball%29.svg.png",
+    "options": ["Basketball", "Association football", "Volleyball", "Rugby"],
+    "correctIndex": 1
+  },
+  {
+    "id": "picture-atom",
+    "category": "science-and-nature",
+    "difficulty": "hard",
+    "text": "This stylized diagram usually represents…",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Atom_diagram.png/480px-Atom_diagram.png",
+    "options": ["A molecule of water", "An atom", "A black hole", "A galaxy"],
+    "correctIndex": 1
+  },
+  {
+    "id": "picture-taj",
+    "category": "history",
+    "difficulty": "easy",
+    "text": "What is this monument?",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/640px-Taj_Mahal_%28Edited%29.jpeg",
+    "options": ["Taj Mahal", "Hagia Sophia", "Angkor Wat", "Petra"],
+    "correctIndex": 0
+  },
+  {
+    "id": "picture-piano",
+    "category": "music",
+    "difficulty": "easy",
+    "text": "Name the instrument.",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Grand_piano_and_upright_piano.jpg/640px-Grand_piano_and_upright_piano.jpg",
+    "options": ["Harp", "Organ", "Piano", "Accordion"],
+    "correctIndex": 2
+  }
+]

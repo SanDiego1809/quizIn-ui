@@ -1,0 +1,132 @@
+.shell {
+  /* Keep in sync with QuizShowBackground STAGE_FLOOR / object-position. */
+  --stage-floor: 72%;
+  --stage-band: 34%;
+  --question-bar-space: 148px;
+  --stage-design-w: 1600px;
+  --stage-design-h: 900px;
+  position: relative;
+  width: 100%;
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+  border-radius: 0;
+  box-sizing: border-box;
+  background: #0b1020;
+}
+
+/* Locked 16:9 photo stage behind the play UI. */
+.stageFrame {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--stage-design-w);
+  height: var(--stage-design-h);
+  transform: translate(-50%, -50%)
+    scale(min(100vw / var(--stage-design-w), 100dvh / var(--stage-design-h)));
+  transform-origin: center center;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  padding: 5.25rem 1rem 1rem;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.overlay > * {
+  pointer-events: auto;
+}
+
+.entryCenter {
+  display: none;
+}
+
+.overlayPlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0;
+  overflow: auto;
+  opacity: 1;
+  transition: opacity 0.35s ease;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.overlayPlay > * {
+  width: 100%;
+  pointer-events: auto;
+}
+
+.overlayPlayPending {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.playLoader {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  gap: 0.75rem;
+  background: #0b1020;
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+}
+
+.playLoaderSpinner {
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  border: 2px solid rgb(148 163 184 / 0.25);
+  border-top-color: #fbbf24;
+  animation: classicSpin 0.75s linear infinite;
+}
+
+@keyframes classicSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .shell {
+    min-height: 100dvh;
+    height: auto;
+    overflow: auto;
+  }
+
+  .overlay:not(.overlayPlay) {
+    position: relative;
+    inset: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: linear-gradient(
+      180deg,
+      rgba(12, 8, 18, 0.72) 0%,
+      rgba(12, 8, 18, 0.35) 40%,
+      rgba(12, 8, 18, 0.72) 100%
+    );
+  }
+
+  .overlayPlay {
+    position: absolute;
+    inset: 0;
+    padding: 0;
+    background: transparent;
+  }
+}

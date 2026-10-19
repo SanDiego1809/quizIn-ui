@@ -74,9 +74,18 @@
     "hostCta": "Créer une salle",
     "stepsHeading": "Comment ça marche",
     "steps": [
-      { "title": "Créer", "body": "Ouvrez une salle" },
-      { "title": "Partager", "body": "Envoyez le code" },
-      { "title": "Jouer", "body": "Affrontez-vous" }
+      {
+        "title": "Créer",
+        "body": "Ouvrez une salle"
+      },
+      {
+        "title": "Partager",
+        "body": "Envoyez le code"
+      },
+      {
+        "title": "Jouer",
+        "body": "Affrontez-vous"
+      }
     ],
     "recentHeading": "Parties récentes",
     "recentSeeProfile": "Profil",
@@ -133,16 +142,32 @@
   },
   "credits": {
     "libraries": {
-      "nextjs": { "note": "Routage App, interface et build de production" },
-      "react": { "note": "Composants et état côté client" },
-      "socketio": { "note": "Salles de quiz multijoueur en temps réel" },
-      "clerk": { "note": "Authentification gérée et sessions utilisateur" },
-      "prisma": { "note": "Accès Postgres pour profils, historique et favoris" },
-      "threejs": { "note": "Avatars 3D, animations et Terre du lobby Géographie" },
-      "d3geo": { "note": "Projection de la carte du monde en mode géographie" }
+      "nextjs": {
+        "note": "Routage App, interface et build de production"
+      },
+      "react": {
+        "note": "Composants et état côté client"
+      },
+      "socketio": {
+        "note": "Salles de quiz multijoueur en temps réel"
+      },
+      "clerk": {
+        "note": "Authentification gérée et sessions utilisateur"
+      },
+      "prisma": {
+        "note": "Accès Postgres pour profils, historique et favoris"
+      },
+      "threejs": {
+        "note": "Avatars 3D, animations, Terre du lobby Géographie et studio du quiz classique"
+      },
+      "d3geo": {
+        "note": "Projection de la carte du monde en mode géographie"
+      }
     },
     "assets": {
-      "mixamo": { "note": "Skins de personnages et clips d'animation dans /public/assets/animation" },
+      "mixamo": {
+        "note": "Skins de personnages et clips d'animation dans /public/assets/animation"
+      },
       "geoCountries": {
         "name": "GeoJSON des pays du monde",
         "note": "Frontières des pays pour la carte interactive"
@@ -170,6 +195,10 @@
       "uiverseEarthCard": {
         "name": "Carte Terre Uiverse (Lakshay-art)",
         "note": "Terre qui tourne sur la carte Géographie de l'accueil, par Lakshay Gupta (MIT) — https://uiverse.io/Lakshay-art/soft-dingo-98"
+      },
+      "uiverseTvPlayButton": {
+        "name": "Bouton TV Uiverse (Sophiek9h / Praashoo7)",
+        "note": "Bouton Play télé rétro dans le lobby Classic, par Kalagbor Sophia d’après Prashant (MIT) — https://uiverse.io/Sophiek9h/black-pug-58"
       },
       "lottieShowTime": {
         "name": "Icône show time (Ahmad Halawani)",
@@ -223,7 +252,34 @@
     "joinRoom": "Rejoindre la salle",
     "avatarFromProfile": "Votre emote de victoire et votre skin viennent de votre profil.",
     "avatarGuestDefault": "Les invités utilisent l'avatar par défaut. Connectez-vous pour choisir emote de victoire et skin.",
-    "editAvatarProfile": "Modifier dans le profil"
+    "editAvatarProfile": "Modifier dans le profil",
+    "speedScoringHint": "Les bonnes réponses les plus rapides rapportent plus de points.",
+    "emptySeat": "Place libre",
+    "liveRanking": "Classement",
+    "revealBeat": "Scores en cours…",
+    "questionProgress": "Question {n} / {total}",
+    "answerLockedHint": "Réponse verrouillée. En attente des autres ({count}/{total})…",
+    "eliminatedHint": "Vous êtes éliminé pour ce tour (mort subite).",
+    "buzzerLockedHint": "Une bonne réponse a verrouillé les buzzers.",
+    "hostAdvance": "Question suivante",
+    "youTag": "vous",
+    "pictureLabel": "Manche images",
+    "feedbackCaption": "Noter cette question",
+    "feedbackHarder": "Difficile",
+    "feedbackEasier": "Facile",
+    "feedbackReport": "Signaler une erreur",
+    "feedbackReported": "Merci — signalé pour relecture.",
+    "feedbackReportedShort": "Signalé",
+    "feedbackVotedHarder": "Marquée difficile",
+    "feedbackVotedEasier": "Marquée facile",
+    "feedbackError": "Enregistrement impossible.",
+    "feedbackHarderTitle": "Cette question est difficile",
+    "feedbackEasierTitle": "Cette question est facile",
+    "feedbackReportTitle": "Signaler une question incorrecte",
+    "feedbackNoteLabel": "Note optionnelle (quel est le problème ?)",
+    "feedbackNotePlaceholder": "ex. mauvaise réponse, faute, peu clair…",
+    "feedbackSendReport": "Envoyer le signalement",
+    "feedbackCancel": "Annuler"
   },
   "roomSubtitle": "Répondez rapidement — les bonnes réponses les plus rapides rapportent le plus de points.",
   "results": {
@@ -237,7 +293,10 @@
     "teamRed": "Rouge",
     "viewReview": "Voir le corrigé",
     "replay": "Rejouer",
-    "waitingHostRestart": "En attente de l'hôte pour relancer une partie…"
+    "waitingHostRestart": "En attente de l'hôte pour relancer une partie…",
+    "rematch": "Revanche (mêmes réglages)",
+    "backToLobby": "Retour au lobby",
+    "noAnswer": "Pas de réponse"
   },
   "settings": {
     "gameSetup": "Configuration de la partie",
@@ -258,6 +317,7 @@
     "gameInProgress": "Partie en cours",
     "hostTag": "hôte",
     "premiumHostHint": "L'hôte Premium débloque les filtres par continent, les modificateurs de carte, les vies et les parties plus longues.",
+    "premiumClassicHint": "L'hôte Premium débloque la difficulté, les règles de score, la course au buzzer, le rythme hôte, les styles de pupitre, les sons, les catégories et les parties plus longues.",
     "upgradeLink": "Passer Premium",
     "seatStatus": "{count} / {max} places · {premium} Premium (+1 chacune)",
     "needPremiumSeat": "Il faut un autre Premium pour une plus grande salle",
@@ -324,10 +384,12 @@
       }
     },
     "category": {
-      "label": "Catégorie",
-      "hint": "Hôte Premium — filtrer la banque de trivia par catégorie.",
+      "label": "Catégories",
+      "hint": "Limite la banque de trivia aux catégories choisies. Vide = toutes.",
+      "all": "Toutes les catégories",
+      "selectAll": "Toutes",
+      "clear": "Effacer",
       "options": {
-        "all": "Toutes les catégories",
         "animals": "Animaux",
         "brain-teasers": "Casse-têtes",
         "celebrities": "Célébrités",
@@ -350,6 +412,44 @@
         "video-games": "Jeux vidéo",
         "world": "Monde"
       }
+    },
+    "difficulty": {
+      "label": "Difficulté",
+      "options": {
+        "all": "Toutes",
+        "easy": "Facile",
+        "medium": "Moyen",
+        "hard": "Difficile"
+      }
+    },
+    "scoringMode": {
+      "label": "Score",
+      "options": {
+        "speed": "Vitesse",
+        "flat": "Fixe (10 pts)",
+        "sudden_death": "Mort subite"
+      }
+    },
+    "buzzerRace": {
+      "label": "Course au buzzer",
+      "info": "La première bonne réponse verrouille les autres."
+    },
+    "hostPacing": {
+      "label": "L'hôte avance",
+      "info": "L'hôte clique Suivant après le reveal."
+    },
+    "pulpitKit": {
+      "label": "Style de pupitre",
+      "options": {
+        "gold": "Or",
+        "neon": "Néon",
+        "wood": "Bois",
+        "chrome": "Chrome"
+      }
+    },
+    "audioPack": {
+      "label": "Effets sonores",
+      "info": "Sons de verrouillage / juste / faux (désactivés par défaut)."
     }
   },
   "modes": {
@@ -364,6 +464,12 @@
       "vibe": "Cartes",
       "description": "Le nom d'un pays s'affiche — cliquez le sur la carte interactive avant vos amis. Parfait pour les amoureux de la géographie et les classes.",
       "learnMore": "En savoir plus →"
+    },
+    "picture": {
+      "name": "Manche images",
+      "vibe": "Visuel",
+      "description": "Identifiez ce qui est sur l'image — même plateau et buzzers que le classique.",
+      "learnMore": "Jouer la manche images →"
     }
   },
   "geoQuestion": {
@@ -411,13 +517,26 @@
         "Fonctionne sur navigateurs desktop et mobiles"
       ],
       "howItWorks": [
-        { "title": "Créez une salle", "body": "Saisissez votre nom et appuyez sur Créer la salle. Vous devenez l'hôte." },
-        { "title": "Invitez des amis", "body": "Partagez le code de la salle. Les amis rejoignent avec le même code et leur nom." },
-        { "title": "Choisissez un mode et démarrez", "body": "L'hôte choisit Classic ou Geography, ajuste les paramètres et démarre le quiz." }
+        {
+          "title": "Créez une salle",
+          "body": "Saisissez votre nom et appuyez sur Créer la salle. Vous devenez l'hôte."
+        },
+        {
+          "title": "Invitez des amis",
+          "body": "Partagez le code de la salle. Les amis rejoignent avec le même code et leur nom."
+        },
+        {
+          "title": "Choisissez un mode et démarrez",
+          "body": "L'hôte choisit Classic ou Geography, ajuste les paramètres et démarre le quiz."
+        }
+      ],
+      "playHref": "/play",
+      "keywords": [
+        "quiz multijoueur en ligne",
+        "quiz entre amis",
+        "salle de trivia en ligne",
+        "jeu quiz temps réel"
       ]
-    ,
-    "playHref": "/play",
-    "keywords": ["quiz multijoueur en ligne","quiz entre amis","salle de trivia en ligne","jeu quiz temps réel"]
     },
     "classic-quiz": {
       "title": "Quiz classique — Multijoueur",
@@ -430,14 +549,27 @@
         "Correction à la fin"
       ],
       "howItWorks": [
-        { "title": "Rejoindre ou héberger", "body": "Ouvrez la salle, créez une partie ou rejoignez avec le code d'un ami." },
-        { "title": "Sélectionner Classic", "body": "L'hôte définit le mode Classic et les options comme le nombre de questions." },
-        { "title": "Répondre avant la fin du temps", "body": "Choisissez rapidement la bonne réponse — les plus rapides gagnent plus de points." }
+        {
+          "title": "Rejoindre ou héberger",
+          "body": "Ouvrez la salle, créez une partie ou rejoignez avec le code d'un ami."
+        },
+        {
+          "title": "Sélectionner Classic",
+          "body": "L'hôte définit le mode Classic et les options comme le nombre de questions."
+        },
+        {
+          "title": "Répondre avant la fin du temps",
+          "body": "Choisissez rapidement la bonne réponse — les plus rapides gagnent plus de points."
+        }
+      ],
+      "playHref": "/play?mode=classic",
+      "modeLabel": "Quiz classique",
+      "keywords": [
+        "quiz classique",
+        "quiz choix multiple en ligne",
+        "trivia multijoueur",
+        "nuit de quiz en ligne"
       ]
-    ,
-    "playHref": "/play?mode=classic",
-    "modeLabel": "Quiz classique",
-    "keywords": ["quiz classique","quiz choix multiple en ligne","trivia multijoueur","nuit de quiz en ligne"]
     },
     "geography-quiz": {
       "title": "Quiz de géographie — Jeu de carte",
@@ -450,15 +582,27 @@
         "Zoom et panoramique pour explorer la carte"
       ],
       "howItWorks": [
-        { "title": "Démarrer une salle géographie", "body": "Créez une salle et choisissez le mode Geography dans le lobby." },
-        { "title": "Lire le pays", "body": "Chaque manche affiche un pays. Trouvez-le avant les autres." },
-        { "title": "Gagner la manche", "body": "Le premier clic correct marque le point. Consultez le classement final." }
+        {
+          "title": "Démarrer une salle géographie",
+          "body": "Créez une salle et choisissez le mode Geography dans le lobby."
+        },
+        {
+          "title": "Lire le pays",
+          "body": "Chaque manche affiche un pays. Trouvez-le avant les autres."
+        },
+        {
+          "title": "Gagner la manche",
+          "body": "Le premier clic correct marque le point. Consultez le classement final."
+        }
+      ],
+      "playHref": "/play?mode=geography",
+      "modeLabel": "Quiz de géographie",
+      "keywords": [
+        "quiz géographie en ligne",
+        "map quiz",
+        "jeu pays",
+        "trivia carte multijoueur"
       ]
-    ,
-    "playHref": "/play?mode=geography",
-    "modeLabel": "Quiz de géographie",
-    "keywords": ["quiz géographie en ligne","map quiz","jeu pays","trivia carte multijoueur"]
     }
   }
 }
-

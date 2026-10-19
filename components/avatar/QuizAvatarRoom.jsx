@@ -9,7 +9,8 @@ import getLayer from "./libs/getLayer.js";
 import { createPlayerNameLabel } from "./libs/createPlayerNameLabel.js";
 import {
   createQuizPedestal,
-  setPedestalAnswered,
+  setPedestalScreen,
+  tickPedestalScreen,
 } from "./libs/createQuizPedestal.js";
 import { layoutPlayersForArc } from "./libs/playerArcLayout.js";
 import { skinUrl, animationUrl } from "@/lib/quiz/avatarAssets";
@@ -43,11 +44,34 @@ function loadFbx(loader, url) {
   });
 }
 
+/** Framing for the strip above the question block (heads + pulpits). */
+function applyStageCamera(camera, width, height, playerCount) {
+  const aspect = Math.max(0.35, width / Math.max(height, 1));
+  const crowd = Math.max(0, playerCount - 2) * 0.18;
+  camera.fov = aspect > 2.2 ? 38 : 44;
+  camera.aspect = aspect;
+  /* Aim a bit higher so pulpits sit near the bottom edge (closer to questions). */
+  camera.position.set(0, 1.55, 7.1 + crowd);
+  camera.lookAt(0, -0.2, 0.15);
+  camera.updateProjectionMatrix();
+}
+
 export default function QuizAvatarRoom({
   players,
   yourPlayerId,
   className = "",
+  /** "studio" = self-contained dark room; "stage" = transparent over quiz-show backdrop */
+  backdrop = "studio",
+  onReady,
+  showLoadingOverlay = true,
+  /** Pedestal chrome: gold | neon | wood | chrome */
+  pulpitKit = "gold",
+  /** Highlight top ranks on results (playerId → 1|2|3). */
+  podiumRanks = null,
 }) {
+  const stageBackdrop = backdrop === "stage";
+  const onReadyRef = useRef(onReady);
+  onReadyRef.current = onReady;
   const mountRef = useRef(null);
   const controllersRef = useRef(new Map());
   const clipCacheRef = useRef(new Map());
@@ -61,7 +85,7 @@ export default function QuizAvatarRoom({
       players
         .map(
           (player) =>
-            `${player.id}:${player.animation ?? DEFAULT_ANIMATION}:${player.skinKey ?? DEFAULT_SKIN}:${Boolean(player.answered)}`
+            `${player.id}:${player.animation ?? DEFAULT_ANIMATION}:${player.skinKey ?? DEFAULT_SKIN}:${player.answerOutcome ?? (player.answered ? "pending" : "idle")}`
         )
         .join("|"),
     [players]
@@ -82,7 +106,10 @@ export default function QuizAvatarRoom({
 
       const nextAnimation = player.animation ?? DEFAULT_ANIMATION;
       controller.playAnimation(nextAnimation);
-      setPedestalAnswered(controller.screenMaterial, Boolean(player.answered));
+      const outcome =
+        player.answerOutcome ??
+        (player.answered ? "pending" : "idle");
+      setPedestalScreen(controller.screenMaterial, outcome);
     }
   }, [playerAnimationKey, players]);
 
@@ -109,14 +136,24 @@ export default function QuizAvatarRoom({
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
-    camera.position.set(0, 0.45, 5.5 + Math.max(0, playerCount - 2) * 0.4);
+    if (stageBackdrop) {
+      applyStageCamera(camera, width, height, playerCount);
+    } else {
+      camera.position.set(0, 0.45, 5.5 + Math.max(0, playerCount - 2) * 0.4);
+    }
 
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+      premultipliedAlpha: false,
+    });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.domElement.style.display = "block";
+    renderer.domElement.style.background = "transparent";
     mount.appendChild(renderer.domElement);
 
     labelRenderer = new CSS2DRenderer();
@@ -129,58 +166,91 @@ export default function QuizAvatarRoom({
     const textureLoader = new THREE.TextureLoader();
     let matcapTexture = null;
 
-    const plane = new THREE.Mesh(
-      new THREE.CircleGeometry(18, 64),
-      new THREE.MeshStandardMaterial({
-        color: 0x0a1628,
-        metalness: 0.35,
-        roughness: 0.55,
-      })
-    );
-    plane.rotation.x = Math.PI * -0.5;
-    plane.receiveShadow = true;
-    plane.position.y = -1.5;
-    scene.add(plane);
+    if (stageBackdrop) {
+      const ground = new THREE.Mesh(
+        new THREE.PlaneGeometry(40, 24),
+        new THREE.ShadowMaterial({ opacity: 0.38 })
+      );
+      ground.rotation.x = -Math.PI / 2;
+      ground.position.set(0, -1.5, 0.4);
+      ground.receiveShadow = true;
+      scene.add(ground);
+    } else {
+      const plane = new THREE.Mesh(
+        new THREE.CircleGeometry(18, 64),
+        new THREE.MeshStandardMaterial({
+          color: 0x0a1628,
+          metalness: 0.35,
+          roughness: 0.55,
+        })
+      );
+      plane.rotation.x = Math.PI * -0.5;
+      plane.receiveShadow = true;
+      plane.position.y = -1.5;
+      scene.add(plane);
+    }
 
-    const sunLight = new THREE.DirectionalLight(0xfff1c9, 5.8);
+    const sunLight = new THREE.DirectionalLight(
+      0xfff1c9,
+      stageBackdrop ? 4.4 : 5.8
+    );
     sunLight.position.set(2.2, 6, 3.5);
     sunLight.castShadow = true;
+    if (stageBackdrop) {
+      sunLight.shadow.mapSize.set(1024, 1024);
+      sunLight.shadow.camera.near = 1;
+      sunLight.shadow.camera.far = 24;
+      sunLight.shadow.camera.left = -8;
+      sunLight.shadow.camera.right = 8;
+      sunLight.shadow.camera.top = 8;
+      sunLight.shadow.camera.bottom = -8;
+    }
     scene.add(sunLight);
 
-    const fillLight = new THREE.DirectionalLight(0x7dd3fc, 1.8);
+    const fillLight = new THREE.DirectionalLight(
+      stageBackdrop ? 0xbae6fd : 0x7dd3fc,
+      stageBackdrop ? 1.35 : 1.8
+    );
     fillLight.position.set(-3.5, 2.2, 2.5);
     scene.add(fillLight);
 
-    const rimLight = new THREE.DirectionalLight(0xfbbf24, 1.35);
+    const rimLight = new THREE.DirectionalLight(0xfbbf24, stageBackdrop ? 1.8 : 1.35);
     rimLight.position.set(0, 3.5, -4);
     scene.add(rimLight);
 
-    const studioGlow = new THREE.AmbientLight(0x1e293b, 0.55);
+    const studioGlow = new THREE.AmbientLight(
+      stageBackdrop ? 0x334155 : 0x1e293b,
+      stageBackdrop ? 0.75 : 0.55
+    );
     scene.add(studioGlow);
 
-    scene.add(
-      getLayer({
-        hue: 0.12,
-        numSprites: 10,
-        opacity: 0.16,
-        radius: 12,
-        size: 22,
-        z: -9.5,
-      })
-    );
-    scene.add(
-      getLayer({
-        hue: 0.58,
-        numSprites: 12,
-        opacity: 0.2,
-        radius: 14,
-        size: 28,
-        z: -11,
-      })
-    );
+    if (!stageBackdrop) {
+      scene.add(
+        getLayer({
+          hue: 0.12,
+          numSprites: 10,
+          opacity: 0.16,
+          radius: 12,
+          size: 22,
+          z: -9.5,
+        })
+      );
+      scene.add(
+        getLayer({
+          hue: 0.58,
+          numSprites: 12,
+          opacity: 0.2,
+          radius: 14,
+          size: 28,
+          z: -11,
+        })
+      );
+    }
 
     const roomScaleFactor = playerCount > 4 ? 0.85 : 1;
-    const slots = layoutPlayersForArc(players, yourPlayerId);
+    const slots = layoutPlayersForArc(players, yourPlayerId, {
+      stageLine: stageBackdrop,
+    });
 
     function startClip(controller, clip) {
       const remapped = remapMixamoClip(clip, controller.mixamoPrefix);
@@ -258,6 +328,21 @@ export default function QuizAvatarRoom({
           slotGroup.position.set(slot.x, -1.5, slot.z);
           slotGroup.rotation.y = slot.rotationY;
 
+          if (stageBackdrop) {
+            const contact = new THREE.Mesh(
+              new THREE.CircleGeometry(0.72, 28),
+              new THREE.MeshBasicMaterial({
+                color: 0x000000,
+                transparent: true,
+                opacity: 0.42,
+                depthWrite: false,
+              })
+            );
+            contact.rotation.x = -Math.PI / 2;
+            contact.position.set(0, 0.015, 0.85);
+            slotGroup.add(contact);
+          }
+
           const skinKey = slot.player.skinKey ?? DEFAULT_SKIN;
           const template = templateBySkin.get(skinKey);
           const material = skinUsesMatcap(skinKey)
@@ -266,18 +351,33 @@ export default function QuizAvatarRoom({
           const character = prepareCharacter(
             cloneSkeleton(template),
             material,
-            getSkinScale(skinKey) * roomScaleFactor
+            getSkinScale(skinKey) * roomScaleFactor * (stageBackdrop ? 0.92 : 1)
           );
           const mixer = new THREE.AnimationMixer(character);
           mixers.push(mixer);
           slotGroup.add(character);
 
-          const { group: pedestal, screenMaterial } = createQuizPedestal();
-          setPedestalAnswered(
+          const { group: pedestal, screenMaterial } = createQuizPedestal({
+            kit: pulpitKit,
+          });
+          setPedestalScreen(
             screenMaterial,
-            Boolean(slot.player.answered)
+            slot.player.answerOutcome ??
+              (slot.player.answered ? "pending" : "idle")
           );
           slotGroup.add(pedestal);
+
+          const place = podiumRanks?.[slot.player.id];
+          if (place === 1 || place === 2 || place === 3) {
+            const light = new THREE.PointLight(
+              place === 1 ? 0xfbbf24 : place === 2 ? 0xcbd5e1 : 0xd97706,
+              place === 1 ? 2.4 : 1.5,
+              3.2,
+              2
+            );
+            light.position.set(0, 2.2, 1.1);
+            slotGroup.add(light);
+          }
 
           const nameLabel = createPlayerNameLabel(slot.player.name, {
             isYou: slot.player.id === yourPlayerId,
@@ -304,11 +404,13 @@ export default function QuizAvatarRoom({
         controllersRef.current = controllers;
         setLoadError(null);
         setLoading(false);
+        onReadyRef.current?.();
       } catch (error) {
         if (!active) return;
         console.error("Avatar model failed to load:", error);
         setLoadError("Could not load avatar.");
         setLoading(false);
+        onReadyRef.current?.();
       }
     })();
 
@@ -317,6 +419,9 @@ export default function QuizAvatarRoom({
       animationId = requestAnimationFrame(animate);
       const delta = clock.getDelta();
       for (const mixer of mixers) mixer.update(delta);
+      for (const controller of controllersRef.current.values()) {
+        tickPedestalScreen(controller.screenMaterial, delta);
+      }
       renderer.render(scene, camera);
       labelRenderer?.render(scene, camera);
     }
@@ -325,8 +430,12 @@ export default function QuizAvatarRoom({
       const nextWidth = mount.clientWidth;
       const nextHeight = mount.clientHeight;
       if (!nextWidth || !nextHeight || !renderer) return;
-      camera.aspect = nextWidth / nextHeight;
-      camera.updateProjectionMatrix();
+      if (stageBackdrop) {
+        applyStageCamera(camera, nextWidth, nextHeight, playerCount);
+      } else {
+        camera.aspect = nextWidth / nextHeight;
+        camera.updateProjectionMatrix();
+      }
       renderer.setSize(nextWidth, nextHeight);
       labelRenderer?.setSize(nextWidth, nextHeight);
     }
@@ -368,12 +477,19 @@ export default function QuizAvatarRoom({
         }
       });
     };
-  }, [playerKey, playerSkinKey, yourPlayerId]);
+  }, [playerKey, playerSkinKey, yourPlayerId, stageBackdrop, pulpitKit, podiumRanks]);
 
   return (
-    <div ref={mountRef} className={`${styles.mount} ${className}`.trim()}>
-      {loading ? (
-        <div className={styles.loading} aria-busy="true" aria-live="polite">
+    <div
+      ref={mountRef}
+      className={`${styles.mount} ${stageBackdrop ? styles.mountStage : ""} ${className}`.trim()}
+    >
+      {loading && showLoadingOverlay ? (
+        <div
+          className={`${styles.loading} ${stageBackdrop ? styles.loadingStage : ""}`}
+          aria-busy="true"
+          aria-live="polite"
+        >
           <span className={styles.loadingSpinner} aria-hidden="true" />
           <span className={styles.loadingLabel}>Loading avatars…</span>
         </div>

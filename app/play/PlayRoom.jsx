@@ -10,6 +10,7 @@ import { getTranslations } from "@/lib/i18n";
 import QuizLobby from "@/components/quiz/QuizLobby";
 import ModeView from "@/components/quiz/modes/ModeView";
 import GeographyModeView from "@/components/quiz/modes/geography/GeographyModeView";
+import ClassicModeView from "@/components/quiz/modes/classic/ClassicModeView";
 import { parsePlayModeParam } from "@/lib/quiz/playMode";
 import { useQuizRoom } from "@/hooks/useQuizRoom";
 import { usePlayerProfile } from "@/hooks/usePlayerProfile";
@@ -38,8 +39,11 @@ export default function PlayRoom() {
     updateRoomConfig,
     pickTeam,
     submitAnswer,
+    advanceRound,
     sendGameAction,
     resetGame,
+    rematchGame,
+    sendQuestionFeedback,
     clearError,
   } = useQuizRoom();
 
@@ -50,20 +54,28 @@ export default function PlayRoom() {
   const isGeoSession = room?.mode === "geography";
   const isGeoLobby = isGeoSession && room?.phase === "lobby";
   const useGeoShell = isGeoEntry || isGeoSession;
+
+  const isClassicEntry =
+    !room && (defaultMode === "classic" || defaultMode === "picture");
+  const isClassicSession =
+    room?.mode === "classic" || room?.mode === "picture";
+  const isClassicLobby = isClassicSession && room?.phase === "lobby";
+  const useClassicShell = isClassicEntry || isClassicSession;
+
+  const useImmersiveLobby = isGeoEntry || isGeoLobby || isClassicEntry || isClassicLobby;
   const hidePlayTitle =
-    isPlaying || isFinalResults || isGeoEntry || isGeoLobby;
+    isPlaying || isFinalResults || useImmersiveLobby;
 
   useEffect(() => {
     if (isPlaying || isFinalResults) {
       setChromeMode("immersive");
-    } else if (isGeoEntry || isGeoLobby) {
-      // Full-bleed planet with transparent header overlaid on top.
+    } else if (useImmersiveLobby) {
       setChromeMode("overlay");
     } else {
       setChromeMode("default");
     }
     return () => setChromeMode("default");
-  }, [isPlaying, isFinalResults, isGeoEntry, isGeoLobby, setChromeMode]);
+  }, [isPlaying, isFinalResults, useImmersiveLobby, setChromeMode]);
 
   return (
     <main
@@ -72,7 +84,7 @@ export default function PlayRoom() {
           ? classes.playingMain
           : isFinalResults
             ? classes.resultsMain
-            : isGeoEntry || isGeoLobby
+            : useImmersiveLobby
               ? classes.geoLobbyMain
               : undefined
       }
@@ -98,6 +110,7 @@ export default function PlayRoom() {
           isHost={isHost}
           onStart={startGame}
           onReset={resetGame}
+          onRematch={rematchGame}
           onAction={sendGameAction}
           onUpdateConfig={updateRoomConfig}
           onPickTeam={pickTeam}
@@ -107,6 +120,28 @@ export default function PlayRoom() {
           connectionError={connectionError}
           defaultName={defaultName}
           defaultRoomCode={defaultRoomCode}
+          isSignedIn={Boolean(isSignedIn)}
+          lang={lang}
+        />
+      ) : useClassicShell ? (
+        <ClassicModeView
+          room={room}
+          isHost={isHost}
+          onStart={startGame}
+          onReset={resetGame}
+          onRematch={rematchGame}
+          onSubmit={submitAnswer}
+          onAdvance={advanceRound}
+          onQuestionFeedback={sendQuestionFeedback}
+          onUpdateConfig={updateRoomConfig}
+          onPickTeam={pickTeam}
+          onCreate={createRoom}
+          onJoin={joinRoom}
+          connected={connected}
+          connectionError={connectionError}
+          defaultName={defaultName}
+          defaultRoomCode={defaultRoomCode}
+          defaultMode={defaultMode === "picture" ? "picture" : "classic"}
           isSignedIn={Boolean(isSignedIn)}
           lang={lang}
         />
@@ -128,7 +163,10 @@ export default function PlayRoom() {
           isHost={isHost}
           onStart={startGame}
           onReset={resetGame}
+          onRematch={rematchGame}
           onSubmit={submitAnswer}
+          onAdvance={advanceRound}
+          onQuestionFeedback={sendQuestionFeedback}
           onAction={sendGameAction}
           onUpdateConfig={updateRoomConfig}
           onPickTeam={pickTeam}

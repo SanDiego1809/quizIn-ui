@@ -27,6 +27,8 @@ export default function QuizLobby({
   );
   const t = getTranslations(lang).play;
   const geo = variant === "geo";
+  const classic = variant === "classic";
+  const immersive = geo || classic;
 
   useEffect(() => {
     if (defaultName) setName(defaultName);
@@ -43,14 +45,26 @@ export default function QuizLobby({
     );
   }, [defaultRoomCode]);
 
+  const panelClass = [
+    classes.panel,
+    geo ? classes.geoPanel : "",
+    classic ? classes.classicPanel : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <section className={`${classes.panel} ${geo ? classes.geoPanel : ""}`.trim()}>
+    <section className={panelClass}>
       <h2 className={classes.heading}>{t.joinHeading}</h2>
-      {defaultMode && !geo ? (
+      {defaultMode && !immersive ? (
         <p className={classes.hint}>
           {t.newRoomsStart}{" "}
           <strong>
-            {defaultMode === "geography" ? t.geographyLabel : t.classicLabel}
+            {defaultMode === "geography"
+              ? t.geographyLabel
+              : defaultMode === "picture"
+                ? t.pictureLabel ?? "Picture Round"
+                : t.classicLabel}
           </strong>
           . {t.modeLockedFromHome ?? "Mode settings are chosen in the waiting room."}
         </p>
@@ -60,6 +74,20 @@ export default function QuizLobby({
           <strong>{t.geographyLabel}</strong>
           {" — "}
           {t.modeLockedFromHome ?? "Mode settings are chosen in the waiting room."}
+        </p>
+      ) : null}
+      {classic ? (
+        <p className={classes.hint}>
+          <strong>
+            {defaultMode === "picture"
+              ? t.pictureLabel ?? "Picture Round"
+              : t.classicLabel}
+          </strong>
+          {" — "}
+          {t.modeLockedFromHome ?? "Mode settings are chosen in the waiting room."}
+          {" "}
+          {t.speedScoringHint ??
+            "Faster correct answers earn more points."}
         </p>
       ) : null}
       {connected ? (

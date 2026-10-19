@@ -51,6 +51,16 @@ export default function HomePage({ lang = "en" }) {
               </Link>
             </article>
             <article className={classes.modeCard}>
+              <h3 className={classes.modeName}>{all.modes.picture?.name ?? "Picture Round"}</h3>
+              <p className={classes.modeDesc}>
+                {all.modes.picture?.description ??
+                  "Identify what’s in the picture on the quiz-show stage."}
+              </p>
+              <Link href={`/play?mode=picture&lang=${lang}`} className={classes.modeLink}>
+                {all.modes.picture?.learnMore ?? "Play Picture Round →"}
+              </Link>
+            </article>
+            <article className={classes.modeCard}>
               <h3 className={classes.modeName}>{all.modes.geography.name}</h3>
               <p className={classes.modeDesc}>{all.modes.geography.description}</p>
               <Link href={`/geography-quiz?lang=${lang}`} className={classes.modeLink}>

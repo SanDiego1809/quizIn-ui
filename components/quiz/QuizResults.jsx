@@ -15,6 +15,11 @@ const AvatarScene = dynamic(() => import("@/components/avatar/AvatarScene"), {
   ssr: false,
 });
 
+const QuizAvatarRoom = dynamic(
+  () => import("@/components/avatar/QuizAvatarRoom"),
+  { ssr: false }
+);
+
 const SUSPENSE_MS = 1800;
 const REVEAL_MS = 1200;
 const CELEBRATE_MS = 2800;
@@ -31,7 +36,11 @@ function placeLabel(rank) {
   return String(rank);
 }
 
-function defaultRenderReviewItem(q, index, { yourPlayerId, classes: css }) {
+function defaultRenderReviewItem(
+  q,
+  index,
+  { yourPlayerId, classes: css, noAnswerLabel = "No answer" }
+) {
   const yourIndex = q.answers?.[yourPlayerId];
   const correctText = q.options[q.correctIndex];
   const pickedWrong =
@@ -48,7 +57,9 @@ function defaultRenderReviewItem(q, index, { yourPlayerId, classes: css }) {
         {pickedWrong ? (
           <span className={css.wrong}>❌ {q.options[yourIndex]}</span>
         ) : null}
-        {missed ? <span className={css.wrong}>❌ Pas de réponse</span> : null}
+        {missed ? (
+          <span className={css.wrong}>❌ {noAnswerLabel}</span>
+        ) : null}
       </div>
     </article>
   );
@@ -58,8 +69,10 @@ export default function QuizResults({
   room,
   isHost,
   onReset,
+  onRematch,
   renderReviewItem = defaultRenderReviewItem,
   lang = "en",
+  variant = "default",
 }) {
   const { result, questionReview, yourPlayerId } = room;
   const all = getTranslations(lang);
@@ -118,15 +131,50 @@ export default function QuizResults({
     phase === PHASE.CELEBRATE || phase === PHASE.DETAILS;
   const showDetails = phase === PHASE.DETAILS;
   const isYouWinner = winnerEntry?.playerId === yourPlayerId;
+  const classicShow = variant === "classicShow";
+  const podiumEntries = (result?.playerRankings ?? rankings).slice(0, 3);
+  const noAnswerLabel = t.noAnswer ?? "No answer";
 
   const victoryAnimation =
     winnerPlayer?.victoryAnimation || DEFAULT_VICTORY_ANIMATION;
   const victorySkin = winnerPlayer?.skinKey ?? DEFAULT_SKIN;
 
+  const castPlayers = useMemo(() => {
+    const order = result?.playerRankings ?? rankings;
+    return order.map((entry, index) => {
+      const player = room.players.find((p) => p.id === entry.playerId);
+      return {
+        id: entry.playerId,
+        name: entry.name,
+        skinKey: player?.skinKey ?? DEFAULT_SKIN,
+        animation:
+          index === 0
+            ? player?.victoryAnimation || DEFAULT_VICTORY_ANIMATION
+            : DEFAULT_ANIMATION,
+        answered: true,
+        answerOutcome: index === 0 ? "correct" : "idle",
+      };
+    });
+  }, [result?.playerRankings, rankings, room.players]);
+
+  const podiumRanks = useMemo(() => {
+    const map = {};
+    podiumEntries.forEach((entry, i) => {
+      if (!entry) return;
+      const rank =
+        (result?.playerRankings ?? rankings).findIndex(
+          (row) => row.playerId === entry.playerId
+        ) + 1;
+      if (rank >= 1 && rank <= 3) map[entry.playerId] = rank;
+    });
+    return map;
+  }, [podiumEntries, result?.playerRankings, rankings]);
+
   return (
     <section
       className={[
         classes.stage,
+        classicShow ? classes.classicShow : "",
         phase === PHASE.CELEBRATE ? classes.stageCelebrate : "",
         showDetails ? classes.stageDetails : "",
       ]
@@ -135,7 +183,7 @@ export default function QuizResults({
     >
       <div className={classes.backdrop} aria-hidden="true">
         <span className={classes.spotlight} />
-        <span className={classes.glow} />
+        <span className={`${classes.glow} ${classicShow ? classes.glowShow : ""}`} />
         <span className={classes.vignette} />
         {showCelebration ? (
           <>
@@ -196,14 +244,28 @@ export default function QuizResults({
             )}
 
             {showCelebration && winnerEntry ? (
-              <div className={classes.victoryScene}>
-                <AvatarScene
-                  animation={victoryAnimation}
-                  skinKey={victorySkin}
-                  restoreIdleAfterPreview={false}
-                  className={classes.victoryCanvas}
-                />
-              </div>
+              classicShow && castPlayers.length ? (
+                <div className={classes.castScene}>
+                  <QuizAvatarRoom
+                    players={castPlayers}
+                    yourPlayerId={yourPlayerId}
+                    className={classes.castCanvas}
+                    backdrop="stage"
+                    showLoadingOverlay={false}
+                    pulpitKit={room.settings?.pulpitKit || "gold"}
+                    podiumRanks={podiumRanks}
+                  />
+                </div>
+              ) : (
+                <div className={classes.victoryScene}>
+                  <AvatarScene
+                    animation={victoryAnimation}
+                    skinKey={victorySkin}
+                    restoreIdleAfterPreview={false}
+                    className={classes.victoryCanvas}
+                  />
+                </div>
+              )
             ) : null}
           </div>
         ) : (
@@ -237,6 +299,44 @@ export default function QuizResults({
                     {result?.maxScore ? ` / ${result.maxScore}` : ""}
                   </p>
                 </div>
+              </div>
+            ) : null}
+
+            {classicShow && !result?.teamRankings?.length && podiumEntries.length ? (
+              <div className={classes.winnerPodium} aria-label={t.rankingsHeading}>
+                {[podiumEntries[1], podiumEntries[0], podiumEntries[2]].map(
+                  (entry, slot) => {
+                    if (!entry) {
+                      return <div key={`empty-${slot}`} className={classes.winnerStepEmpty} />;
+                    }
+                    const rank =
+                      (result?.playerRankings ?? rankings).findIndex(
+                        (row) => row.playerId === entry.playerId
+                      ) + 1;
+                    const isYou = entry.playerId === yourPlayerId;
+                    return (
+                      <div
+                        key={entry.playerId}
+                        className={`${classes.winnerStep} ${
+                          classes[`winnerStep${rank}`] || ""
+                        }`}
+                      >
+                        <span className={classes.winnerStepPlace}>
+                          {placeLabel(rank)}
+                        </span>
+                        <span className={classes.winnerStepName}>
+                          {entry.name}
+                          {isYou ? (
+                            <span className={classes.youTag}> {t.youTag}</span>
+                          ) : null}
+                        </span>
+                        <span className={classes.winnerStepScore}>
+                          {entry.score} pts
+                        </span>
+                      </div>
+                    );
+                  }
+                )}
               </div>
             ) : null}
 
@@ -323,6 +423,7 @@ export default function QuizResults({
                         yourPlayerId,
                         classes,
                         lang,
+                        noAnswerLabel,
                       })
                     )}
                   </div>
@@ -331,7 +432,21 @@ export default function QuizResults({
 
               <footer className={classes.actions}>
                 {isHost ? (
-                  <Button onClick={onReset}>{t.replay}</Button>
+                  <>
+                    <Button
+                      type="button"
+                      onClick={() => (onRematch || onReset)?.()}
+                    >
+                      {t.rematch ?? t.replay ?? "Rematch (same settings)"}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={() => onReset?.()}
+                    >
+                      {t.backToLobby ?? "Back to lobby"}
+                    </Button>
+                  </>
                 ) : (
                   <p className={classes.hint}>{t.waitingHostRestart}</p>
                 )}
