@@ -166,6 +166,14 @@
       "uiverseSpaceButton": {
         "name": "Botón Space de Uiverse (Yaksh37 / zanina-yassine)",
         "note": "Botón CTA animado (MIT) — https://uiverse.io/Yaksh37/stale-goat-96"
+      },
+      "uiverseEarthCard": {
+        "name": "Tarjeta Tierra de Uiverse (Lakshay-art)",
+        "note": "Tierra giratoria en la tarjeta de Geografía del inicio, de Lakshay Gupta (MIT) — https://uiverse.io/Lakshay-art/soft-dingo-98"
+      },
+      "lottieShowTime": {
+        "name": "Icono show time (Ahmad Halawani)",
+        "note": "Animación show time en la tarjeta del quiz clásico del inicio (licencia Lottie Simple) — https://lottiefiles.com/free-animation/show-time-icon-1EUnXQJISy"
       }
     },
     "videos": {

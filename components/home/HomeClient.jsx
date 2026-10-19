@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ModeFavoriteButton from "@/components/auth/ModeFavoriteButton";
@@ -13,6 +14,9 @@ import {
 } from "@/lib/site/jsonLd";
 import { SITE_NAME } from "@/lib/site/site";
 import { getTranslations } from "@/lib/i18n";
+import EarthGlobe from "./EarthGlobe";
+
+const ShowTimeIcon = dynamic(() => import("./ShowTimeIcon"), { ssr: false });
 import HomeFaqTeaser from "./HomeFaqTeaser";
 import HomeRecentGames from "./HomeRecentGames";
 import classes from "./HomePage.module.css";
@@ -153,7 +157,7 @@ export default function HomeClient() {
                 return (
                   <article
                     key={id}
-                    className={`${classes.modeCard} ${classes[id]}`}
+                    className={`${classes.modeCard} ${classes[id]}${id === "geography" ? " geoCard" : ""}`}
                     style={{ "--stagger": `${index * 90}ms` }}
                   >
                     <div className={classes.modeCorner}>
@@ -171,17 +175,7 @@ export default function HomeClient() {
                       href={`/play?mode=${id}&lang=${lang}`}
                       className={classes.modePlay}
                     >
-                      <span className={classes.modeDecor} aria-hidden="true" />
-                      {id === "classic" ? (
-                        <span className={classes.classicPills} aria-hidden="true">
-                          <span />
-                          <span />
-                          <span />
-                          <span />
-                        </span>
-                      ) : (
-                        <span className={classes.geoPreview} aria-hidden="true" />
-                      )}
+                      {id === "classic" ? <ShowTimeIcon /> : <EarthGlobe />}
                       <h3 className={classes.modeName}>{mode.name}</h3>
                       <p className={classes.vibe}>{mode.vibe}</p>
                     </Link>

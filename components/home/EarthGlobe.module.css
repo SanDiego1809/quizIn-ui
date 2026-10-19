@@ -1,0 +1,152 @@
+/* Rotating earth card adapted from Lakshay-art (MIT)
+   https://uiverse.io/Lakshay-art/soft-dingo-98 */
+
+.scene {
+  position: absolute;
+  inset: 0 0 4.4rem;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.globe {
+  --spin: 15.9744em;
+  position: relative;
+  width: 10em;
+  height: 10em;
+  font-size: clamp(0.95rem, 4.6vw, 1.05rem);
+  border-radius: 50%;
+  background-image: url("/geo/earth-card.jpg");
+  background-repeat: repeat-x;
+  background-size: var(--spin) 100%;
+  background-position: 0 50%;
+  animation: earthRotate 30s linear infinite paused;
+  box-shadow:
+    0 0 0.8em rgba(255, 255, 255, 0.2),
+    -0.2em 0 0.32em #c3f4ff inset,
+    0.6em 0.08em 1em #000 inset,
+    -0.96em -0.08em 1.36em #c3f4ff99 inset,
+    10em 0 1.76em #00000066 inset,
+    6em 0 1.52em #000000aa inset;
+}
+
+:global(.geoCard:hover) .globe,
+:global(.geoCard:focus-within) .globe {
+  animation-play-state: running;
+}
+
+@keyframes earthRotate {
+  to {
+    background-position: calc(var(--spin) * -1) 50%;
+  }
+}
+
+.half {
+  display: flex;
+  position: relative;
+}
+
+.corner {
+  width: 0.16em;
+  height: 0.2em;
+  overflow: hidden;
+  position: relative;
+}
+
+.corner::before {
+  content: "";
+  display: block;
+  width: 200%;
+  height: 200%;
+  position: absolute;
+  border-radius: 50%;
+}
+
+.br::before {
+  bottom: 0;
+  right: 0;
+  box-shadow: 0.2em 0.2em 0 0 white;
+}
+
+.bl::before {
+  bottom: 0;
+  left: 0;
+  box-shadow: -0.2em 0.2em 0 0 white;
+}
+
+.tr::before {
+  top: 0;
+  right: 0;
+  box-shadow: 0.2em -0.2em 0 0 white;
+}
+
+.tl::before {
+  top: 0;
+  left: 0;
+  box-shadow: -0.2em -0.2em 0 0 white;
+}
+
+.star {
+  position: absolute;
+  animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.s1 {
+  left: -0.8em;
+}
+
+.s2 {
+  left: -1.6em;
+  top: 1.2em;
+  animation-duration: 2s;
+}
+
+.s3 {
+  left: 14em;
+  top: 3.6em;
+  animation-duration: 4s;
+}
+
+.s4 {
+  left: 8em;
+  top: 11.6em;
+}
+
+.s5 {
+  left: 2em;
+  top: 10.8em;
+  animation-duration: 1.5s;
+}
+
+.s6 {
+  left: 10em;
+  top: -2em;
+  animation-duration: 4s;
+}
+
+.s7 {
+  left: 11.6em;
+  top: 2.4em;
+  animation-duration: 2s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .globe,
+  .star {
+    animation: none;
+  }
+
+  .star {
+    opacity: 0.85;
+  }
+}

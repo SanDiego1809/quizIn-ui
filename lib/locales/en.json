@@ -166,6 +166,14 @@
       "uiverseSpaceButton": {
         "name": "Uiverse Space button (Yaksh37 / zanina-yassine)",
         "note": "Animated CTA button (MIT) — https://uiverse.io/Yaksh37/stale-goat-96"
+      },
+      "uiverseEarthCard": {
+        "name": "Uiverse Earth card (Lakshay-art)",
+        "note": "Rotating Earth on the home Geography card, by Lakshay Gupta (MIT) — https://uiverse.io/Lakshay-art/soft-dingo-98"
+      },
+      "lottieShowTime": {
+        "name": "Show time icon (Ahmad Halawani)",
+        "note": "Show-time animation on the home Classic quiz card (Lottie Simple License) — https://lottiefiles.com/free-animation/show-time-icon-1EUnXQJISy"
       }
     },
     "videos": {

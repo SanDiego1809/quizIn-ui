@@ -301,10 +301,10 @@ a.stepLink:hover {
 }
 
 .geography {
+  min-height: 16.5rem;
   background:
-    radial-gradient(ellipse 70% 60% at 90% 10%, rgba(45, 212, 191, 0.2), transparent 55%),
-    radial-gradient(ellipse 55% 50% at 0% 90%, rgba(14, 165, 233, 0.14), transparent 50%),
-    linear-gradient(200deg, #132337 0%, #0f172a 100%);
+    radial-gradient(ellipse 70% 55% at 50% 36%, rgba(125, 211, 252, 0.14), transparent 62%),
+    #070b14;
 }
 
 .geography:hover,
@@ -330,95 +330,28 @@ a.stepLink:hover {
   outline-offset: -4px;
 }
 
-.modeDecor {
+.geography .modePlay::after {
+  content: "";
   position: absolute;
-  inset: 0;
-  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 5.75rem;
+  background: linear-gradient(to top, #070b14 18%, rgba(7, 11, 20, 0.2) 72%, transparent);
   pointer-events: none;
-  opacity: 0.55;
-  transition: opacity 0.2s ease, transform 0.25s ease;
+  z-index: 1;
 }
 
-.modeCard:hover .modeDecor,
-.modeCard:focus-within .modeDecor {
-  opacity: 0.85;
-  transform: scale(1.04);
+.geography .modeName,
+.geography .vibe {
+  position: relative;
+  z-index: 2;
 }
 
-.classic .modeDecor {
-  opacity: 0.35;
-}
-
-.geography .modeDecor {
-  background-image:
-    linear-gradient(rgba(148, 163, 184, 0.16) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.16) 1px, transparent 1px),
-    radial-gradient(circle at 72% 38%, rgba(45, 212, 191, 0.28), transparent 42%);
-  background-size: 1.2rem 1.2rem, 1.2rem 1.2rem, 100% 100%;
-  mask-image: radial-gradient(ellipse 85% 75% at 68% 28%, #000 25%, transparent 78%);
-}
-
-.classicPills {
-  position: absolute;
-  inset: 2.4rem 0.9rem auto;
-  display: grid;
-  gap: 0.4rem;
-  pointer-events: none;
-  opacity: 0.45;
-  transition: opacity 0.2s ease, transform 0.25s ease;
-}
-
-.classicPills span {
-  display: block;
-  height: 0.72rem;
-  border-radius: 999px;
-  border: 1px solid rgba(251, 191, 36, 0.35);
-  background: rgba(248, 250, 252, 0.08);
-}
-
-.classicPills span:nth-child(1) {
-  width: 72%;
-}
-.classicPills span:nth-child(2) {
-  width: 88%;
-  border-color: rgba(56, 189, 248, 0.45);
-  background: rgba(56, 189, 248, 0.16);
-}
-.classicPills span:nth-child(3) {
-  width: 64%;
-}
-.classicPills span:nth-child(4) {
-  width: 78%;
-}
-
-.modeCard:hover .classicPills,
-.modeCard:focus-within .classicPills {
-  opacity: 0.95;
-  transform: translateY(-2px);
-}
-
-.geoPreview {
-  position: absolute;
-  top: 2.2rem;
-  right: 0.9rem;
-  width: 4.5rem;
-  height: 4.5rem;
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: 0.4;
-  background:
-    radial-gradient(circle at 35% 40%, rgba(45, 212, 191, 0.55), transparent 42%),
-    radial-gradient(circle at 70% 55%, rgba(14, 165, 233, 0.4), transparent 38%),
-    radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.2), rgba(15, 23, 42, 0.65));
-  border: 1px solid rgba(94, 234, 212, 0.28);
-  box-shadow: inset 0 0 18px rgba(45, 212, 191, 0.15);
-  transition: opacity 0.2s ease, transform 0.25s ease;
-}
-
-.modeCard:hover .geoPreview,
-.modeCard:focus-within .geoPreview {
-  opacity: 0.9;
-  transform: scale(1.06);
+.classic .modeName,
+.classic .vibe {
+  position: relative;
+  z-index: 2;
 }
 
 .modeName {
@@ -650,11 +583,6 @@ a.stepLink:hover {
 
   .modeCard:hover,
   .modeCard:focus-within {
-    transform: none;
-  }
-
-  .modeCard:hover .modeDecor,
-  .modeCard:focus-within .modeDecor {
     transform: none;
   }
 }

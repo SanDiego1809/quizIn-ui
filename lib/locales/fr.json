@@ -166,6 +166,14 @@
       "uiverseSpaceButton": {
         "name": "Bouton Space Uiverse (Yaksh37 / zanina-yassine)",
         "note": "Bouton CTA animé (MIT) — https://uiverse.io/Yaksh37/stale-goat-96"
+      },
+      "uiverseEarthCard": {
+        "name": "Carte Terre Uiverse (Lakshay-art)",
+        "note": "Terre qui tourne sur la carte Géographie de l'accueil, par Lakshay Gupta (MIT) — https://uiverse.io/Lakshay-art/soft-dingo-98"
+      },
+      "lottieShowTime": {
+        "name": "Icône show time (Ahmad Halawani)",
+        "note": "Animation show time sur la carte quiz classique de l'accueil (licence Lottie Simple) — https://lottiefiles.com/free-animation/show-time-icon-1EUnXQJISy"
       }
     },
     "videos": {
