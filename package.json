@@ -8,6 +8,7 @@
     "dev:all": "node scripts/dev-all.js",
     "start:socket": "node socket-server/server.js",
     "import:trivia": "node socket-server/scripts/import-opentriviaqa.js",
+    "build:geo-meta": "node socket-server/scripts/build-geography-meta.js",
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",

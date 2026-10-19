@@ -28,6 +28,7 @@ export default function ExpandableModePicker({
   id,
   ariaLabel,
   theme = {},
+  hostPremium = false,
 }) {
   const generatedId = useId();
   const rootId = id ?? generatedId;
@@ -136,7 +137,8 @@ export default function ExpandableModePicker({
     };
   }, [open, rootId, selectedIndex]);
 
-  const selectOption = (nextValue) => {
+  const selectOption = (nextValue, option) => {
+    if (option?.premium && !hostPremium) return;
     if (typeof onChange === "function") {
       onChange(nextValue);
     }
@@ -186,6 +188,7 @@ export default function ExpandableModePicker({
               {options.map((option, index) => {
                 const entry = theme[option.value] ?? {};
                 const isSelected = option.value === value;
+                const locked = Boolean(option.premium) && !hostPremium;
                 const TileIcon =
                   typeof entry.Icon === "function"
                     ? entry.Icon
@@ -194,6 +197,7 @@ export default function ExpandableModePicker({
                   classes.tile,
                   entry.className ?? classes.defaultTile,
                   isSelected ? classes.tileSelected : "",
+                  locked ? classes.tileLocked : "",
                 ]
                   .filter(Boolean)
                   .join(" ");
@@ -205,9 +209,11 @@ export default function ExpandableModePicker({
                     id={`${rootId}-option-${option.value}`}
                     role="option"
                     aria-selected={isSelected}
+                    aria-disabled={locked}
                     className={tileClass}
                     tabIndex={open && index === activeIndex ? 0 : -1}
-                    onClick={() => selectOption(option.value)}
+                    disabled={locked}
+                    onClick={() => selectOption(option.value, option)}
                     onFocus={() => setActiveIndex(index)}
                   >
                     {TileIcon ? (
@@ -219,7 +225,12 @@ export default function ExpandableModePicker({
                         {entry.icon}
                       </span>
                     ) : null}
-                    <span className={classes.tileLabel}>{option.label}</span>
+                    <span className={classes.tileLabel}>
+                      {option.label}
+                      {option.premium ? (
+                        <span className={classes.tileBadge}>Premium</span>
+                      ) : null}
+                    </span>
                   </button>
                 );
               })}

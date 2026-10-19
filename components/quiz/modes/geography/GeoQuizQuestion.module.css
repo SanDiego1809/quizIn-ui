@@ -29,11 +29,28 @@
 
 .header,
 .teamBanner,
+.outBanner,
 .promptBlock,
 .mapArea,
 .hint {
   position: relative;
   z-index: 1;
+}
+
+.lives {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #fbbf24;
+}
+
+.outBanner {
+  margin: 0.35rem auto 0;
+  max-width: 64rem;
+  width: 100%;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #fca5a5;
 }
 
 .teamBanner {
@@ -114,6 +131,7 @@
      inside it can't reliably resolve against it. Making this a flex
      container lets the child stretch to fill via flexbox (the
      default `align-items: stretch`) instead of a percentage height. */
+  position: relative;
   display: flex;
   flex: 1;
   /* `.stage`/`main` above rely on min-height rather than a definite

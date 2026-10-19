@@ -12,6 +12,7 @@ import { formatCategoryLabel } from "@/lib/quiz/classicCategories";
 import { CONTINENT_OPTIONS } from "@/lib/quiz/continents";
 import NumberStepper from "@/components/stepper/NumberStepper";
 import ExpandableMultiSelect from "@/components/ui/ExpandableMultiSelect";
+import SettingInfoTip from "@/components/ui/SettingInfoTip";
 
 function settingsSyncKey(settings) {
   if (!settings || typeof settings !== "object") return "";
@@ -64,6 +65,10 @@ function formatSettingSummary(field, value, all) {
       optionLabel(field.key, id, all, id)
     );
     return names.join(", ");
+  }
+  if (field.type === "checkbox") {
+    if (!value) return null;
+    return all.settings_fields?.[field.key]?.label ?? field.label;
   }
   if (field.type === "select") {
     const match = (field.options || []).find((option) => option.value === value);
@@ -248,6 +253,9 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
       if (Number.isFinite(max) && parsed > max) parsed = max;
       if (Number.isFinite(field.min) && parsed < field.min) parsed = field.min;
     }
+    if (field?.type === "checkbox") {
+      parsed = Boolean(rawValue);
+    }
     if (field?.type === "multiselect" || key === "continents") {
       parsed = Array.isArray(rawValue) ? [...rawValue] : [];
       if (key === "continents") {
@@ -269,6 +277,9 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
 
   if (isGeography) {
     const numberFields = visibleFields.filter((field) => field.type === "number");
+    const checkboxFields = visibleFields.filter(
+      (field) => field.type === "checkbox"
+    );
     const continentsCopy = all.settings_fields?.continents;
     const continentOptions = CONTINENT_OPTIONS.map((option) => ({
       value: option.value,
@@ -286,6 +297,12 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
           <span className={classes.fieldLabel}>
             {continentsCopy?.label ?? "Continents"}
             <span className={classes.badge}>Premium</span>
+            <SettingInfoTip
+              text={
+                continentsCopy?.hint ??
+                "Limit the country pool to selected continents. Empty = all."
+              }
+            />
           </span>
           <ExpandableMultiSelect
             value={draftSettings.continents ?? []}
@@ -298,14 +315,48 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
             clearLabel={continentsCopy?.clear ?? "Clear"}
             ariaLabel={continentsCopy?.label ?? "Continents"}
           />
-          <span className={classes.hint}>
-            {!hostPremium
-              ? continentsCopy?.premiumHint ??
-                "Premium host — filter the country pool by continent."
-              : continentsCopy?.hint ??
-                "Limit the country pool to selected continents. Empty = all."}
-          </span>
         </div>
+
+        {checkboxFields.length ? (
+          <div className={classes.geoChecks}>
+            {checkboxFields.map((field) => {
+              const locked = Boolean(field.premium) && !hostPremium;
+              const fieldCopy = all.settings_fields?.[field.key];
+              const label = fieldCopy?.label ?? field.label;
+              const info = fieldCopy?.info ?? field.info;
+              const fieldId = `${baseId}-${field.key}`;
+              const checked = Boolean(draftSettings[field.key]);
+
+              return (
+                <label
+                  key={field.key}
+                  className={`${classes.checkRow} ${
+                    locked ? classes.checkRowLocked : ""
+                  }`}
+                  htmlFor={fieldId}
+                >
+                  <input
+                    id={fieldId}
+                    type="checkbox"
+                    className={classes.checkbox}
+                    checked={checked}
+                    disabled={locked}
+                    onChange={(event) =>
+                      onSettingChange(field.key, event.target.checked)
+                    }
+                  />
+                  <span className={classes.checkTitle}>
+                    <span className={classes.checkLabel}>{label}</span>
+                    {field.premium ? (
+                      <span className={classes.badge}>Premium</span>
+                    ) : null}
+                    <SettingInfoTip text={info} />
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+        ) : null}
 
         <div className={classes.geoSteppers}>
           {numberFields.map((field) =>
@@ -323,7 +374,7 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
         {!hostPremium ? (
           <p className={classes.premiumHint}>
             {t.premiumHostHint ??
-              "Premium host unlocks category filters and longer games."}{" "}
+              "Premium host unlocks continent filters, map modifiers, lives, and longer games."}{" "}
             <Link href={`/profile?lang=${lang}`} className={classes.premiumLink}>
               {t.upgradeLink ?? "Upgrade"}
             </Link>

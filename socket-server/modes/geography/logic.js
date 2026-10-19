@@ -1,6 +1,8 @@
 const COUNTRY_BANK = require("../../data/geography-questions.json");
 const CAPITALS = require("../../data/geography-capitals.json");
 const CONTINENT_DATA = require("../../data/geography-continents.json");
+const BORDERS = require("../../data/geography-borders.json");
+const DIFFICULTY = require("../../data/geography-difficulty.json");
 const { shuffle } = require("../../lib/utils");
 const { clearRoomTimer } = require("../../lib/timers");
 const { FREE_GEOGRAPHY_MAX_QUESTIONS } = require("../../lib/hostLimits");
@@ -15,7 +17,13 @@ const {
 } = require("../../lib/teams");
 
 const SPEED_POINTS = [10, 8, 7, 5];
-const GEO_VARIANTS = new Set(["countries", "flags", "capitals", "teams"]);
+const NEIGHBOR_POINTS = 2;
+const DEFAULT_LIVES = 3;
+/** Always pause this long after a round so players see correct vs their miss. */
+const RESULT_REVEAL_MS = 2000;
+const PROMPT_VARIANTS = ["countries", "flags", "capitals"];
+const FREE_VARIANTS = new Set(["countries", "flags", "capitals", "teams", "mixed"]);
+const GEO_VARIANTS = new Set([...FREE_VARIANTS, "streak"]);
 const CONTINENT_IDS = new Set(CONTINENT_DATA.continents || []);
 const COUNTRY_CONTINENT = CONTINENT_DATA.byCountryCode || {};
 
@@ -29,10 +37,19 @@ function toBoundedNumber(value, fallback, min, max) {
   return Math.min(max, Math.max(min, n));
 }
 
-function sanitizeVariant(value, fallback = "countries") {
+function sanitizeBoolean(value, fallback = false) {
+  if (typeof value === "boolean") return value;
+  if (value === "true" || value === 1 || value === "1") return true;
+  if (value === "false" || value === 0 || value === "0") return false;
+  return Boolean(fallback);
+}
+
+function sanitizeVariant(value, fallback = "countries", premium = false) {
   const normalized = String(value || "").trim().toLowerCase();
   if (normalized === "versus") return "teams";
-  return GEO_VARIANTS.has(normalized) ? normalized : fallback;
+  if (!GEO_VARIANTS.has(normalized)) return fallback;
+  if (normalized === "streak" && !premium) return fallback;
+  return normalized;
 }
 
 function sanitizeContinents(input) {
@@ -54,14 +71,27 @@ function sanitizeSettings(input = {}, defaults, options = {}) {
     ? COUNTRY_BANK.length
     : Math.min(FREE_GEOGRAPHY_MAX_QUESTIONS, COUNTRY_BANK.length);
 
-  const variant = sanitizeVariant(input.variant, defaults.variant || "countries");
+  const variant = sanitizeVariant(
+    input.variant,
+    defaults.variant || "countries",
+    premium
+  );
+
+  const premiumFlag = (key) =>
+    premium
+      ? sanitizeBoolean(input[key], defaults[key])
+      : false;
 
   return {
     variant,
-    // Continent filter is Premium-only; free/guest hosts always use the full pool.
     continents: premium
       ? sanitizeContinents(input.continents ?? defaults.continents)
       : [],
+    harderPool: premiumFlag("harderPool"),
+    neighborMiss: premiumFlag("neighborMiss"),
+    revealHeat: premiumFlag("revealHeat"),
+    lives: premiumFlag("lives"),
+    silhouette: premiumFlag("silhouette"),
     questionTimeSeconds: toBoundedNumber(
       input.questionTimeSeconds,
       defaults.questionTimeSeconds,
@@ -85,6 +115,9 @@ function createInitialState() {
     scores: {},
     teams: null,
     result: null,
+    livesByPlayer: {},
+    eliminatedPlayerIds: [],
+    reveal: null,
   };
 }
 
@@ -95,7 +128,41 @@ function withCapital(country) {
   };
 }
 
-function pickCountries(count, continents = []) {
+function isNeighbor(correctCode, guessCode) {
+  const correct = String(correctCode || "").toLowerCase();
+  const guess = String(guessCode || "").toLowerCase();
+  if (!correct || !guess || correct === guess) return false;
+  const list = BORDERS[correct];
+  return Array.isArray(list) && list.includes(guess);
+}
+
+function weightedSample(source, count) {
+  const pool = source.map((country) => ({
+    country,
+    weight: Math.max(0.05, Number(DIFFICULTY[country.countryCode]) || 0.5),
+  }));
+  const picked = [];
+  const remaining = [...pool];
+  const target = Math.min(count, remaining.length);
+
+  while (picked.length < target && remaining.length) {
+    const total = remaining.reduce((sum, entry) => sum + entry.weight, 0);
+    let roll = Math.random() * total;
+    let index = remaining.length - 1;
+    for (let i = 0; i < remaining.length; i += 1) {
+      roll -= remaining[i].weight;
+      if (roll <= 0) {
+        index = i;
+        break;
+      }
+    }
+    picked.push(remaining[index].country);
+    remaining.splice(index, 1);
+  }
+  return picked;
+}
+
+function pickCountries(count, continents = [], harderPool = false) {
   const selected = Array.isArray(continents) ? continents : [];
   let source = COUNTRY_BANK;
   if (selected.length > 0) {
@@ -105,8 +172,37 @@ function pickCountries(count, continents = []) {
     );
     if (filtered.length > 0) source = filtered;
   }
-  const pool = shuffle(source.map(withCapital));
-  return pool.slice(0, Math.min(count, pool.length));
+  const withCaps = source.map(withCapital);
+  if (harderPool) {
+    return weightedSample(withCaps, count);
+  }
+  return shuffle(withCaps).slice(0, Math.min(count, withCaps.length));
+}
+
+function assignPromptVariants(countries, roomVariant) {
+  if (roomVariant !== "mixed") {
+    return countries.map((country) => ({
+      ...country,
+      promptVariant:
+        roomVariant === "flags" || roomVariant === "capitals"
+          ? roomVariant
+          : "countries",
+    }));
+  }
+
+  const cues = [];
+  for (let i = 0; i < countries.length; i += 1) {
+    cues.push(PROMPT_VARIANTS[i % PROMPT_VARIANTS.length]);
+  }
+  const shuffledCues = shuffle(cues);
+
+  return countries.map((country, index) => {
+    let promptVariant = shuffledCues[index] || "countries";
+    if (promptVariant === "capitals" && !country.capitalName) {
+      promptVariant = Math.random() < 0.5 ? "countries" : "flags";
+    }
+    return { ...country, promptVariant };
+  });
 }
 
 function pointsForRank(rank) {
@@ -120,32 +216,69 @@ function findCountryByCode(code) {
   return country ? withCapital(country) : null;
 }
 
-function scoreQuestionBySpeed(country, answers, players) {
-  const correctPlayers = players
-    .map((player) => {
-      const answer = answers[player.id];
-      return {
-        playerId: player.id,
-        countryCode: answer ? answer.countryCode : null,
-        answeredAt: answer ? answer.answeredAt : Infinity,
-      };
-    })
-    .filter(
-      (entry) =>
-        entry.countryCode && entry.countryCode === country.countryCode
-    )
-    .sort((a, b) => a.answeredAt - b.answeredAt);
-
-  const pointsByPlayer = {};
-  correctPlayers.forEach((entry, rank) => {
-    pointsByPlayer[entry.playerId] = pointsForRank(rank);
-  });
-  return pointsByPlayer;
+function isEliminated(state, playerId) {
+  return (state.eliminatedPlayerIds || []).includes(playerId);
 }
 
-function allPlayersAnswered(room, state) {
+function activeParticipants(room, state) {
+  return participatingPlayers(room, state.teams).filter(
+    (player) => !isEliminated(state, player.id)
+  );
+}
+
+function usesLives(settings) {
+  if (String(settings?.variant || "") === "streak") return true;
+  return Boolean(settings?.lives);
+}
+
+function startingLives(settings) {
+  if (String(settings?.variant || "") === "streak") return 1;
+  if (settings?.lives) return DEFAULT_LIVES;
+  return 0;
+}
+
+function scoreQuestion(country, answers, players, neighborMiss) {
+  const correctCode = String(country.countryCode || "").toLowerCase();
+  const pointsByPlayer = {};
+  const kindsByPlayer = {};
+
+  const correctEntries = [];
+  for (const player of players) {
+    const answer = answers[player.id];
+    const guess = answer?.countryCode
+      ? String(answer.countryCode).toLowerCase()
+      : null;
+    if (!guess) {
+      kindsByPlayer[player.id] = "wrong";
+      continue;
+    }
+    if (guess === correctCode) {
+      correctEntries.push({
+        playerId: player.id,
+        answeredAt: answer.answeredAt ?? Infinity,
+      });
+      kindsByPlayer[player.id] = "correct";
+    } else if (neighborMiss && isNeighbor(correctCode, guess)) {
+      pointsByPlayer[player.id] = NEIGHBOR_POINTS;
+      kindsByPlayer[player.id] = "neighbor";
+    } else {
+      kindsByPlayer[player.id] = "wrong";
+    }
+  }
+
+  correctEntries
+    .sort((a, b) => a.answeredAt - b.answeredAt)
+    .forEach((entry, rank) => {
+      pointsByPlayer[entry.playerId] = pointsForRank(rank);
+    });
+
+  return { pointsByPlayer, kindsByPlayer };
+}
+
+function allActivePlayersAnswered(room, state) {
   const answers = state.answersByQuestion[state.currentQuestionIndex] || {};
-  const participants = participatingPlayers(room, state.teams);
+  const participants = activeParticipants(room, state);
+  if (!participants.length) return true;
   return participants.every((p) => answers[p.id] !== undefined);
 }
 
@@ -155,18 +288,59 @@ function applyScoresForCurrentQuestion(room, state) {
 
   const answers = state.answersByQuestion[state.currentQuestionIndex] || {};
   const participants = participatingPlayers(room, state.teams);
-  const pointsByPlayer = scoreQuestionBySpeed(country, answers, participants);
+  const { pointsByPlayer, kindsByPlayer } = scoreQuestion(
+    country,
+    answers,
+    participants,
+    Boolean(room.settings.neighborMiss)
+  );
 
   for (const player of participants) {
     const points = pointsByPlayer[player.id] || 0;
     state.scores[player.id] = (state.scores[player.id] || 0) + points;
+    if (answers[player.id]) {
+      answers[player.id].kind = kindsByPlayer[player.id] || "wrong";
+    }
   }
+
+  if (usesLives(room.settings)) {
+    for (const player of participants) {
+      if (isEliminated(state, player.id)) continue;
+      const kind = kindsByPlayer[player.id] || "wrong";
+      if (kind === "correct" || kind === "neighbor") continue;
+      const remaining = Math.max(0, (state.livesByPlayer[player.id] ?? 0) - 1);
+      state.livesByPlayer[player.id] = remaining;
+      if (remaining <= 0 && !state.eliminatedPlayerIds.includes(player.id)) {
+        state.eliminatedPlayerIds.push(player.id);
+      }
+    }
+  }
+
+  state.answersByQuestion[state.currentQuestionIndex] = answers;
+}
+
+function buildRevealPayload(room, state) {
+  const country = state.countries[state.currentQuestionIndex];
+  if (!country) return null;
+  const answers = state.answersByQuestion[state.currentQuestionIndex] || {};
+  const clicks = Object.entries(answers)
+    .filter(([, answer]) => answer?.countryCode)
+    .map(([playerId, answer]) => ({
+      playerId,
+      countryCode: String(answer.countryCode).toLowerCase(),
+      kind: answer.kind || null,
+    }));
+  return {
+    correctCode: String(country.countryCode).toLowerCase(),
+    clicks,
+  };
 }
 
 function finalizeGame(room, state) {
   clearRoomTimer(room);
   room.phase = "final_results";
   room.phaseDeadline = null;
+  state.reveal = null;
 
   state.result = buildFinalResult(room, state, {
     totalQuestions: state.countries.length,
@@ -181,12 +355,12 @@ function finalizeGame(room, state) {
   }
 }
 
-function advanceQuestion(roomCode, ctx) {
+function goToNextQuestion(roomCode, ctx) {
   const room = ctx.rooms.get(roomCode);
-  if (!room || room.phase !== "playing") return;
+  if (!room || (room.phase !== "playing" && room.phase !== "reveal")) return;
 
   const state = room.state;
-  applyScoresForCurrentQuestion(room, state);
+  state.reveal = null;
 
   if (state.currentQuestionIndex >= state.countries.length - 1) {
     finalizeGame(room, state);
@@ -194,9 +368,42 @@ function advanceQuestion(roomCode, ctx) {
     return;
   }
 
+  // If everyone is eliminated before the last question, end early.
+  if (usesLives(room.settings) && activeParticipants(room, state).length === 0) {
+    finalizeGame(room, state);
+    ctx.emitRoom(roomCode);
+    return;
+  }
+
+  room.phase = "playing";
   state.currentQuestionIndex += 1;
   scheduleQuestionTimer(roomCode, ctx);
   ctx.emitRoom(roomCode);
+}
+
+function scheduleReveal(roomCode, ctx) {
+  const room = ctx.rooms.get(roomCode);
+  if (!room) return;
+
+  const state = room.state;
+  clearRoomTimer(room);
+  room.phase = "reveal";
+  state.reveal = buildRevealPayload(room, state);
+  room.phaseDeadline = Date.now() + RESULT_REVEAL_MS;
+  room.phaseTimeoutId = setTimeout(() => {
+    goToNextQuestion(roomCode, ctx);
+  }, RESULT_REVEAL_MS);
+  ctx.emitRoom(roomCode);
+}
+
+function advanceQuestion(roomCode, ctx) {
+  const room = ctx.rooms.get(roomCode);
+  if (!room || room.phase !== "playing") return;
+
+  const state = room.state;
+  applyScoresForCurrentQuestion(room, state);
+  // Always show a short result beat (solo after click, multi after last answer).
+  scheduleReveal(roomCode, ctx);
 }
 
 function scheduleQuestionTimer(roomCode, ctx) {
@@ -221,7 +428,7 @@ function scheduleQuestionTimer(roomCode, ctx) {
 
     const answers = current.state.answersByQuestion[questionIndex] || {};
     const deadline = current.phaseDeadline ?? Date.now();
-    const participants = participatingPlayers(current, current.state.teams);
+    const participants = activeParticipants(current, current.state);
     for (const player of participants) {
       if (answers[player.id] === undefined) {
         answers[player.id] = { countryCode: null, answeredAt: deadline };
@@ -240,22 +447,32 @@ function validateStart(room) {
 function beginGame(room) {
   clearRoomTimer(room);
   const state = room.state;
-  const countries = pickCountries(
-    room.settings.questionsPerGame,
-    room.settings.continents
+  const settings = room.settings;
+  const countries = assignPromptVariants(
+    pickCountries(
+      settings.questionsPerGame,
+      settings.continents,
+      Boolean(settings.harderPool)
+    ),
+    settings.variant
   );
-  const teams = isTeamsSettings(room.settings)
+  const teams = isTeamsSettings(settings)
     ? buildTeamsFromPlayers(room.players)
     : null;
+  const participants = participatingPlayers(room, teams);
+  const lives = startingLives(settings);
 
   room.phase = "playing";
   state.countries = countries;
   state.currentQuestionIndex = 0;
   state.answersByQuestion = countries.map(() => ({}));
   state.teams = teams;
-  state.scores = Object.fromEntries(
-    participatingPlayers(room, teams).map((p) => [p.id, 0])
+  state.scores = Object.fromEntries(participants.map((p) => [p.id, 0]));
+  state.livesByPlayer = Object.fromEntries(
+    participants.map((p) => [p.id, lives])
   );
+  state.eliminatedPlayerIds = [];
+  state.reveal = null;
   state.result = null;
   room.phaseDeadline = null;
 }
@@ -278,6 +495,9 @@ function submitAnswer(room, playerId, countryCode, ctx) {
   }
 
   const state = room.state;
+  if (isEliminated(state, playerId)) {
+    return { ok: false, message: "You are out for this game." };
+  }
   if (
     state.teams?.length &&
     !state.teams.some((team) => team.playerIds.includes(playerId))
@@ -301,7 +521,7 @@ function submitAnswer(room, playerId, countryCode, ctx) {
   answers[playerId] = createAnswer(normalized);
   state.answersByQuestion[state.currentQuestionIndex] = answers;
 
-  if (allPlayersAnswered(room, state)) {
+  if (allActivePlayersAnswered(room, state)) {
     clearRoomTimer(room);
     room.phaseDeadline = null;
     advanceQuestion(room.code, ctx);
@@ -329,4 +549,8 @@ module.exports = {
   scheduleQuestionTimer,
   previewTeams,
   sanitizeTeamKey,
+  isNeighbor,
+  NEIGHBOR_POINTS,
+  DEFAULT_LIVES,
+  RESULT_REVEAL_MS,
 };

@@ -71,7 +71,7 @@ export default function GeographyModeView({
         </div>
       ) : null}
 
-      {room?.phase === "playing" ? (
+      {room?.phase === "playing" || room?.phase === "reveal" ? (
         <GeoQuizQuestion
           room={room}
           onSubmit={(countryCode) =>

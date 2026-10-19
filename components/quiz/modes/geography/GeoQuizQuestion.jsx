@@ -1,14 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { getTranslations } from "@/lib/i18n";
 import { getCapitalLabel, getCountryLabel } from "@/lib/quiz/geoLabels";
+import LiveRanking from "./LiveRanking";
 import classes from "./GeoQuizQuestion.module.css";
 
-// d3-geo touches the DOM-free geometry math only, but we still load it
-// on the client only to keep it out of the server bundle and to match
-// the pattern already used for the (three.js based) avatar room.
 const WorldMap = dynamic(() => import("./WorldMap"), { ssr: false });
 
 function formatCountdown(deadline) {
@@ -34,6 +32,7 @@ export default function GeoQuizQuestion({ room, onSubmit, lang = "en" }) {
   const [pendingCode, setPendingCode] = useState(null);
   const questionNumber = (room.currentQuestionIndex ?? 0) + 1;
   const t = getTranslations(lang).geoQuestion;
+  const isReveal = room.phase === "reveal";
   const variant =
     room.question?.variant ||
     room.settings?.variant ||
@@ -43,6 +42,35 @@ export default function GeoQuizQuestion({ room, onSubmit, lang = "en" }) {
   const isTeams = variant === "teams" || variant === "versus";
   const flagSrc = isFlags ? flagUrl(room.question?.countryCode) : null;
   const yourTeam = room.teams?.find((team) => team.id === room.yourTeamId);
+  const flags = room.settingsFlags || {};
+  const youEliminated = Boolean(room.youEliminated);
+  const showLives =
+    flags.lives ||
+    room.settings?.variant === "streak" ||
+    room.yourLives != null;
+
+  const yourGuess = room.yourGuess || pendingCode || null;
+  const correctCode = isReveal
+    ? room.reveal?.correctCode || room.question?.countryCode || null
+    : null;
+  const wrongCode =
+    isReveal &&
+    yourGuess &&
+    correctCode &&
+    String(yourGuess).toLowerCase() !== String(correctCode).toLowerCase()
+      ? yourGuess
+      : null;
+
+  const highlightCodes = useMemo(() => {
+    if (!isReveal || !flags.revealHeat || !room.reveal?.clicks) return [];
+    const correct = String(correctCode || "").toLowerCase();
+    const mine = String(yourGuess || "").toLowerCase();
+    return room.reveal.clicks
+      .map((click) => String(click.countryCode || "").toLowerCase())
+      .filter(
+        (code) => code && code !== correct && code !== mine
+      );
+  }, [isReveal, flags.revealHeat, room.reveal, correctCode, yourGuess]);
 
   useEffect(() => {
     setPendingCode(null);
@@ -61,7 +89,7 @@ export default function GeoQuizQuestion({ room, onSubmit, lang = "en" }) {
   }, [room.phaseDeadline]);
 
   function handleSelectCountry(code) {
-    if (room.hasAnswered) return;
+    if (isReveal || room.hasAnswered || youEliminated) return;
     setPendingCode(code);
     onSubmit(code);
   }
@@ -82,7 +110,26 @@ export default function GeoQuizQuestion({ room, onSubmit, lang = "en" }) {
   let promptValue = localizedCountry;
   let hintText = t.hint;
 
-  if (isFlags) {
+  if (isReveal) {
+    promptText = t.revealTitle ?? "Round reveal";
+    promptValue = localizedCountry;
+    if (wrongCode) {
+      hintText =
+        t.revealMiss ??
+        "Your pick is red — the correct country is green.";
+    } else if (yourGuess) {
+      hintText = t.revealHit ?? "Correct!";
+    } else {
+      hintText = t.revealHint ?? "The correct country is highlighted.";
+    }
+  } else if (youEliminated) {
+    hintText = t.youAreOut ?? "You're out — watch the rest of the game.";
+  } else if (room.hasAnswered || yourGuess) {
+    hintText = fill(t.waitingPick ?? t.waiting, {
+      answered: room.answeredCount,
+      total: room.players.length,
+    });
+  } else if (isFlags) {
     promptText = t.promptFlag ?? t.prompt;
     promptValue = null;
     hintText = t.hintFlag ?? t.hint;
@@ -96,6 +143,9 @@ export default function GeoQuizQuestion({ room, onSubmit, lang = "en" }) {
     hintText = t.hintTeams ?? t.hintVersus ?? t.hint;
   }
 
+  const mapDisabled =
+    isReveal || room.hasAnswered || Boolean(yourGuess) || youEliminated;
+
   return (
     <section className={classes.stage}>
       <header className={classes.header}>
@@ -105,6 +155,11 @@ export default function GeoQuizQuestion({ room, onSubmit, lang = "en" }) {
             total: room.totalQuestions,
           })}
         </span>
+        {showLives && room.yourLives != null && !youEliminated ? (
+          <span className={classes.lives}>
+            {fill(t.livesLeft ?? "Lives: {count}", { count: room.yourLives })}
+          </span>
+        ) : null}
         {countdown ? <span className={classes.timer}>{countdown}</span> : null}
       </header>
 
@@ -123,6 +178,12 @@ export default function GeoQuizQuestion({ room, onSubmit, lang = "en" }) {
         </p>
       ) : null}
 
+      {youEliminated ? (
+        <p className={classes.outBanner}>
+          {t.youAreOut ?? "You're out — watch the rest of the game."}
+        </p>
+      ) : null}
+
       <div className={classes.promptBlock}>
         <h2 className={classes.question}>
           {promptText}
@@ -133,7 +194,7 @@ export default function GeoQuizQuestion({ room, onSubmit, lang = "en" }) {
             </>
           ) : null}
         </h2>
-        {flagSrc ? (
+        {!isReveal && flagSrc ? (
           <img
             className={classes.flag}
             src={flagSrc}
@@ -146,21 +207,27 @@ export default function GeoQuizQuestion({ room, onSubmit, lang = "en" }) {
       </div>
 
       <div className={classes.mapArea}>
+        <LiveRanking
+          players={room.players || []}
+          scores={room.scores || {}}
+          yourPlayerId={room.yourPlayerId}
+          eliminatedPlayerIds={room.eliminatedPlayerIds || []}
+          phase={room.phase}
+          label={t.liveRanking ?? "Ranking"}
+          youLabel={t.youTag ?? "you"}
+        />
         <WorldMap
           onSelectCountry={handleSelectCountry}
-          disabled={room.hasAnswered}
-          pendingCode={pendingCode}
+          disabled={mapDisabled}
+          pendingCode={!isReveal ? yourGuess : null}
+          silhouette={Boolean(flags.silhouette)}
+          highlightCodes={highlightCodes}
+          correctCode={correctCode}
+          wrongCode={wrongCode}
         />
       </div>
 
-      <p className={classes.hint}>
-        {room.hasAnswered
-          ? fill(t.waiting, {
-              answered: room.answeredCount,
-              total: room.players.length,
-            })
-          : hintText}
-      </p>
+      <p className={classes.hint}>{hintText}</p>
     </section>
   );
 }

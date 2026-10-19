@@ -97,7 +97,15 @@ const INITIAL_TRANSFORM = { x: 0, y: 0, scale: 1 };
  * zoom and drag-to-pan. Adapted from the d3 + React GeoChart pattern
  * (geoPath projecting a world GeoJSON FeatureCollection).
  */
-export default function WorldMap({ onSelectCountry, disabled, pendingCode }) {
+export default function WorldMap({
+  onSelectCountry,
+  disabled,
+  pendingCode,
+  silhouette = false,
+  highlightCodes = [],
+  correctCode = null,
+  wrongCode = null,
+}) {
   const wrapperRef = useRef(null);
   const dimensions = useResizeObserver(wrapperRef);
   const [geoData, setGeoData] = useState(cachedGeoData);
@@ -110,6 +118,16 @@ export default function WorldMap({ onSelectCountry, disabled, pendingCode }) {
   const dragRef = useRef(null);
   const pinchRef = useRef(null);
   const suppressClickRef = useRef(false);
+  const highlightSet = useMemo(
+    () => new Set((highlightCodes || []).map((code) => String(code).toLowerCase())),
+    [highlightCodes]
+  );
+  const correctNormalized = correctCode
+    ? String(correctCode).toLowerCase()
+    : null;
+  const wrongNormalized = wrongCode
+    ? String(wrongCode).toLowerCase()
+    : null;
 
   useEffect(() => {
     transformRef.current = transform;
@@ -335,12 +353,18 @@ export default function WorldMap({ onSelectCountry, disabled, pendingCode }) {
   const atDefaultZoom =
     transform.scale === 1 && transform.x === 0 && transform.y === 0;
 
+  const wrapperClass = [
+    classes.wrapper,
+    isDragging ? classes.dragging : "",
+    silhouette ? classes.silhouette : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <div
       ref={wrapperRef}
-      className={[classes.wrapper, isDragging ? classes.dragging : ""]
-        .filter(Boolean)
-        .join(" ")}
+      className={wrapperClass}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
@@ -361,7 +385,20 @@ export default function WorldMap({ onSelectCountry, disabled, pendingCode }) {
             >
               {geoData.features.map((feature, index) => {
                 const code = countryCodeOf(feature);
-                const isPending = Boolean(pendingCode) && code === pendingCode;
+                const isPending =
+                  Boolean(pendingCode) &&
+                  code === pendingCode &&
+                  !correctNormalized;
+                const isCorrect = correctNormalized && code === correctNormalized;
+                const isWrong =
+                  wrongNormalized &&
+                  code === wrongNormalized &&
+                  !isCorrect;
+                const isHeat =
+                  !isCorrect &&
+                  !isWrong &&
+                  code &&
+                  highlightSet.has(code);
 
                 return (
                   <path
@@ -371,6 +408,9 @@ export default function WorldMap({ onSelectCountry, disabled, pendingCode }) {
                     className={[
                       classes.country,
                       isPending ? classes.pending : "",
+                      isCorrect ? classes.correct : "",
+                      isWrong ? classes.wrong : "",
+                      isHeat ? classes.heat : "",
                       disabled ? classes.disabled : "",
                     ]
                       .filter(Boolean)

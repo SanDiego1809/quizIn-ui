@@ -117,6 +117,38 @@ function TeamsIcon() {
   );
 }
 
+function MixedIcon() {
+  return (
+    <svg className={classes.icon} viewBox="0 0 48 48" aria-hidden="true">
+      <g className={classes.mixSpin}>
+        <circle cx="16" cy="18" r="6" fill="#38bdf8" opacity="0.95" />
+        <path d="M26 12h14l-3 5 3 5H26z" fill="#ef4444" />
+        <path
+          d="M24 28c-4 0-7 3-7 6.5C17 40 24 46 24 46s7-6 7-11.5C31 31 28 28 24 28z"
+          fill="#fbbf24"
+        />
+      </g>
+    </svg>
+  );
+}
+
+function StreakIcon() {
+  return (
+    <svg
+      className={`${classes.icon} ${classes.streakFlash}`}
+      viewBox="0 0 48 48"
+      aria-hidden="true"
+    >
+      <path
+        d="M26 6L14 26h8l-2 16 14-22h-8l4-14z"
+        fill="#fbbf24"
+        stroke="#f59e0b"
+        strokeWidth="1"
+      />
+    </svg>
+  );
+}
+
 export const geographyModePickerTheme = {
   countries: {
     className: classes.countries,
@@ -129,6 +161,14 @@ export const geographyModePickerTheme = {
   capitals: {
     className: classes.capitals,
     Icon: CapitalsIcon,
+  },
+  mixed: {
+    className: classes.mixed,
+    Icon: MixedIcon,
+  },
+  streak: {
+    className: classes.streak,
+    Icon: StreakIcon,
   },
   teams: {
     className: classes.teams,

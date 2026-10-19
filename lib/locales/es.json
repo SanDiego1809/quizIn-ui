@@ -249,7 +249,7 @@
     "waitingForPlayers": "Esperando jugadores",
     "gameInProgress": "Partida en curso",
     "hostTag": "anfitrión",
-    "premiumHostHint": "El anfitrión Premium desbloquea filtros de categoría, filtros por continente y partidas más largas.",
+    "premiumHostHint": "El anfitrión Premium desbloquea filtros por continente, modificadores de mapa, vidas y partidas más largas.",
     "upgradeLink": "Mejorar",
     "seatStatus": "{count} / {max} plazas · {premium} Premium (+1 cada uno)",
     "needPremiumSeat": "Hace falta otro Premium para una sala más grande",
@@ -274,8 +274,30 @@
         "countries": "Encontrar el país",
         "flags": "Encontrar por bandera",
         "capitals": "Encontrar por capital",
+        "mixed": "Mixto",
+        "streak": "Racha",
         "teams": "Equipos (Azul vs Rojo)"
       }
+    },
+    "harderPool": {
+      "label": "Pool difícil",
+      "info": "Inclina el banco hacia países más pequeños y menos conocidos."
+    },
+    "neighborMiss": {
+      "label": "Fallo vecino",
+      "info": "Pulsar un país fronterizo da 2 puntos de consuelo y te mantiene en juego."
+    },
+    "revealHeat": {
+      "label": "Revelar clics",
+      "info": "Tras cada ronda, muestra brevemente dónde ha pulsado cada uno en el mapa."
+    },
+    "lives": {
+      "label": "Vidas",
+      "info": "Cada jugador tiene 3 vidas. Un fallo o el tiempo resta una; a 0 quedas fuera."
+    },
+    "silhouette": {
+      "label": "Silueta",
+      "info": "Oculta las fronteras: la tierra es una sola forma — más difícil reconocer países."
     },
     "continents": {
       "label": "Continentes",
@@ -349,7 +371,16 @@
     "hint": "Toca el país en el mapa. Desplaza o pellizca para zoom, arrastra para moverte.",
     "hintFlag": "Mira la bandera y toca el país correspondiente en el mapa.",
     "hintCapital": "Lee la capital y toca el país correspondiente en el mapa.",
-    "hintTeams": "Suma puntos para tu equipo — toca el país antes que el otro bando."
+    "hintTeams": "Suma puntos para tu equipo — toca el país antes que el otro bando.",
+    "livesLeft": "Vidas: {count}",
+    "youAreOut": "Estás fuera — mira el resto de la partida.",
+    "waitingPick": "Respuesta fijada — tu país sigue marcado. Esperando a los demás ({answered}/{total})…",
+    "revealTitle": "Respuesta",
+    "revealHint": "El país correcto está resaltado.",
+    "revealMiss": "Tu elección en rojo — el país correcto en verde.",
+    "revealHit": "¡Correcto!",
+    "liveRanking": "Clasificación",
+    "youTag": "tú"
   },
   "how": {
     "title": "Cómo funciona",

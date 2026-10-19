@@ -72,6 +72,54 @@
   fill: #b45309;
 }
 
+.country.correct {
+  fill: #22c55e;
+  stroke: #bbf7d0;
+  stroke-width: 1;
+}
+
+.country.wrong {
+  fill: #ef4444;
+  stroke: #fecaca;
+  stroke-width: 1;
+}
+
+.country.heat {
+  fill: #f97316;
+  stroke: #fed7aa;
+  stroke-width: 0.85;
+}
+
+/* One continuous landmass: same fill, no strokes, no hover tint. */
+.silhouette .country,
+.silhouette .country:hover,
+.silhouette .country.disabled:hover {
+  fill: #1e293b;
+  stroke: none;
+  stroke-width: 0;
+}
+
+.silhouette .country.pending,
+.silhouette .country.disabled.pending:hover {
+  fill: #b45309;
+  stroke: none;
+}
+
+.silhouette .country.correct {
+  fill: #22c55e;
+  stroke: none;
+}
+
+.silhouette .country.wrong {
+  fill: #ef4444;
+  stroke: none;
+}
+
+.silhouette .country.heat {
+  fill: #f97316;
+  stroke: none;
+}
+
 .controls {
   position: absolute;
   top: 0.75rem;

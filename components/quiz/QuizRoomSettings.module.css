@@ -61,6 +61,54 @@
   justify-content: center;
 }
 
+.geoChecks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+  margin: 0.1rem 0 0.15rem;
+}
+
+.checkRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.35rem 0.45rem;
+  border-radius: 0.45rem;
+  color: #e2e8f0;
+  cursor: pointer;
+}
+
+.checkRow:hover {
+  background: rgba(30, 41, 59, 0.55);
+}
+
+.checkRowLocked {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+
+.checkbox {
+  flex-shrink: 0;
+  width: 0.95rem;
+  height: 0.95rem;
+  accent-color: #38bdf8;
+}
+
+.checkTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.checkLabel {
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
 .geoSteppers {
   flex: 0 0 auto;
   display: flex;

@@ -43,7 +43,8 @@ export default function PlayRoom() {
     clearError,
   } = useQuizRoom();
 
-  const isPlaying = room?.phase === "playing";
+  const isPlaying =
+    room?.phase === "playing" || room?.phase === "reveal";
   const isFinalResults = room?.phase === "final_results";
   const isGeoEntry = !room && defaultMode === "geography";
   const isGeoSession = room?.mode === "geography";

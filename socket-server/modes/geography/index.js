@@ -6,9 +6,52 @@ const { FREE_GEOGRAPHY_MAX_QUESTIONS } = require("../../lib/hostLimits");
 const DEFAULT_SETTINGS = {
   variant: "countries",
   continents: [],
+  harderPool: false,
+  neighborMiss: false,
+  revealHeat: false,
+  lives: false,
+  silhouette: false,
   questionTimeSeconds: 20,
   questionsPerGame: Math.min(8, COUNTRY_BANK.length),
 };
+
+const CHECKBOX_FIELDS = [
+  {
+    key: "harderPool",
+    label: "Harder pool",
+    type: "checkbox",
+    premium: true,
+    info: "Bias the country pool toward smaller, less familiar countries.",
+  },
+  {
+    key: "neighborMiss",
+    label: "Neighbor miss",
+    type: "checkbox",
+    premium: true,
+    info: "Clicking a bordering country scores 2 consolation points and keeps you alive.",
+  },
+  {
+    key: "revealHeat",
+    label: "Reveal heat",
+    type: "checkbox",
+    premium: true,
+    info: "During the 2s answer reveal, also show where every other player clicked.",
+  },
+  {
+    key: "lives",
+    label: "Lives",
+    type: "checkbox",
+    premium: true,
+    info: "Each player gets 3 lives. A wrong answer or timeout costs a life; at 0 you are out.",
+  },
+  {
+    key: "silhouette",
+    label: "Silhouette",
+    type: "checkbox",
+    premium: true,
+    info: "Hide country borders so land is one solid shape — harder to recognize by frontiers.",
+  },
+];
 
 const SETTINGS_FIELDS = [
   {
@@ -19,9 +62,11 @@ const SETTINGS_FIELDS = [
       { value: "countries", label: "Find the country" },
       { value: "flags", label: "Find by flag" },
       { value: "capitals", label: "Find by capital" },
+      { value: "mixed", label: "Mix" },
+      { value: "streak", label: "Streak", premium: true },
       { value: "teams", label: "Teams (Blue vs Red)" },
     ],
-    hint: "How the prompt is shown each round. Teams: players pick Blue or Red.",
+    hint: "How the prompt is shown each round. Teams: players pick Blue or Red. Streak is Premium.",
   },
   {
     key: "continents",
@@ -38,6 +83,7 @@ const SETTINGS_FIELDS = [
     ],
     hint: "Limit the country pool to selected continents. Empty = all.",
   },
+  ...CHECKBOX_FIELDS,
   {
     key: "questionsPerGame",
     label: "Number of countries",

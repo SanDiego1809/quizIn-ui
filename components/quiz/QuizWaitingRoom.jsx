@@ -45,9 +45,11 @@ export default function QuizWaitingRoom({
   const variantField = activeMode?.settingsFields?.find(
     (field) => field.key === "variant"
   );
+  const hostPremium = room.hostPlan === "premium";
   const variantOptions = (variantField?.options ?? []).map((option) => ({
     value: option.value,
     label: variantOptionLabel(option.value, all, option.label),
+    premium: Boolean(option.premium),
   }));
   const showGeoModePicker =
     geoLobby && inLobby && isHost && roomMode === "geography";
@@ -197,6 +199,8 @@ export default function QuizWaitingRoom({
 
   const onVariantChange = (nextVariant) => {
     if (typeof onUpdateConfig !== "function") return;
+    const option = variantOptions.find((entry) => entry.value === nextVariant);
+    if (option?.premium && !hostPremium) return;
     onUpdateConfig({
       settings: {
         ...(room.settings ?? activeMode?.defaultSettings ?? {}),
@@ -227,6 +231,7 @@ export default function QuizWaitingRoom({
               placeholder={t.chooseMode ?? "Choose mode"}
               ariaLabel={t.chooseMode ?? "Choose mode"}
               theme={geographyModePickerTheme}
+              hostPremium={hostPremium}
             />
           ) : null}
         </div>
