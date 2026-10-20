@@ -1,6 +1,7 @@
 const classic = require("./classic");
 const geography = require("./geography");
 const picture = require("./picture");
+const undercover = require("./undercover");
 const { buildSeatInfo } = require("../lib/premiumSeats");
 const { hostIsPremium } = require("../lib/hostLimits");
 
@@ -8,6 +9,7 @@ const MODES = {
   [classic.id]: classic,
   [geography.id]: geography,
   [picture.id]: picture,
+  [undercover.id]: undercover,
 };
 
 const DEFAULT_MODE_ID = classic.id;

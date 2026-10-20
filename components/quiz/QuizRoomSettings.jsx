@@ -129,12 +129,14 @@ function renderNumberField({
   all,
   onSettingChange,
   fieldClassName = classes.field,
+  hintAsTip = false,
 }) {
   const locked = Boolean(field.premium) && !hostPremium;
   const max = fieldMax(field, hostPremium);
   const fieldCopy = all.settings_fields?.[field.key];
   const label = fieldCopy?.label ?? field.label;
   const hint =
+    fieldCopy?.info ??
     fieldCopy?.hint ??
     (locked
       ? field.hint
@@ -149,6 +151,7 @@ function renderNumberField({
       <span className={classes.fieldLabel} id={labelId}>
         {label}
         {field.premium ? <span className={classes.badge}>Premium</span> : null}
+        {hintAsTip && hint ? <SettingInfoTip text={hint} /> : null}
       </span>
       <NumberStepper
         id={fieldId}
@@ -160,7 +163,7 @@ function renderNumberField({
         disabled={locked}
         onChange={(next) => onSettingChange(field.key, next)}
       />
-      {hint ? <span className={classes.hint}>{hint}</span> : null}
+      {!hintAsTip && hint ? <span className={classes.hint}>{hint}</span> : null}
     </div>
   );
 }
@@ -173,6 +176,7 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
   const baseId = useId();
   const isGeography = roomMode === "geography";
   const isClassic = roomMode === "classic" || roomMode === "picture";
+  const isUndercover = roomMode === "undercover";
 
   const activeMode = useMemo(
     () => getModeMeta(room, roomMode),
@@ -258,7 +262,7 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
     return (
       <div className={classes.readOnly}>
         <p className={classes.readOnlyLabel}>{t.gameSetup ?? "Game setup"}</p>
-        {isGeography || isClassic ? (
+        {isGeography || isClassic || isUndercover ? (
           <p className={classes.geoTitle}>{modeName}</p>
         ) : null}
         <p className={classes.readOnlyValue}>{formatRoomSettingsSummary(room, lang)}</p>
@@ -555,6 +559,64 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
             </Link>
           </p>
         ) : null}
+      </div>
+    );
+  }
+
+  if (isUndercover) {
+    const numberFields = visibleFields.filter((field) => field.type === "number");
+    const selectFields = visibleFields.filter((field) => field.type === "select");
+
+    return (
+      <div className={`${classes.form} ${classes.geoForm}`}>
+        <p className={classes.formLabel}>{t.gameSetup ?? "Game setup"}</p>
+        <h3 className={classes.geoTitle}>{modeName}</h3>
+
+        {selectFields.map((field) => {
+          const fieldCopy = all.settings_fields?.[field.key];
+          const label = fieldCopy?.label ?? field.label;
+          const tip = fieldCopy?.info ?? fieldCopy?.hint ?? field.hint;
+          const fieldId = `${baseId}-${field.key}`;
+
+          return (
+            <label key={field.key} className={classes.field}>
+              <span className={classes.fieldLabel}>
+                {label}
+                {tip ? <SettingInfoTip text={tip} /> : null}
+              </span>
+              <select
+                id={fieldId}
+                className={classes.select}
+                value={
+                  draftSettings[field.key] ??
+                  activeMode.defaultSettings?.[field.key] ??
+                  ""
+                }
+                onChange={(e) => onSettingChange(field.key, e.target.value)}
+              >
+                {(field.options || []).map((option) => (
+                  <option key={option.value || "all"} value={option.value}>
+                    {optionLabel(field.key, option.value, all, option.label)}
+                  </option>
+                ))}
+              </select>
+            </label>
+          );
+        })}
+
+        <div className={classes.geoSteppers}>
+          {numberFields.map((field) =>
+            renderNumberField({
+              field,
+              draftSettings,
+              hostPremium,
+              baseId,
+              all,
+              onSettingChange,
+              hintAsTip: true,
+            })
+          )}
+        </div>
       </div>
     );
   }

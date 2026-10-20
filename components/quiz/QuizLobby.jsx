@@ -28,7 +28,8 @@ export default function QuizLobby({
   const t = getTranslations(lang).play;
   const geo = variant === "geo";
   const classic = variant === "classic";
-  const immersive = geo || classic;
+  const undercover = variant === "undercover";
+  const immersive = geo || classic || undercover;
 
   useEffect(() => {
     if (defaultName) setName(defaultName);
@@ -49,6 +50,7 @@ export default function QuizLobby({
     classes.panel,
     geo ? classes.geoPanel : "",
     classic ? classes.classicPanel : "",
+    undercover ? classes.undercoverPanel : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -88,6 +90,13 @@ export default function QuizLobby({
           {" "}
           {t.speedScoringHint ??
             "Faster correct answers earn more points."}
+        </p>
+      ) : null}
+      {undercover ? (
+        <p className={classes.hint}>
+          <strong>{t.undercoverLabel ?? "Undercover"}</strong>
+          {" — "}
+          {t.modeLockedFromHome ?? "Mode settings are chosen in the waiting room."}
         </p>
       ) : null}
       {connected ? (

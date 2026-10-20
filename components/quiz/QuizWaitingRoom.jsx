@@ -40,7 +40,8 @@ export default function QuizWaitingRoom({
 }) {
   const geoLobby = variant === "geoLobby";
   const classicLobby = variant === "classicLobby";
-  const immersiveLobby = geoLobby || classicLobby;
+  const undercoverLobby = variant === "undercoverLobby";
+  const immersiveLobby = geoLobby || classicLobby || undercoverLobby;
   const inLobby = room.phase === "lobby";
   const all = getTranslations(lang);
   const t = { ...all.settings, ...all.play };
@@ -241,6 +242,7 @@ export default function QuizWaitingRoom({
       classes.panel,
       geoLobby ? classes.geoPanel : "",
       classicLobby ? classes.classicPanel : "",
+      undercoverLobby ? classes.undercoverPanel : "",
     ]
       .filter(Boolean)
       .join(" ");
@@ -248,6 +250,7 @@ export default function QuizWaitingRoom({
       classes.panel,
       geoLobby ? classes.geoPanel : "",
       classicLobby ? classes.classicPanel : "",
+      undercoverLobby ? classes.undercoverPanel : "",
       classes.geoPanelRight,
     ]
       .filter(Boolean)

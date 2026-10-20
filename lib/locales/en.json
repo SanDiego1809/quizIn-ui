@@ -178,6 +178,10 @@
       "lottieShowTime": {
         "name": "Show time icon (Ahmad Halawani)",
         "note": "Show-time animation on the home Classic quiz card (Lottie Simple License) — https://lottiefiles.com/free-animation/show-time-icon-1EUnXQJISy"
+      },
+      "lottieIspettorePrivacy": {
+        "name": "Ispettore Privacy (Armando Rinaldi)",
+        "note": "Privacy / spy animation on the home Undercover card (Lottie Simple License) — https://lottiefiles.com/free-animation/ispettore-privacy-5nQfuQ4eRe"
       }
     },
     "videos": {
@@ -217,6 +221,7 @@
     "geographyLabel": "Geography Quiz",
     "classicLabel": "Classic Quiz",
     "pictureLabel": "Picture Round",
+    "undercoverLabel": "Undercover",
     "connected": "Connected to game server",
     "connecting": "Connecting to game server…",
     "yourName": "Your name",
@@ -394,7 +399,118 @@
     },
     "audioPack": {
       "label": "Sound effects",
-      "info": "Play lock-in / correct / wrong stings (off by default)."
+      "info": "Play lock-in / correct / wrong stings (off by default).",
+      "hintUndercover": "Play undercover stings (your turn, vote, elim, blank)."
+    },
+    "undercoverCount": {
+      "label": "Undercovers",
+      "hint": "Players who get a related but different word."
+    },
+    "mrWhiteCount": {
+      "label": "Mr White",
+      "hint": "Players with no word. If voted out, they can guess the civilian word."
+    },
+    "foolCount": {
+      "label": "Fool",
+      "hint": "Sees the undercover word but scores with civilians."
+    },
+    "detectiveCount": {
+      "label": "Detective",
+      "hint": "Once per round, peek whether a player is civilian or special."
+    },
+    "hideRoles": {
+      "label": "Hide roles",
+      "hint": "Players only see their word. Only Mr White sees their role."
+    },
+    "blankRounds": {
+      "label": "Blank rounds",
+      "hint": "Randomly turn a round into everyone-has-no-word chaos.",
+      "options": {
+        "off": "Off",
+        "random": "Random (20%)"
+      }
+    },
+    "discussionMode": {
+      "label": "Discussion",
+      "hint": "Talk between clues and voting.",
+      "options": {
+        "off": "Off",
+        "timer": "Timer",
+        "ready": "Ready to vote"
+      }
+    },
+    "discussionTimeSeconds": {
+      "label": "Discussion time (seconds)"
+    },
+    "requireAccuse": {
+      "label": "Require accusation",
+      "hint": "A nomination must be seconded before voting opens."
+    },
+    "accuseTimeSeconds": {
+      "label": "Accuse time (seconds)"
+    },
+    "tieBehavior": {
+      "label": "On vote tie",
+      "options": {
+        "revote": "Revote",
+        "skip": "Skip elimination"
+      }
+    },
+    "banSecretWord": {
+      "label": "Ban secret word in clues"
+    },
+    "banDuplicateClue": {
+      "label": "Ban duplicate clues"
+    },
+    "clueOneWord": {
+      "label": "One-word clues only"
+    },
+    "clueMaxChars": {
+      "label": "Max clue characters",
+      "hint": "0 = no limit"
+    },
+    "speedResolve": {
+      "label": "Speed resolve (one vote ends round)",
+      "hint": "Used by the Speed preset — one elimination scores the round."
+    },
+    "wordSource": {
+      "label": "Word source",
+      "hint": "Custom pairs stay in this room.",
+      "options": {
+        "bank": "Built-in bank",
+        "custom": "Custom pairs only",
+        "mixed": "Bank + custom"
+      }
+    },
+    "totalRounds": {
+      "label": "Rounds"
+    },
+    "clueTimeSeconds": {
+      "label": "Clue time (seconds)",
+      "hint": "0 = no timer"
+    },
+    "voteTimeSeconds": {
+      "label": "Vote time (seconds)",
+      "hint": "0 = no timer"
+    },
+    "wordCategory": {
+      "label": "Word pack",
+      "options": {
+        "all": "All packs",
+        "easy": "Easy",
+        "family": "Family",
+        "classic": "Classic",
+        "funny": "Funny",
+        "food": "Food & Drinks"
+      }
+    },
+    "wordLang": {
+      "label": "Word language",
+      "options": {
+        "en": "English",
+        "fr": "Français",
+        "es": "Español"
+      }
     },
     "category": {
       "label": "Categories",
@@ -445,6 +561,96 @@
       "vibe": "Maps",
       "description": "A country name appears — click it on the interactive world map before your friends do. Built for map lovers and classrooms.",
       "learnMore": "Learn more →"
+    },
+    "undercover": {
+      "name": "Undercover",
+      "vibe": "Deduce",
+      "description": "Most players share a secret word. Undercovers get a close cousin. Give clues and vote until civilians or impostors win — optional Mr White has no word at all.",
+      "learnMore": "Play Undercover →"
+    }
+  },
+  "undercover": {
+    "phaseClue": "Clues",
+    "phaseDiscuss": "Discussion",
+    "phaseAccuse": "Accuse",
+    "phaseVote": "Vote",
+    "phaseMrWhite": "Mr White guess",
+    "phaseResults": "Round results",
+    "phaseReveal": "Your card",
+    "roundMeta": "Round {current} / {total}",
+    "yourSecret": "Your secret",
+    "yourWord": "Your word",
+    "roleCivilian": "Civilian",
+    "roleUndercover": "Undercover",
+    "roleMrWhite": "Mr White",
+    "roleFool": "Fool",
+    "roleDetective": "Detective",
+    "noWord": "No word",
+    "blankRoundBanner": "Blank round — no one has a word. Bluff.",
+    "youAreOut": "You're out for this round — watch the others.",
+    "spectateHint": "Spectating — clues and votes only.",
+    "turnOrder": "Order: {order}",
+    "yourTurn": "Your turn — give a short clue.",
+    "waitingFor": "Waiting for {name}…",
+    "cluePlaceholder": "One short clue",
+    "submitClue": "Submit clue",
+    "discussHint": "Talk it out, then vote.",
+    "readyToVote": "Ready to vote",
+    "readyCount": "Ready {ready}/{need}",
+    "accuseHint": "Nominate someone. Another player must second.",
+    "nominate": "Nominate",
+    "secondAccuse": "Second",
+    "nominated": "Nominated: {name}",
+    "waitingSecond": "Waiting for a second…",
+    "voteHint": "Vote for who seems off.",
+    "submitVote": "Lock vote",
+    "voteWaiting": "Waiting for everyone to vote…",
+    "votedFor": "→ {name}",
+    "tieRevote": "Tie — voting again…",
+    "mrWhiteEliminated": "{name} was eliminated and may guess the civilian word.",
+    "guessPlaceholder": "Civilian word",
+    "submitGuess": "Guess",
+    "waitingMrWhite": "Waiting for Mr White’s guess…",
+    "winnerCivilians": "Civilians win the round",
+    "winnerUndercover": "Undercover wins the round",
+    "winnerMrWhite": "Mr White wins the round",
+    "eliminatedLine": "Eliminated: {name}",
+    "mrWhiteGuessLine": "Guess: {guess} ({ok})",
+    "correct": "correct",
+    "wrong": "wrong",
+    "wordsReveal": "Words: {common} / {undercover}",
+    "foolReveal": "Fool: {names}",
+    "detectiveReveal": "Detective: {names}",
+    "scoreCivilians": "Civilians",
+    "scoreUndercover": "Undercover",
+    "scoreMrWhite": "Mr White",
+    "nextRound": "Next round",
+    "seeFinal": "See final results",
+    "waitingHost": "Waiting for the host…",
+    "ratePair": "Rate this word pair",
+    "peek": "Peek",
+    "peekResultCivilian": "{name} reads civilian",
+    "peekResultSpecial": "{name} reads special",
+    "presetsLabel": "Presets",
+    "customPairsLabel": "Custom word pairs",
+    "customPairsHint": "common / undercover — stay in this room",
+    "addPair": "Add pair",
+    "commonPlaceholder": "Civilian word",
+    "undercoverPlaceholder": "Undercover word",
+    "achievements": "Achievements",
+    "achievement_perfect_civilian_table": "Perfect civilian table",
+    "achievement_mr_white_clutch": "Mr White clutch guess",
+    "achievement_fool_survived": "Fool survived",
+    "achievement_won_while_blind": "Won while blind",
+    "achievement_survived_blank_round": "Survived a blank round",
+    "presets": {
+      "chill": "Chill",
+      "chaos": "Chaos",
+      "mrWhiteNight": "Mr White night",
+      "quick": "Quick",
+      "blindNight": "Blind night",
+      "fog": "Fog",
+      "speed": "Speed"
     }
   },
   "geoQuestion": {

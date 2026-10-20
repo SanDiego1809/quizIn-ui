@@ -67,6 +67,13 @@ export default function HomePage({ lang = "en" }) {
                 {all.modes.geography.learnMore}
               </Link>
             </article>
+            <article className={classes.modeCard}>
+              <h3 className={classes.modeName}>{all.modes.undercover.name}</h3>
+              <p className={classes.modeDesc}>{all.modes.undercover.description}</p>
+              <Link href={`/play?mode=undercover&lang=${lang}`} className={classes.modeLink}>
+                {all.modes.undercover.learnMore}
+              </Link>
+            </article>
           </div>
           <p className={classes.sectionLead}>
             <Link href={`/multiplayer-quiz?lang=${lang}`}>Multiplayer quiz rooms</Link> use a

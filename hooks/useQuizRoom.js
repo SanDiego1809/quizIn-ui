@@ -108,12 +108,20 @@ export function useQuizRoom() {
     [room?.roomCode]
   );
 
-  const startGame = useCallback(() => {
-    if (!room?.roomCode) return;
-    getQuizSocket()?.emit("quiz:game_start", {
-      roomCode: room.roomCode,
-    });
-  }, [room?.roomCode]);
+  const startGame = useCallback(
+    (extraSettings) => {
+      if (!room?.roomCode) return;
+      const settings =
+        extraSettings && typeof extraSettings === "object"
+          ? { ...(room.settings || {}), ...extraSettings }
+          : undefined;
+      getQuizSocket()?.emit("quiz:game_start", {
+        roomCode: room.roomCode,
+        ...(settings ? { settings } : {}),
+      });
+    },
+    [room?.roomCode, room?.settings]
+  );
 
   const sendGameAction = useCallback(
     (action) => {
@@ -142,10 +150,20 @@ export function useQuizRoom() {
     getQuizSocket()?.emit("quiz:game_reset", { roomCode: room.roomCode });
   }, [room?.roomCode]);
 
-  const rematchGame = useCallback(() => {
-    if (!room?.roomCode) return;
-    getQuizSocket()?.emit("quiz:game_rematch", { roomCode: room.roomCode });
-  }, [room?.roomCode]);
+  const rematchGame = useCallback(
+    (extraSettings) => {
+      if (!room?.roomCode) return;
+      const settings =
+        extraSettings && typeof extraSettings === "object"
+          ? { ...(room.settings || {}), ...extraSettings }
+          : undefined;
+      getQuizSocket()?.emit("quiz:game_rematch", {
+        roomCode: room.roomCode,
+        ...(settings ? { settings } : {}),
+      });
+    },
+    [room?.roomCode, room?.settings]
+  );
 
   const sendQuestionFeedback = useCallback(
     ({ questionId, kind, note }) =>

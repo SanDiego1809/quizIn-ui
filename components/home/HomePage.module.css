@@ -312,6 +312,19 @@ a.stepLink:hover {
   box-shadow: 0 14px 32px rgba(45, 212, 191, 0.12);
 }
 
+.undercover {
+  min-height: 14rem;
+  background:
+    radial-gradient(ellipse 70% 60% at 15% 15%, rgba(148, 163, 184, 0.2), transparent 55%),
+    radial-gradient(ellipse 50% 45% at 85% 90%, rgba(94, 234, 212, 0.12), transparent 50%),
+    linear-gradient(165deg, #111827 0%, #0c1220 100%);
+}
+
+.undercover:hover,
+.undercover:focus-within {
+  box-shadow: 0 14px 32px rgba(94, 234, 212, 0.12);
+}
+
 .modePlay {
   position: relative;
   display: flex;
@@ -330,7 +343,9 @@ a.stepLink:hover {
   outline-offset: -4px;
 }
 
-.geography .modePlay::after {
+.geography .modePlay::after,
+.undercover .modePlay::after,
+.classic .modePlay::after {
   content: "";
   position: absolute;
   left: 0;
@@ -342,14 +357,20 @@ a.stepLink:hover {
   z-index: 1;
 }
 
-.geography .modeName,
-.geography .vibe {
-  position: relative;
-  z-index: 2;
+.undercover .modePlay::after {
+  background: linear-gradient(to top, #0c1220 22%, rgba(12, 18, 32, 0.35) 70%, transparent);
 }
 
+.classic .modePlay::after {
+  background: linear-gradient(to top, #0f172a 18%, rgba(15, 23, 42, 0.25) 72%, transparent);
+}
+
+.geography .modeName,
+.geography .vibe,
 .classic .modeName,
-.classic .vibe {
+.classic .vibe,
+.undercover .modeName,
+.undercover .vibe {
   position: relative;
   z-index: 2;
 }
@@ -378,6 +399,14 @@ a.stepLink:hover {
 
 .geography .vibe {
   color: #5eead4;
+}
+
+.undercover .modeName {
+  color: #f8fafc;
+}
+
+.undercover .vibe {
+  color: #e2e8f0;
 }
 
 .modeCorner {

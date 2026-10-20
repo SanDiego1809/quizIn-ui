@@ -17,6 +17,7 @@ import { getTranslations } from "@/lib/i18n";
 import EarthGlobe from "./EarthGlobe";
 
 const ShowTimeIcon = dynamic(() => import("./ShowTimeIcon"), { ssr: false });
+const UndercoverIcon = dynamic(() => import("./UndercoverIcon"), { ssr: false });
 import HomeFaqTeaser from "./HomeFaqTeaser";
 import HomeRecentGames from "./HomeRecentGames";
 import classes from "./HomePage.module.css";
@@ -24,6 +25,7 @@ import classes from "./HomePage.module.css";
 const MODES = [
   { id: "classic", infoHref: "/classic-quiz" },
   { id: "geography", infoHref: "/geography-quiz" },
+  { id: "undercover", infoHref: "/play?mode=undercover" },
 ];
 
 function ModeInfoIcon() {
@@ -154,6 +156,9 @@ export default function HomeClient() {
             <div className={classes.modeGrid}>
               {MODES.map(({ id, infoHref }, index) => {
                 const mode = all.modes[id];
+                const infoHrefWithLang = infoHref.includes("?")
+                  ? `${infoHref}&lang=${lang}`
+                  : `${infoHref}?lang=${lang}`;
                 return (
                   <article
                     key={id}
@@ -162,7 +167,7 @@ export default function HomeClient() {
                   >
                     <div className={classes.modeCorner}>
                       <Link
-                        href={`${infoHref}?lang=${lang}`}
+                        href={infoHrefWithLang}
                         className={classes.infoLink}
                         aria-label={mode.learnMore.replace(/\s*→\s*$/, "")}
                         title={mode.learnMore.replace(/\s*→\s*$/, "")}
@@ -175,7 +180,13 @@ export default function HomeClient() {
                       href={`/play?mode=${id}&lang=${lang}`}
                       className={classes.modePlay}
                     >
-                      {id === "classic" ? <ShowTimeIcon /> : <EarthGlobe />}
+                      {id === "classic" ? (
+                        <ShowTimeIcon />
+                      ) : id === "geography" ? (
+                        <EarthGlobe />
+                      ) : (
+                        <UndercoverIcon />
+                      )}
                       <h3 className={classes.modeName}>{mode.name}</h3>
                       <p className={classes.vibe}>{mode.vibe}</p>
                     </Link>

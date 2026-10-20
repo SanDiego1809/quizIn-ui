@@ -1,0 +1,4509 @@
+{
+  "source": {
+    "name": "Undercover Word",
+    "url": "https://www.undercoverword.com/word-packs",
+    "note": "Curated sample of 250 Operative/Mole pairs from undercoverword.com word packs."
+  },
+  "pairs": [
+    {
+      "id": "easy-coffee-tea",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Coffee",
+        "fr": "Café",
+        "es": "Café"
+      },
+      "undercover": {
+        "en": "Tea",
+        "fr": "Thé",
+        "es": "Té"
+      }
+    },
+    {
+      "id": "easy-cat-dog",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Cat",
+        "fr": "Chat",
+        "es": "Gato"
+      },
+      "undercover": {
+        "en": "Dog",
+        "fr": "Chien",
+        "es": "Perro"
+      }
+    },
+    {
+      "id": "easy-pizza-burger",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Pizza",
+        "fr": "Pizza",
+        "es": "Pizza"
+      },
+      "undercover": {
+        "en": "Burger",
+        "fr": "Burger",
+        "es": "Hamburguesa"
+      }
+    },
+    {
+      "id": "easy-beach-pool",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Beach",
+        "fr": "Plage",
+        "es": "Playa"
+      },
+      "undercover": {
+        "en": "Pool",
+        "fr": "Piscine",
+        "es": "Piscina"
+      }
+    },
+    {
+      "id": "easy-apple-orange",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Apple",
+        "fr": "Pomme",
+        "es": "Manzana"
+      },
+      "undercover": {
+        "en": "Orange",
+        "fr": "Orange",
+        "es": "Naranja"
+      }
+    },
+    {
+      "id": "easy-rain-snow",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Rain",
+        "fr": "Pluie",
+        "es": "Lluvia"
+      },
+      "undercover": {
+        "en": "Snow",
+        "fr": "Neige",
+        "es": "Nieve"
+      }
+    },
+    {
+      "id": "easy-car-truck",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Car",
+        "fr": "Voiture",
+        "es": "Coche"
+      },
+      "undercover": {
+        "en": "Truck",
+        "fr": "Camion",
+        "es": "Camión"
+      }
+    },
+    {
+      "id": "easy-book-magazine",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Book",
+        "fr": "Livre",
+        "es": "Libro"
+      },
+      "undercover": {
+        "en": "Magazine",
+        "fr": "Magazine",
+        "es": "Revista"
+      }
+    },
+    {
+      "id": "easy-chair-couch",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Chair",
+        "fr": "Chaise",
+        "es": "Silla"
+      },
+      "undercover": {
+        "en": "Couch",
+        "fr": "Canapé",
+        "es": "Sofá"
+      }
+    },
+    {
+      "id": "easy-soccer-basketball",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Soccer",
+        "fr": "Football",
+        "es": "Fútbol"
+      },
+      "undercover": {
+        "en": "Basketball",
+        "fr": "Basket-ball",
+        "es": "Baloncesto"
+      }
+    },
+    {
+      "id": "easy-breakfast-lunch",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Breakfast",
+        "fr": "Petit-déjeuner",
+        "es": "Desayuno"
+      },
+      "undercover": {
+        "en": "Lunch",
+        "fr": "Déjeuner",
+        "es": "Almuerzo"
+      }
+    },
+    {
+      "id": "easy-mountain-hill",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Mountain",
+        "fr": "Montagne",
+        "es": "Montaña"
+      },
+      "undercover": {
+        "en": "Hill",
+        "fr": "Colline",
+        "es": "Colina"
+      }
+    },
+    {
+      "id": "easy-sun-moon",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Sun",
+        "fr": "Soleil",
+        "es": "Sol"
+      },
+      "undercover": {
+        "en": "Moon",
+        "fr": "Lune",
+        "es": "Luna"
+      }
+    },
+    {
+      "id": "easy-hot-cold",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Hot",
+        "fr": "Chaud",
+        "es": "Caliente"
+      },
+      "undercover": {
+        "en": "Cold",
+        "fr": "Froid",
+        "es": "Frío"
+      }
+    },
+    {
+      "id": "easy-day-night",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Day",
+        "fr": "Jour",
+        "es": "Día"
+      },
+      "undercover": {
+        "en": "Night",
+        "fr": "Nuit",
+        "es": "Noche"
+      }
+    },
+    {
+      "id": "easy-summer-winter",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Summer",
+        "fr": "Été",
+        "es": "Verano"
+      },
+      "undercover": {
+        "en": "Winter",
+        "fr": "Hiver",
+        "es": "Invierno"
+      }
+    },
+    {
+      "id": "easy-shirt-pants",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Shirt",
+        "fr": "Chemise",
+        "es": "Camisa"
+      },
+      "undercover": {
+        "en": "Pants",
+        "fr": "Pantalon",
+        "es": "Pantalones"
+      }
+    },
+    {
+      "id": "easy-shoes-socks",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Shoes",
+        "fr": "Chaussures",
+        "es": "Zapatos"
+      },
+      "undercover": {
+        "en": "Socks",
+        "fr": "Chaussettes",
+        "es": "Calcetines"
+      }
+    },
+    {
+      "id": "easy-spoon-fork",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Spoon",
+        "fr": "Cuillère",
+        "es": "Cuchara"
+      },
+      "undercover": {
+        "en": "Fork",
+        "fr": "Fourchette",
+        "es": "Tenedor"
+      }
+    },
+    {
+      "id": "easy-cup-glass",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Cup",
+        "fr": "Tasse",
+        "es": "Taza"
+      },
+      "undercover": {
+        "en": "Glass",
+        "fr": "Verre",
+        "es": "Vaso"
+      }
+    },
+    {
+      "id": "easy-phone-tablet",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Phone",
+        "fr": "Téléphone",
+        "es": "Teléfono"
+      },
+      "undercover": {
+        "en": "Tablet",
+        "fr": "Tablette",
+        "es": "Tableta"
+      }
+    },
+    {
+      "id": "easy-tv-computer",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "TV",
+        "fr": "Télé",
+        "es": "Tele"
+      },
+      "undercover": {
+        "en": "Computer",
+        "fr": "Ordinateur",
+        "es": "Ordenador"
+      }
+    },
+    {
+      "id": "easy-bed-couch",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Bed",
+        "fr": "Lit",
+        "es": "Cama"
+      },
+      "undercover": {
+        "en": "Couch",
+        "fr": "Canapé",
+        "es": "Sofá"
+      }
+    },
+    {
+      "id": "easy-door-window",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Door",
+        "fr": "Porte",
+        "es": "Puerta"
+      },
+      "undercover": {
+        "en": "Window",
+        "fr": "Fenêtre",
+        "es": "Ventana"
+      }
+    },
+    {
+      "id": "easy-bird-fish",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Bird",
+        "fr": "Oiseau",
+        "es": "Pájaro"
+      },
+      "undercover": {
+        "en": "Fish",
+        "fr": "Poisson",
+        "es": "Pez"
+      }
+    },
+    {
+      "id": "easy-big-small",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Big",
+        "fr": "Grand",
+        "es": "Grande"
+      },
+      "undercover": {
+        "en": "Small",
+        "fr": "Petit",
+        "es": "Pequeño"
+      }
+    },
+    {
+      "id": "easy-fast-slow",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Fast",
+        "fr": "Rapide",
+        "es": "Rápido"
+      },
+      "undercover": {
+        "en": "Slow",
+        "fr": "Lent",
+        "es": "Lento"
+      }
+    },
+    {
+      "id": "easy-clean-dirty",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Clean",
+        "fr": "Propre",
+        "es": "Limpio"
+      },
+      "undercover": {
+        "en": "Dirty",
+        "fr": "Sale",
+        "es": "Sucio"
+      }
+    },
+    {
+      "id": "easy-happy-sad",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Happy",
+        "fr": "Heureux",
+        "es": "Feliz"
+      },
+      "undercover": {
+        "en": "Sad",
+        "fr": "Triste",
+        "es": "Triste"
+      }
+    },
+    {
+      "id": "easy-inside-outside",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Inside",
+        "fr": "Intérieur",
+        "es": "Dentro"
+      },
+      "undercover": {
+        "en": "Outside",
+        "fr": "Extérieur",
+        "es": "Fuera"
+      }
+    },
+    {
+      "id": "easy-up-down",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Up",
+        "fr": "Haut",
+        "es": "Arriba"
+      },
+      "undercover": {
+        "en": "Down",
+        "fr": "Bas",
+        "es": "Abajo"
+      }
+    },
+    {
+      "id": "easy-left-right",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Left",
+        "fr": "Gauche",
+        "es": "Izquierda"
+      },
+      "undercover": {
+        "en": "Right",
+        "fr": "Droite",
+        "es": "Derecha"
+      }
+    },
+    {
+      "id": "easy-near-far",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Near",
+        "fr": "Près",
+        "es": "Cerca"
+      },
+      "undercover": {
+        "en": "Far",
+        "fr": "Loin",
+        "es": "Lejos"
+      }
+    },
+    {
+      "id": "easy-sweet-salty",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Sweet",
+        "fr": "Sucré",
+        "es": "Dulce"
+      },
+      "undercover": {
+        "en": "Salty",
+        "fr": "Salé",
+        "es": "Salado"
+      }
+    },
+    {
+      "id": "easy-morning-evening",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Morning",
+        "fr": "Matin",
+        "es": "Mañana"
+      },
+      "undercover": {
+        "en": "Evening",
+        "fr": "Soir",
+        "es": "Noche"
+      }
+    },
+    {
+      "id": "easy-bus-taxi",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Bus",
+        "fr": "Bus",
+        "es": "Autobús"
+      },
+      "undercover": {
+        "en": "Taxi",
+        "fr": "Taxi",
+        "es": "Taxi"
+      }
+    },
+    {
+      "id": "easy-school-classroom",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "School",
+        "fr": "École",
+        "es": "Escuela"
+      },
+      "undercover": {
+        "en": "Classroom",
+        "fr": "Salle de classe",
+        "es": "Aula"
+      }
+    },
+    {
+      "id": "easy-teacher-student",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Teacher",
+        "fr": "Professeur",
+        "es": "Profesor"
+      },
+      "undercover": {
+        "en": "Student",
+        "fr": "Élève",
+        "es": "Estudiante"
+      }
+    },
+    {
+      "id": "easy-water-juice",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Water",
+        "fr": "Eau",
+        "es": "Agua"
+      },
+      "undercover": {
+        "en": "Juice",
+        "fr": "Jus",
+        "es": "Zumo"
+      }
+    },
+    {
+      "id": "easy-bread-cake",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Bread",
+        "fr": "Pain",
+        "es": "Pan"
+      },
+      "undercover": {
+        "en": "Cake",
+        "fr": "Gâteau",
+        "es": "Pastel"
+      }
+    },
+    {
+      "id": "easy-hat-scarf",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Hat",
+        "fr": "Chapeau",
+        "es": "Sombrero"
+      },
+      "undercover": {
+        "en": "Scarf",
+        "fr": "Écharpe",
+        "es": "Bufanda"
+      }
+    },
+    {
+      "id": "easy-eye-nose",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Eye",
+        "fr": "Œil",
+        "es": "Ojo"
+      },
+      "undercover": {
+        "en": "Nose",
+        "fr": "Nez",
+        "es": "Nariz"
+      }
+    },
+    {
+      "id": "easy-hand-foot",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Hand",
+        "fr": "Main",
+        "es": "Mano"
+      },
+      "undercover": {
+        "en": "Foot",
+        "fr": "Pied",
+        "es": "Pie"
+      }
+    },
+    {
+      "id": "easy-head-neck",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Head",
+        "fr": "Tête",
+        "es": "Cabeza"
+      },
+      "undercover": {
+        "en": "Neck",
+        "fr": "Cou",
+        "es": "Cuello"
+      }
+    },
+    {
+      "id": "easy-red-blue",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Red",
+        "fr": "Rouge",
+        "es": "Rojo"
+      },
+      "undercover": {
+        "en": "Blue",
+        "fr": "Bleu",
+        "es": "Azul"
+      }
+    },
+    {
+      "id": "easy-green-yellow",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Green",
+        "fr": "Vert",
+        "es": "Verde"
+      },
+      "undercover": {
+        "en": "Yellow",
+        "fr": "Jaune",
+        "es": "Amarillo"
+      }
+    },
+    {
+      "id": "easy-quiet-loud",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Quiet",
+        "fr": "Silencieux",
+        "es": "Silencioso"
+      },
+      "undercover": {
+        "en": "Loud",
+        "fr": "Bruyant",
+        "es": "Ruidoso"
+      }
+    },
+    {
+      "id": "easy-light-dark",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Light",
+        "fr": "Lumière",
+        "es": "Luz"
+      },
+      "undercover": {
+        "en": "Dark",
+        "fr": "Sombre",
+        "es": "Oscuro"
+      }
+    },
+    {
+      "id": "easy-open-close",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Open",
+        "fr": "Ouvrir",
+        "es": "Abrir"
+      },
+      "undercover": {
+        "en": "Close",
+        "fr": "Fermer",
+        "es": "Cerrar"
+      }
+    },
+    {
+      "id": "easy-start-stop",
+      "category": "easy",
+      "difficulty": "easy",
+      "tags": [
+        "easy"
+      ],
+      "common": {
+        "en": "Start",
+        "fr": "Démarrer",
+        "es": "Empezar"
+      },
+      "undercover": {
+        "en": "Stop",
+        "fr": "Arrêter",
+        "es": "Parar"
+      }
+    },
+    {
+      "id": "family-ice-cream-frozen-yogurt",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Ice Cream",
+        "fr": "Glace",
+        "es": "Helado"
+      },
+      "undercover": {
+        "en": "Frozen Yogurt",
+        "fr": "Yaourt glacé",
+        "es": "Yogur helado"
+      }
+    },
+    {
+      "id": "family-train-bus",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Train",
+        "fr": "Train",
+        "es": "Tren"
+      },
+      "undercover": {
+        "en": "Bus",
+        "fr": "Bus",
+        "es": "Autobús"
+      }
+    },
+    {
+      "id": "family-bicycle-scooter",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Bicycle",
+        "fr": "Vélo",
+        "es": "Bicicleta"
+      },
+      "undercover": {
+        "en": "Scooter",
+        "fr": "Trottinette",
+        "es": "Patinete"
+      }
+    },
+    {
+      "id": "family-zoo-aquarium",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Zoo",
+        "fr": "Zoo",
+        "es": "Zoo"
+      },
+      "undercover": {
+        "en": "Aquarium",
+        "fr": "Aquarium",
+        "es": "Acuario"
+      }
+    },
+    {
+      "id": "family-pancakes-waffles",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Pancakes",
+        "fr": "Pancakes",
+        "es": "Tortitas"
+      },
+      "undercover": {
+        "en": "Waffles",
+        "fr": "Gaufres",
+        "es": "Gofres"
+      }
+    },
+    {
+      "id": "family-playground-park",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Playground",
+        "fr": "Aire de jeux",
+        "es": "Parque infantil"
+      },
+      "undercover": {
+        "en": "Park",
+        "fr": "Parc",
+        "es": "Parque"
+      }
+    },
+    {
+      "id": "family-rainbow-sunset",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Rainbow",
+        "fr": "Arc-en-ciel",
+        "es": "Arcoíris"
+      },
+      "undercover": {
+        "en": "Sunset",
+        "fr": "Coucher de soleil",
+        "es": "Puesta de sol"
+      }
+    },
+    {
+      "id": "family-teddy-bear-stuffed-animal",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Teddy Bear",
+        "fr": "Ours en peluche",
+        "es": "Osito de peluche"
+      },
+      "undercover": {
+        "en": "Stuffed Animal",
+        "fr": "Peluche",
+        "es": "Peluche"
+      }
+    },
+    {
+      "id": "family-birthday-cake-cupcake",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Birthday Cake",
+        "fr": "Gâteau d'anniversaire",
+        "es": "Tarta de cumpleaños"
+      },
+      "undercover": {
+        "en": "Cupcake",
+        "fr": "Cupcake",
+        "es": "Cupcake"
+      }
+    },
+    {
+      "id": "family-camping-hiking",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Camping",
+        "fr": "Camping",
+        "es": "Camping"
+      },
+      "undercover": {
+        "en": "Hiking",
+        "fr": "Randonnée",
+        "es": "Senderismo"
+      }
+    },
+    {
+      "id": "family-cartoon-movie",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Cartoon",
+        "fr": "Dessin animé",
+        "es": "Dibujos animados"
+      },
+      "undercover": {
+        "en": "Movie",
+        "fr": "Film",
+        "es": "Película"
+      }
+    },
+    {
+      "id": "family-lemonade-juice",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Lemonade",
+        "fr": "Limonade",
+        "es": "Limonada"
+      },
+      "undercover": {
+        "en": "Juice",
+        "fr": "Jus",
+        "es": "Zumo"
+      }
+    },
+    {
+      "id": "family-treehouse-fort",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Treehouse",
+        "fr": "Cabane dans un arbre",
+        "es": "Casa del árbol"
+      },
+      "undercover": {
+        "en": "Fort",
+        "fr": "Fort",
+        "es": "Fuerte"
+      }
+    },
+    {
+      "id": "family-sandcastle-snow-fort",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Sandcastle",
+        "fr": "Château de sable",
+        "es": "Castillo de arena"
+      },
+      "undercover": {
+        "en": "Snow Fort",
+        "fr": "Fort de neige",
+        "es": "Fuerte de nieve"
+      }
+    },
+    {
+      "id": "family-puppy-kitten",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Puppy",
+        "fr": "Chiot",
+        "es": "Cachorro"
+      },
+      "undercover": {
+        "en": "Kitten",
+        "fr": "Chaton",
+        "es": "Gatito"
+      }
+    },
+    {
+      "id": "family-superhero-villain",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Superhero",
+        "fr": "Super-héros",
+        "es": "Superhéroe"
+      },
+      "undercover": {
+        "en": "Villain",
+        "fr": "Méchant",
+        "es": "Villano"
+      }
+    },
+    {
+      "id": "family-princess-queen",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Princess",
+        "fr": "Princesse",
+        "es": "Princesa"
+      },
+      "undercover": {
+        "en": "Queen",
+        "fr": "Reine",
+        "es": "Reina"
+      }
+    },
+    {
+      "id": "family-pirate-sailor",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Pirate",
+        "fr": "Pirate",
+        "es": "Pirata"
+      },
+      "undercover": {
+        "en": "Sailor",
+        "fr": "Marin",
+        "es": "Marinero"
+      }
+    },
+    {
+      "id": "family-dinosaur-monster",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Dinosaur",
+        "fr": "Dinosaure",
+        "es": "Dinosaurio"
+      },
+      "undercover": {
+        "en": "Monster",
+        "fr": "Monstre",
+        "es": "Monstruo"
+      }
+    },
+    {
+      "id": "family-fairy-elf",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Fairy",
+        "fr": "Fée",
+        "es": "Hada"
+      },
+      "undercover": {
+        "en": "Elf",
+        "fr": "Elfe",
+        "es": "Elfo"
+      }
+    },
+    {
+      "id": "family-magic-trick-card-trick",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Magic Trick",
+        "fr": "Tour de magie",
+        "es": "Truco de magia"
+      },
+      "undercover": {
+        "en": "Card Trick",
+        "fr": "Tour de cartes",
+        "es": "Truco de cartas"
+      }
+    },
+    {
+      "id": "family-hide-and-seek-tag",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Hide and Seek",
+        "fr": "Cache-cache",
+        "es": "Escondite"
+      },
+      "undercover": {
+      "en": "Tag",
+      "fr": "Jeu du chat",
+      "es": "Pilla-pilla"
+      }
+    },
+    {
+      "id": "family-sleepover-camping",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Sleepover",
+        "fr": "Pyjama party",
+        "es": "Pijamada"
+      },
+      "undercover": {
+        "en": "Camping",
+        "fr": "Camping",
+        "es": "Camping"
+      }
+    },
+    {
+      "id": "family-playdough-slime",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Playdough",
+        "fr": "Pâte à modeler",
+        "es": "Plastilina"
+      },
+      "undercover": {
+        "en": "Slime",
+        "fr": "Slime",
+        "es": "Slime"
+      }
+    },
+    {
+      "id": "family-crayons-markers",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Crayons",
+        "fr": "Crayons de couleur",
+        "es": "Ceras"
+      },
+      "undercover": {
+        "en": "Markers",
+        "fr": "Feutres",
+        "es": "Rotuladores"
+      }
+    },
+    {
+      "id": "family-board-game-puzzle",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Board Game",
+        "fr": "Jeu de société",
+        "es": "Juego de mesa"
+      },
+      "undercover": {
+        "en": "Puzzle",
+        "fr": "Puzzle",
+        "es": "Puzzle"
+      }
+    },
+    {
+      "id": "family-bubble-bath-bath-bomb",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Bubble Bath",
+        "fr": "Bain moussant",
+        "es": "Baño de burbujas"
+      },
+      "undercover": {
+        "en": "Bath Bomb",
+        "fr": "Bombe de bain",
+        "es": "Bomba de baño"
+      }
+    },
+    {
+      "id": "family-pillow-fort-cardboard-castle",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Pillow Fort",
+        "fr": "Cabane de coussins",
+        "es": "Fuerte de almohadas"
+      },
+      "undercover": {
+        "en": "Cardboard Castle",
+        "fr": "Château en carton",
+        "es": "Castillo de cartón"
+      }
+    },
+    {
+      "id": "family-lunchbox-backpack",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Lunchbox",
+        "fr": "Boîte à lunch",
+        "es": "Fiambrera"
+      },
+      "undercover": {
+        "en": "Backpack",
+        "fr": "Sac à dos",
+        "es": "Mochila"
+      }
+    },
+    {
+      "id": "family-fireflies-glow-sticks",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Fireflies",
+        "fr": "Lucioles",
+        "es": "Luciérnagas"
+      },
+      "undercover": {
+        "en": "Glow Sticks",
+        "fr": "Bâtons lumineux",
+        "es": "Barras luminosas"
+      }
+    },
+    {
+      "id": "family-storytime-bedtime",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Storytime",
+        "fr": "Heure du conte",
+        "es": "Hora del cuento"
+      },
+      "undercover": {
+        "en": "Bedtime",
+        "fr": "Heure du coucher",
+        "es": "Hora de dormir"
+      }
+    },
+    {
+      "id": "family-snowman-sandman",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Snowman",
+        "fr": "Bonhomme de neige",
+        "es": "Muñeco de nieve"
+      },
+      "undercover": {
+        "en": "Sandman",
+        "fr": "Marchand de sable",
+        "es": "Hombre de arena"
+      }
+    },
+    {
+      "id": "family-trampoline-bounce-house",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Trampoline",
+        "fr": "Trampoline",
+        "es": "Trampolín"
+      },
+      "undercover": {
+        "en": "Bounce House",
+        "fr": "Château gonflable",
+        "es": "Castillo hinchable"
+      }
+    },
+    {
+      "id": "family-swing-set-slide",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Swing Set",
+        "fr": "Portique",
+        "es": "Columpios"
+      },
+      "undercover": {
+        "en": "Slide",
+        "fr": "Toboggan",
+        "es": "Tobogán"
+      }
+    },
+    {
+      "id": "family-merry-go-round-ferris-wheel",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Merry-Go-Round",
+        "fr": "Manège",
+        "es": "Carrusel"
+      },
+      "undercover": {
+        "en": "Ferris Wheel",
+        "fr": "Grande roue",
+        "es": "Noria"
+      }
+    },
+    {
+      "id": "family-roller-coaster-water-slide",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Roller Coaster",
+        "fr": "Montagnes russes",
+        "es": "Montaña rusa"
+      },
+      "undercover": {
+        "en": "Water Slide",
+        "fr": "Toboggan aquatique",
+        "es": "Tobogán de agua"
+      }
+    },
+    {
+      "id": "family-haunted-house-corn-maze",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Haunted House",
+        "fr": "Maison hantée",
+        "es": "Casa encantada"
+      },
+      "undercover": {
+        "en": "Corn Maze",
+        "fr": "Labyrinthe de maïs",
+        "es": "Laberinto de maíz"
+      }
+    },
+    {
+      "id": "family-cotton-candy-popcorn",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Cotton Candy",
+        "fr": "Barbe à papa",
+        "es": "Algodón de azúcar"
+      },
+      "undercover": {
+        "en": "Popcorn",
+        "fr": "Pop-corn",
+        "es": "Palomitas"
+      }
+    },
+    {
+      "id": "family-petting-zoo-animal-sanctuary",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Petting Zoo",
+        "fr": "Mini-ferme",
+        "es": "Zoo de caricias"
+      },
+      "undercover": {
+        "en": "Animal Sanctuary",
+        "fr": "Sanctuaire animalier",
+        "es": "Santuario de animales"
+      }
+    },
+    {
+      "id": "family-roller-skate-ice-skate",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Roller Skate",
+        "fr": "Roller",
+        "es": "Patines"
+      },
+      "undercover": {
+        "en": "Ice Skate",
+        "fr": "Patin à glace",
+        "es": "Patinaje sobre hielo"
+      }
+    },
+    {
+      "id": "family-kite-balloon",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Kite",
+        "fr": "Cerf-volant",
+        "es": "Cometa"
+      },
+      "undercover": {
+        "en": "Balloon",
+        "fr": "Ballon",
+        "es": "Globo"
+      }
+    },
+    {
+      "id": "family-soap-bubbles-foam",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Soap Bubbles",
+        "fr": "Bulles de savon",
+        "es": "Burbujas de jabón"
+      },
+      "undercover": {
+        "en": "Foam",
+        "fr": "Mousse",
+        "es": "Espuma"
+      }
+    },
+    {
+      "id": "family-hopscotch-chalk-drawing",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Hopscotch",
+        "fr": "Marelle",
+        "es": "Rayuela"
+      },
+      "undercover": {
+        "en": "Chalk Drawing",
+        "fr": "Dessin à la craie",
+        "es": "Dibujo con tiza"
+      }
+    },
+    {
+      "id": "family-jump-rope-hula-hoop",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Jump Rope",
+        "fr": "Corde à sauter",
+        "es": "Cuerda de saltar"
+      },
+      "undercover": {
+        "en": "Hula Hoop",
+        "fr": "Hula hoop",
+        "es": "Hula hoop"
+      }
+    },
+    {
+      "id": "family-water-balloon-slip-and-slide",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Water Balloon",
+        "fr": "Ballon d'eau",
+        "es": "Globo de agua"
+      },
+      "undercover": {
+        "en": "Slip and Slide",
+        "fr": "Toboggan aquatique",
+        "es": "Pista deslizante"
+      }
+    },
+    {
+      "id": "family-sprinkler-hose",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Sprinkler",
+        "fr": "Arroseur",
+        "es": "Aspersor"
+      },
+      "undercover": {
+        "en": "Hose",
+        "fr": "Tuyau d'arrosage",
+        "es": "Manguera"
+      }
+    },
+    {
+      "id": "family-sandbox-garden",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Sandbox",
+        "fr": "Bac à sable",
+        "es": "Arenero"
+      },
+      "undercover": {
+        "en": "Garden",
+        "fr": "Jardin",
+        "es": "Jardín"
+      }
+    },
+    {
+      "id": "family-swing-seesaw",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Swing",
+        "fr": "Balançoire",
+        "es": "Columpio"
+      },
+      "undercover": {
+        "en": "Seesaw",
+        "fr": "Balançoire à bascule",
+        "es": "Balancín"
+      }
+    },
+    {
+      "id": "family-jungle-gym-monkey-bars",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Jungle Gym",
+        "fr": "Cage à écureuil",
+        "es": "Estructura de juegos"
+      },
+      "undercover": {
+        "en": "Monkey Bars",
+        "fr": "Barres de singe",
+        "es": "Barras de mono"
+      }
+    },
+    {
+      "id": "family-amusement-park-carnival",
+      "category": "family",
+      "difficulty": "easy",
+      "tags": [
+        "family"
+      ],
+      "common": {
+        "en": "Amusement Park",
+        "fr": "Parc d'attractions",
+        "es": "Parque de atracciones"
+      },
+      "undercover": {
+        "en": "Carnival",
+        "fr": "Carnaval",
+        "es": "Carnaval"
+      }
+    },
+    {
+      "id": "classic-lion-tiger",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Lion",
+        "fr": "Lion",
+        "es": "León"
+      },
+      "undercover": {
+        "en": "Tiger",
+        "fr": "Tigre",
+        "es": "Tigre"
+      }
+    },
+    {
+      "id": "classic-penguin-puffin",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Penguin",
+        "fr": "Pingouin",
+        "es": "Pingüino"
+      },
+      "undercover": {
+        "en": "Puffin",
+        "fr": "Macareux",
+        "es": "Frailecillo"
+      }
+    },
+    {
+      "id": "classic-elephant-rhino",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Elephant",
+        "fr": "Éléphant",
+        "es": "Elefante"
+      },
+      "undercover": {
+        "en": "Rhino",
+        "fr": "Rhinocéros",
+        "es": "Rinoceronte"
+      }
+    },
+    {
+      "id": "classic-dolphin-whale",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Dolphin",
+        "fr": "Dauphin",
+        "es": "Delfín"
+      },
+      "undercover": {
+        "en": "Whale",
+        "fr": "Baleine",
+        "es": "Ballena"
+      }
+    },
+    {
+      "id": "classic-rabbit-hare",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Rabbit",
+        "fr": "Lapin",
+        "es": "Conejo"
+      },
+      "undercover": {
+        "en": "Hare",
+        "fr": "Lièvre",
+        "es": "Liebre"
+      }
+    },
+    {
+      "id": "classic-eagle-hawk",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Eagle",
+        "fr": "Aigle",
+        "es": "Águila"
+      },
+      "undercover": {
+        "en": "Hawk",
+        "fr": "Buse",
+        "es": "Gavilán"
+      }
+    },
+    {
+      "id": "classic-frog-toad",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Frog",
+        "fr": "Grenouille",
+        "es": "Rana"
+      },
+      "undercover": {
+        "en": "Toad",
+        "fr": "Crapaud",
+        "es": "Sapo"
+      }
+    },
+    {
+      "id": "classic-horse-donkey",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Horse",
+        "fr": "Cheval",
+        "es": "Caballo"
+      },
+      "undercover": {
+        "en": "Donkey",
+        "fr": "Âne",
+        "es": "Burro"
+      }
+    },
+    {
+      "id": "classic-bear-wolf",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Bear",
+        "fr": "Ours",
+        "es": "Oso"
+      },
+      "undercover": {
+        "en": "Wolf",
+        "fr": "Loup",
+        "es": "Lobo"
+      }
+    },
+    {
+      "id": "classic-shark-ray",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Shark",
+        "fr": "Requin",
+        "es": "Tiburón"
+      },
+      "undercover": {
+        "en": "Ray",
+        "fr": "Raie",
+        "es": "Raya"
+      }
+    },
+    {
+      "id": "classic-owl-falcon",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Owl",
+        "fr": "Hibou",
+        "es": "Búho"
+      },
+      "undercover": {
+        "en": "Falcon",
+        "fr": "Faucon",
+        "es": "Halcón"
+      }
+    },
+    {
+      "id": "classic-giraffe-zebra",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Giraffe",
+        "fr": "Girafe",
+        "es": "Jirafa"
+      },
+      "undercover": {
+        "en": "Zebra",
+        "fr": "Zèbre",
+        "es": "Cebra"
+      }
+    },
+    {
+      "id": "classic-monkey-ape",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Monkey",
+        "fr": "Singe",
+        "es": "Mono"
+      },
+      "undercover": {
+        "en": "Ape",
+        "fr": "Grand singe",
+        "es": "Simio"
+      }
+    },
+    {
+      "id": "classic-crocodile-alligator",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Crocodile",
+        "fr": "Crocodile",
+        "es": "Cocodrilo"
+      },
+      "undercover": {
+        "en": "Alligator",
+        "fr": "Alligator",
+        "es": "Caimán"
+      }
+    },
+    {
+      "id": "classic-butterfly-dragonfly",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Butterfly",
+        "fr": "Papillon",
+        "es": "Mariposa"
+      },
+      "undercover": {
+        "en": "Dragonfly",
+        "fr": "Libellule",
+        "es": "Libélula"
+      }
+    },
+    {
+      "id": "classic-bee-wasp",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Bee",
+        "fr": "Abeille",
+        "es": "Abeja"
+      },
+      "undercover": {
+        "en": "Wasp",
+        "fr": "Guêpe",
+        "es": "Avispa"
+      }
+    },
+    {
+      "id": "classic-kangaroo-koala",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Kangaroo",
+        "fr": "Kangourou",
+        "es": "Canguro"
+      },
+      "undercover": {
+        "en": "Koala",
+        "fr": "Koala",
+        "es": "Koala"
+      }
+    },
+    {
+      "id": "classic-panda-polar-bear",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Panda",
+        "fr": "Panda",
+        "es": "Panda"
+      },
+      "undercover": {
+        "en": "Polar Bear",
+        "fr": "Ours polaire",
+        "es": "Oso polar"
+      }
+    },
+    {
+      "id": "classic-peacock-ostrich",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Peacock",
+        "fr": "Paon",
+        "es": "Pavo real"
+      },
+      "undercover": {
+        "en": "Ostrich",
+        "fr": "Autruche",
+        "es": "Avestruz"
+      }
+    },
+    {
+      "id": "classic-cookie-brownie",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Cookie",
+        "fr": "Cookie",
+        "es": "Galleta"
+      },
+      "undercover": {
+        "en": "Brownie",
+        "fr": "Brownie",
+        "es": "Brownie"
+      }
+    },
+    {
+      "id": "classic-sushi-tempura",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Sushi",
+        "fr": "Sushi",
+        "es": "Sushi"
+      },
+      "undercover": {
+        "en": "Tempura",
+        "fr": "Tempura",
+        "es": "Tempura"
+      }
+    },
+    {
+      "id": "classic-sandwich-wrap",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Sandwich",
+        "fr": "Sandwich",
+        "es": "Sándwich"
+      },
+      "undercover": {
+        "en": "Wrap",
+        "fr": "Wrap",
+        "es": "Wrap"
+      }
+    },
+    {
+      "id": "classic-salad-coleslaw",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Salad",
+        "fr": "Salade",
+        "es": "Ensalada"
+      },
+      "undercover": {
+        "en": "Coleslaw",
+        "fr": "Coleslaw",
+        "es": "Ensalada de col"
+      }
+    },
+    {
+      "id": "classic-milk-cream",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Milk",
+        "fr": "Lait",
+        "es": "Leche"
+      },
+      "undercover": {
+        "en": "Cream",
+        "fr": "Crème",
+        "es": "Nata"
+      }
+    },
+    {
+      "id": "classic-cheese-butter",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Cheese",
+        "fr": "Fromage",
+        "es": "Queso"
+      },
+      "undercover": {
+        "en": "Butter",
+        "fr": "Beurre",
+        "es": "Mantequilla"
+      }
+    },
+    {
+      "id": "classic-bread-toast",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Bread",
+        "fr": "Pain",
+        "es": "Pan"
+      },
+      "undercover": {
+        "en": "Toast",
+        "fr": "Toast",
+        "es": "Tostada"
+      }
+    },
+    {
+      "id": "classic-pasta-noodles",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Pasta",
+        "fr": "Pâtes",
+        "es": "Pasta"
+      },
+      "undercover": {
+        "en": "Noodles",
+        "fr": "Nouilles",
+        "es": "Fideos"
+      }
+    },
+    {
+      "id": "classic-rice-quinoa",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Rice",
+        "fr": "Riz",
+        "es": "Arroz"
+      },
+      "undercover": {
+        "en": "Quinoa",
+        "fr": "Quinoa",
+        "es": "Quinoa"
+      }
+    },
+    {
+      "id": "classic-chocolate-vanilla",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Chocolate",
+        "fr": "Chocolat",
+        "es": "Chocolate"
+      },
+      "undercover": {
+        "en": "Vanilla",
+        "fr": "Vanille",
+        "es": "Vainilla"
+      }
+    },
+    {
+      "id": "classic-strawberry-blueberry",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Strawberry",
+        "fr": "Fraise",
+        "es": "Fresa"
+      },
+      "undercover": {
+        "en": "Blueberry",
+        "fr": "Myrtille",
+        "es": "Arándano"
+      }
+    },
+    {
+      "id": "classic-broccoli-cauliflower",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Broccoli",
+        "fr": "Brocoli",
+        "es": "Brócoli"
+      },
+      "undercover": {
+        "en": "Cauliflower",
+        "fr": "Chou-fleur",
+        "es": "Coliflor"
+      }
+    },
+    {
+      "id": "classic-carrot-potato",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Carrot",
+        "fr": "Carotte",
+        "es": "Zanahoria"
+      },
+      "undercover": {
+        "en": "Potato",
+        "fr": "Pomme de terre",
+        "es": "Patata"
+      }
+    },
+    {
+      "id": "classic-egg-butter",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Egg",
+        "fr": "Œuf",
+        "es": "Huevo"
+      },
+      "undercover": {
+        "en": "Butter",
+        "fr": "Beurre",
+        "es": "Mantequilla"
+      }
+    },
+    {
+      "id": "classic-bacon-sausage",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Bacon",
+        "fr": "Bacon",
+        "es": "Bacon"
+      },
+      "undercover": {
+        "en": "Sausage",
+        "fr": "Saucisse",
+        "es": "Salchicha"
+      }
+    },
+    {
+      "id": "classic-honey-syrup",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Honey",
+        "fr": "Miel",
+        "es": "Miel"
+      },
+      "undercover": {
+        "en": "Syrup",
+        "fr": "Sirop",
+        "es": "Sirope"
+      }
+    },
+    {
+      "id": "classic-ocean-lake",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Ocean",
+        "fr": "Océan",
+        "es": "Océano"
+      },
+      "undercover": {
+        "en": "Lake",
+        "fr": "Lac",
+        "es": "Lago"
+      }
+    },
+    {
+      "id": "classic-forest-jungle",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Forest",
+        "fr": "Forêt",
+        "es": "Bosque"
+      },
+      "undercover": {
+        "en": "Jungle",
+        "fr": "Jungle",
+        "es": "Selva"
+      }
+    },
+    {
+      "id": "classic-river-stream",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "River",
+        "fr": "Rivière",
+        "es": "Río"
+      },
+      "undercover": {
+        "en": "Stream",
+        "fr": "Ruisseau",
+        "es": "Arroyo"
+      }
+    },
+    {
+      "id": "classic-desert-canyon",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Desert",
+        "fr": "Désert",
+        "es": "Desierto"
+      },
+      "undercover": {
+        "en": "Canyon",
+        "fr": "Canyon",
+        "es": "Cañón"
+      }
+    },
+    {
+      "id": "classic-volcano-mountain",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Volcano",
+        "fr": "Volcan",
+        "es": "Volcán"
+      },
+      "undercover": {
+        "en": "Mountain",
+        "fr": "Montagne",
+        "es": "Montaña"
+      }
+    },
+    {
+      "id": "classic-waterfall-rapids",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Waterfall",
+        "fr": "Cascade",
+        "es": "Cascada"
+      },
+      "undercover": {
+        "en": "Rapids",
+        "fr": "Rapides",
+        "es": "Rápidos"
+      }
+    },
+    {
+      "id": "classic-meadow-field",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Meadow",
+        "fr": "Prairie",
+        "es": "Pradera"
+      },
+      "undercover": {
+        "en": "Field",
+        "fr": "Champ",
+        "es": "Campo"
+      }
+    },
+    {
+      "id": "classic-valley-basin",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Valley",
+        "fr": "Vallée",
+        "es": "Valle"
+      },
+      "undercover": {
+        "en": "Basin",
+        "fr": "Bassin",
+        "es": "Cuenca"
+      }
+    },
+    {
+      "id": "classic-cliff-ledge",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Cliff",
+        "fr": "Falaise",
+        "es": "Acantilado"
+      },
+      "undercover": {
+        "en": "Ledge",
+        "fr": "Rebord",
+        "es": "Cornisa"
+      }
+    },
+    {
+      "id": "classic-cave-tunnel",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Cave",
+        "fr": "Grotte",
+        "es": "Cueva"
+      },
+      "undercover": {
+        "en": "Tunnel",
+        "fr": "Tunnel",
+        "es": "Túnel"
+      }
+    },
+    {
+      "id": "classic-glacier-iceberg",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Glacier",
+        "fr": "Glacier",
+        "es": "Glaciar"
+      },
+      "undercover": {
+        "en": "Iceberg",
+        "fr": "Iceberg",
+        "es": "Iceberg"
+      }
+    },
+    {
+      "id": "classic-marsh-swamp",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Marsh",
+        "fr": "Marais",
+        "es": "Marisma"
+      },
+      "undercover": {
+        "en": "Swamp",
+        "fr": "Marécage",
+        "es": "Pantano"
+      }
+    },
+    {
+      "id": "classic-lagoon-bay",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Lagoon",
+        "fr": "Lagon",
+        "es": "Laguna"
+      },
+      "undercover": {
+        "en": "Bay",
+        "fr": "Baie",
+        "es": "Bahía"
+      }
+    },
+    {
+      "id": "classic-reef-rocks",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Reef",
+        "fr": "Récif",
+        "es": "Arrecife"
+      },
+      "undercover": {
+        "en": "Rocks",
+        "fr": "Rochers",
+        "es": "Rocas"
+      }
+    },
+    {
+      "id": "classic-grove-thicket",
+      "category": "classic",
+      "difficulty": "medium",
+      "tags": [
+        "classic"
+      ],
+      "common": {
+        "en": "Grove",
+        "fr": "Bosquet",
+        "es": "Arboleda"
+      },
+      "undercover": {
+        "en": "Thicket",
+        "fr": "Fourré",
+        "es": "Matorral"
+      }
+    },
+    {
+      "id": "funny-unicorn-pegasus",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Unicorn",
+        "fr": "Licorne",
+        "es": "Unicornio"
+      },
+      "undercover": {
+        "en": "Pegasus",
+        "fr": "Pégase",
+        "es": "Pegaso"
+      }
+    },
+    {
+      "id": "funny-vampire-zombie",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Vampire",
+        "fr": "Vampire",
+        "es": "Vampiro"
+      },
+      "undercover": {
+        "en": "Zombie",
+        "fr": "Zombie",
+        "es": "Zombi"
+      }
+    },
+    {
+      "id": "funny-burp-fart",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Burp",
+        "fr": "Rot",
+        "es": "Eructo"
+      },
+      "undercover": {
+        "en": "Fart",
+        "fr": "Pet",
+        "es": "Pedo"
+      }
+    },
+    {
+      "id": "funny-dinosaur-dragon",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Dinosaur",
+        "fr": "Dinosaure",
+        "es": "Dinosaurio"
+      },
+      "undercover": {
+        "en": "Dragon",
+        "fr": "Dragon",
+        "es": "Dragón"
+      }
+    },
+    {
+      "id": "funny-grandma-grandpa",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Grandma",
+        "fr": "Grand-mère",
+        "es": "Abuela"
+      },
+      "undercover": {
+        "en": "Grandpa",
+        "fr": "Grand-père",
+        "es": "Abuelo"
+      }
+    },
+    {
+      "id": "funny-ninja-pirate",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Ninja",
+        "fr": "Ninja",
+        "es": "Ninja"
+      },
+      "undercover": {
+        "en": "Pirate",
+        "fr": "Pirate",
+        "es": "Pirata"
+      }
+    },
+    {
+      "id": "funny-clown-mime",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Clown",
+        "fr": "Clown",
+        "es": "Payaso"
+      },
+      "undercover": {
+        "en": "Mime",
+        "fr": "Mime",
+        "es": "Mimo"
+      }
+    },
+    {
+      "id": "funny-tap-dance-floss-dance",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Tap Dance",
+        "fr": "Claquettes",
+        "es": "Claqué"
+      },
+      "undercover": {
+        "en": "Floss Dance",
+        "fr": "Danse du floss",
+        "es": "Baile del floss"
+      }
+    },
+    {
+      "id": "funny-mullet-mohawk",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Mullet",
+        "fr": "Coupe mulet",
+        "es": "Corte mullet"
+      },
+      "undercover": {
+        "en": "Mohawk",
+        "fr": "Crête iroquoise",
+        "es": "Cresta mohicana"
+      }
+    },
+    {
+      "id": "funny-alien-robot",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Alien",
+        "fr": "Alien",
+        "es": "Alien"
+      },
+      "undercover": {
+        "en": "Robot",
+        "fr": "Robot",
+        "es": "Robot"
+      }
+    },
+    {
+      "id": "funny-underwear-swimsuit",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Underwear",
+        "fr": "Sous-vêtements",
+        "es": "Ropa interior"
+      },
+      "undercover": {
+        "en": "Swimsuit",
+        "fr": "Maillot de bain",
+        "es": "Bañador"
+      }
+    },
+    {
+      "id": "funny-sneeze-cough",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Sneeze",
+        "fr": "Éternuement",
+        "es": "Estornudo"
+      },
+      "undercover": {
+        "en": "Cough",
+        "fr": "Toux",
+        "es": "Tos"
+      }
+    },
+    {
+      "id": "funny-selfie-photobomb",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Selfie",
+        "fr": "Selfie",
+        "es": "Selfie"
+      },
+      "undercover": {
+        "en": "Photobomb",
+        "fr": "Photobomb",
+        "es": "Photobomb"
+      }
+    },
+    {
+      "id": "funny-dad-jokes-puns",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Dad Jokes",
+        "fr": "Blagues de papa",
+        "es": "Chistes de papá"
+      },
+      "undercover": {
+        "en": "Puns",
+        "fr": "Jeux de mots",
+        "es": "Juegos de palabras"
+      }
+    },
+    {
+      "id": "funny-snoring-sleep-talking",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Snoring",
+        "fr": "Ronflement",
+        "es": "Ronquido"
+      },
+      "undercover": {
+        "en": "Sleep Talking",
+        "fr": "Parler en dormant",
+        "es": "Hablar dormido"
+      }
+    },
+    {
+      "id": "funny-hiccup-yawn",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Hiccup",
+        "fr": "Hoquet",
+        "es": "Hipo"
+      },
+      "undercover": {
+        "en": "Yawn",
+        "fr": "Bâillement",
+        "es": "Bostezo"
+      }
+    },
+    {
+      "id": "funny-chicken-dance-macarena",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Chicken Dance",
+        "fr": "Danse du poulet",
+        "es": "Baile del pollito"
+      },
+      "undercover": {
+        "en": "Macarena",
+        "fr": "Macarena",
+        "es": "Macarena"
+      }
+    },
+    {
+      "id": "funny-karaoke-lip-sync",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Karaoke",
+        "fr": "Karaoké",
+        "es": "Karaoke"
+      },
+      "undercover": {
+        "en": "Lip Sync",
+        "fr": "Playback",
+        "es": "Playback"
+      }
+    },
+    {
+      "id": "funny-meme-gif",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Meme",
+        "fr": "Mème",
+        "es": "Meme"
+      },
+      "undercover": {
+        "en": "GIF",
+        "fr": "GIF",
+        "es": "GIF"
+      }
+    },
+    {
+      "id": "funny-emoji-emoticon",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Emoji",
+        "fr": "Emoji",
+        "es": "Emoji"
+      },
+      "undercover": {
+        "en": "Emoticon",
+        "fr": "Émoticône",
+        "es": "Emoticono"
+      }
+    },
+    {
+      "id": "funny-pothole-speed-bump",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Pothole",
+        "fr": "Nid-de-poule",
+        "es": "Bache"
+      },
+      "undercover": {
+        "en": "Speed Bump",
+        "fr": "Ralentisseur",
+        "es": "Badén"
+      }
+    },
+    {
+      "id": "funny-hangry-tired",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Hangry",
+        "fr": "Hangry",
+        "es": "Hangry"
+      },
+      "undercover": {
+        "en": "Tired",
+        "fr": "Fatigué",
+        "es": "Cansado"
+      }
+    },
+    {
+      "id": "funny-fomo-yolo",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "FOMO",
+        "fr": "FOMO",
+        "es": "FOMO"
+      },
+      "undercover": {
+        "en": "YOLO",
+        "fr": "YOLO",
+        "es": "YOLO"
+      }
+    },
+    {
+      "id": "funny-awkward-silence-small-talk",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Awkward Silence",
+        "fr": "Silence gênant",
+        "es": "Silencio incómodo"
+      },
+      "undercover": {
+        "en": "Small Talk",
+        "fr": "Conversation mondaine",
+        "es": "Charla superficial"
+      }
+    },
+    {
+      "id": "funny-dad-bod-gym-bro",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Dad Bod",
+        "fr": "Dad bod",
+        "es": "Cuerpo de papá"
+      },
+      "undercover": {
+        "en": "Gym Bro",
+        "fr": "Bro de salle",
+        "es": "Tío del gym"
+      }
+    },
+    {
+      "id": "funny-stage-fright-stage-dive",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Stage Fright",
+        "fr": "Trac",
+        "es": "Miedo escénico"
+      },
+      "undercover": {
+        "en": "Stage Dive",
+        "fr": "Stage dive",
+        "es": "Tirarse al público"
+      }
+    },
+    {
+      "id": "funny-fake-laugh-forced-smile",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Fake Laugh",
+        "fr": "Rire forcé",
+        "es": "Risa falsa"
+      },
+      "undercover": {
+        "en": "Forced Smile",
+        "fr": "Sourire forcé",
+        "es": "Sonrisa forzada"
+      }
+    },
+    {
+      "id": "funny-asmr-white-noise",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "ASMR",
+        "fr": "ASMR",
+        "es": "ASMR"
+      },
+      "undercover": {
+        "en": "White Noise",
+        "fr": "Bruit blanc",
+        "es": "Ruido blanco"
+      }
+    },
+    {
+      "id": "funny-rage-quit-silent-treatment",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Rage Quit",
+        "fr": "Rage quit",
+        "es": "Rage quit"
+      },
+      "undercover": {
+        "en": "Silent Treatment",
+        "fr": "Loi du silence",
+        "es": "Ley del hielo"
+      }
+    },
+    {
+      "id": "funny-overthinking-paranoia",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Overthinking",
+        "fr": "Suranalyse",
+        "es": "Pensar demasiado"
+      },
+      "undercover": {
+        "en": "Paranoia",
+        "fr": "Paranoïa",
+        "es": "Paranoia"
+      }
+    },
+    {
+      "id": "funny-faceplant-trip",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Faceplant",
+        "fr": "Plantage de face",
+        "es": "Caída de cara"
+      },
+      "undercover": {
+        "en": "Trip",
+        "fr": "Trébuchement",
+        "es": "Tropezón"
+      }
+    },
+    {
+      "id": "funny-bad-hair-day-hat-day",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Bad Hair Day",
+        "fr": "Mauvaise coupe de cheveux",
+        "es": "Mal día de pelo"
+      },
+      "undercover": {
+        "en": "Hat Day",
+        "fr": "Jour du chapeau",
+        "es": "Día del sombrero"
+      }
+    },
+    {
+      "id": "funny-zoom-call-conference-call",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Zoom Call",
+        "fr": "Appel Zoom",
+        "es": "Llamada Zoom"
+      },
+      "undercover": {
+        "en": "Conference Call",
+        "fr": "Conférence téléphonique",
+        "es": "Llamada de conferencia"
+      }
+    },
+    {
+      "id": "funny-reply-all-forward",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Reply All",
+        "fr": "Répondre à tous",
+        "es": "Responder a todos"
+      },
+      "undercover": {
+        "en": "Forward",
+        "fr": "Transférer",
+        "es": "Reenviar"
+      }
+    },
+    {
+      "id": "funny-spam-email-scam-text",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Spam Email",
+        "fr": "E-mail spam",
+        "es": "Correo spam"
+      },
+      "undercover": {
+        "en": "Scam Text",
+        "fr": "Texto d'arnaque",
+        "es": "SMS de estafa"
+      }
+    },
+    {
+      "id": "funny-voice-crack-squeak",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Voice Crack",
+        "fr": "Voix qui casse",
+        "es": "Voz quebrada"
+      },
+      "undercover": {
+        "en": "Squeak",
+        "fr": "Cri aigu",
+        "es": "Chirrido"
+      }
+    },
+    {
+      "id": "funny-wet-socks-soggy-cereal",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Wet Socks",
+        "fr": "Chaussettes mouillées",
+        "es": "Calcetines mojados"
+      },
+      "undercover": {
+        "en": "Soggy Cereal",
+        "fr": "Céréales détrempées",
+        "es": "Cereales empapados"
+      }
+    },
+    {
+      "id": "funny-stubbed-toe-paper-cut",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Stubbed Toe",
+        "fr": "Orteil cogné",
+        "es": "Dedo del pie golpeado"
+      },
+      "undercover": {
+        "en": "Paper Cut",
+        "fr": "Coupe-papier",
+        "es": "Corte de papel"
+      }
+    },
+    {
+      "id": "funny-eyebrow-fail-haircut-disaster",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Eyebrow Fail",
+        "fr": "Échec de sourcils",
+        "es": "Fallo de cejas"
+      },
+      "undercover": {
+        "en": "Haircut Disaster",
+        "fr": "Coupe ratée",
+        "es": "Corte de pelo desastroso"
+      }
+    },
+    {
+      "id": "funny-autocorrect-fail-typo",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Autocorrect Fail",
+        "fr": "Échec de l'autocorrection",
+        "es": "Fallo del autocorrector"
+      },
+      "undercover": {
+        "en": "Typo",
+        "fr": "Faute de frappe",
+        "es": "Error tipográfico"
+      }
+    },
+    {
+      "id": "funny-slip-and-fall-trip",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Slip and Fall",
+        "fr": "Glissade et chute",
+        "es": "Resbalón y caída"
+      },
+      "undercover": {
+        "en": "Trip",
+        "fr": "Trébuchement",
+        "es": "Tropezón"
+      }
+    },
+    {
+      "id": "funny-awkward-hug-weird-handshake",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Awkward Hug",
+        "fr": "Câlin gênant",
+        "es": "Abrazo incómodo"
+      },
+      "undercover": {
+        "en": "Weird Handshake",
+        "fr": "Poignée de main bizarre",
+        "es": "Apretón raro"
+      }
+    },
+    {
+      "id": "funny-eye-contact-staring",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Eye Contact",
+        "fr": "Contact visuel",
+        "es": "Contacto visual"
+      },
+      "undercover": {
+        "en": "Staring",
+        "fr": "Regard fixe",
+        "es": "Mirada fija"
+      }
+    },
+    {
+      "id": "funny-microwaved-smell-burnt-toast",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Microwaved Smell",
+        "fr": "Odeur de micro-ondes",
+        "es": "Olor a microondas"
+      },
+      "undercover": {
+        "en": "Burnt Toast",
+        "fr": "Toast brûlé",
+        "es": "Tostada quemada"
+      }
+    },
+    {
+      "id": "funny-unsend-message-delete-comment",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Unsend Message",
+        "fr": "Annuler l'envoi",
+        "es": "Anular mensaje"
+      },
+      "undercover": {
+        "en": "Delete Comment",
+        "fr": "Supprimer un commentaire",
+        "es": "Borrar comentario"
+      }
+    },
+    {
+      "id": "funny-wrong-group-chat-accidental-tag",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Wrong Group Chat",
+        "fr": "Mauvais groupe",
+        "es": "Grupo equivocado"
+      },
+      "undercover": {
+        "en": "Accidental Tag",
+        "fr": "Tag accidentel",
+        "es": "Etiqueta accidental"
+      }
+    },
+    {
+      "id": "funny-piggyback-wheelbarrow-race",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Piggyback",
+        "fr": "À cheval",
+        "es": "A cuestas"
+      },
+      "undercover": {
+        "en": "Wheelbarrow Race",
+        "fr": "Course en brouette",
+        "es": "Carrera de carretilla"
+      }
+    },
+    {
+      "id": "funny-sweaty-palms-nervous-twitch",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Sweaty Palms",
+        "fr": "Mains moites",
+        "es": "Manos sudorosas"
+      },
+      "undercover": {
+        "en": "Nervous Twitch",
+        "fr": "Tic nerveux",
+        "es": "Tic nervioso"
+      }
+    },
+    {
+      "id": "funny-spit-take-choke",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Spit Take",
+        "fr": "Gerbe de surprise",
+        "es": "Escupitajo de sorpresa"
+      },
+      "undercover": {
+        "en": "Choke",
+        "fr": "Étouffement",
+        "es": "Atragantarse"
+      }
+    },
+    {
+      "id": "funny-lecture-pep-talk",
+      "category": "funny",
+      "difficulty": "medium",
+      "tags": [
+        "funny"
+      ],
+      "common": {
+        "en": "Lecture",
+        "fr": "Cours magistral",
+        "es": "Charla"
+      },
+      "undercover": {
+        "en": "Pep Talk",
+        "fr": "Discours motivant",
+        "es": "Charla motivadora"
+      }
+    },
+    {
+      "id": "food-pizza-calzone",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Pizza",
+        "fr": "Pizza",
+        "es": "Pizza"
+      },
+      "undercover": {
+        "en": "Calzone",
+        "fr": "Calzone",
+        "es": "Calzone"
+      }
+    },
+    {
+      "id": "food-sushi-sashimi",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Sushi",
+        "fr": "Sushi",
+        "es": "Sushi"
+      },
+      "undercover": {
+        "en": "Sashimi",
+        "fr": "Sashimi",
+        "es": "Sashimi"
+      }
+    },
+    {
+      "id": "food-taco-burrito",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Taco",
+        "fr": "Taco",
+        "es": "Taco"
+      },
+      "undercover": {
+        "en": "Burrito",
+        "fr": "Burrito",
+        "es": "Burrito"
+      }
+    },
+    {
+      "id": "food-coffee-espresso",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Coffee",
+        "fr": "Café",
+        "es": "Café"
+      },
+      "undercover": {
+        "en": "Espresso",
+        "fr": "Espresso",
+        "es": "Espresso"
+      }
+    },
+    {
+      "id": "food-latte-cappuccino",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Latte",
+        "fr": "Latte",
+        "es": "Latte"
+      },
+      "undercover": {
+        "en": "Cappuccino",
+        "fr": "Cappuccino",
+        "es": "Capuchino"
+      }
+    },
+    {
+      "id": "food-croissant-bagel",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Croissant",
+        "fr": "Croissant",
+        "es": "Cruasán"
+      },
+      "undercover": {
+        "en": "Bagel",
+        "fr": "Bagel",
+        "es": "Bagel"
+      }
+    },
+    {
+      "id": "food-steak-ribs",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Steak",
+        "fr": "Steak",
+        "es": "Filete"
+      },
+      "undercover": {
+        "en": "Ribs",
+        "fr": "Travers",
+        "es": "Costillas"
+      }
+    },
+    {
+      "id": "food-burger-hot-dog",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Burger",
+        "fr": "Burger",
+        "es": "Hamburguesa"
+      },
+      "undercover": {
+        "en": "Hot Dog",
+        "fr": "Hot-dog",
+        "es": "Perrito caliente"
+      }
+    },
+    {
+      "id": "food-fries-onion-rings",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Fries",
+        "fr": "Frites",
+        "es": "Patatas fritas"
+      },
+      "undercover": {
+        "en": "Onion Rings",
+        "fr": "Rondelles d'oignon",
+        "es": "Aros de cebolla"
+      }
+    },
+    {
+      "id": "food-ice-cream-gelato",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Ice Cream",
+        "fr": "Glace",
+        "es": "Helado"
+      },
+      "undercover": {
+        "en": "Gelato",
+        "fr": "Gelato",
+        "es": "Helado italiano"
+      }
+    },
+    {
+      "id": "food-donut-muffin",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Donut",
+        "fr": "Donut",
+        "es": "Dónut"
+      },
+      "undercover": {
+        "en": "Muffin",
+        "fr": "Muffin",
+        "es": "Muffin"
+      }
+    },
+    {
+      "id": "food-pancakes-french-toast",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Pancakes",
+        "fr": "Pancakes",
+        "es": "Tortitas"
+      },
+      "undercover": {
+        "en": "French Toast",
+        "fr": "Pain perdu",
+        "es": "Tostada francesa"
+      }
+    },
+    {
+      "id": "food-smoothie-milkshake",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Smoothie",
+        "fr": "Smoothie",
+        "es": "Smoothie"
+      },
+      "undercover": {
+        "en": "Milkshake",
+        "fr": "Milk-shake",
+        "es": "Batido"
+      }
+    },
+    {
+      "id": "food-ramen-pho",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Ramen",
+        "fr": "Ramen",
+        "es": "Ramen"
+      },
+      "undercover": {
+        "en": "Pho",
+        "fr": "Phở",
+        "es": "Pho"
+      }
+    },
+    {
+      "id": "food-curry-stir-fry",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Curry",
+        "fr": "Curry",
+        "es": "Curry"
+      },
+      "undercover": {
+        "en": "Stir Fry",
+        "fr": "Sauté wok",
+        "es": "Salteado"
+      }
+    },
+    {
+      "id": "food-bbq-roasting",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "BBQ",
+        "fr": "Barbecue",
+        "es": "Barbacoa"
+      },
+      "undercover": {
+        "en": "Roasting",
+        "fr": "Rôtissage",
+        "es": "Asado"
+      }
+    },
+    {
+      "id": "food-brunch-breakfast",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Brunch",
+        "fr": "Brunch",
+        "es": "Brunch"
+      },
+      "undercover": {
+        "en": "Breakfast",
+        "fr": "Petit-déjeuner",
+        "es": "Desayuno"
+      }
+    },
+    {
+      "id": "food-appetizer-dessert",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Appetizer",
+        "fr": "Entrée",
+        "es": "Entrante"
+      },
+      "undercover": {
+        "en": "Dessert",
+        "fr": "Dessert",
+        "es": "Postre"
+      }
+    },
+    {
+      "id": "food-food-truck-restaurant",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Food Truck",
+        "fr": "Food truck",
+        "es": "Food truck"
+      },
+      "undercover": {
+        "en": "Restaurant",
+        "fr": "Restaurant",
+        "es": "Restaurante"
+      }
+    },
+    {
+      "id": "food-nachos-quesadilla",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Nachos",
+        "fr": "Nachos",
+        "es": "Nachos"
+      },
+      "undercover": {
+        "en": "Quesadilla",
+        "fr": "Quesadilla",
+        "es": "Quesadilla"
+      }
+    },
+    {
+      "id": "food-fried-rice-lo-mein",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Fried Rice",
+        "fr": "Riz frit",
+        "es": "Arroz frito"
+      },
+      "undercover": {
+        "en": "Lo Mein",
+        "fr": "Lo mein",
+        "es": "Lo mein"
+      }
+    },
+    {
+      "id": "food-chicken-wings-chicken-tenders",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Chicken Wings",
+        "fr": "Ailes de poulet",
+        "es": "Alitas de pollo"
+      },
+      "undercover": {
+        "en": "Chicken Tenders",
+        "fr": "Aiguillettes de poulet",
+        "es": "Nuggets de pollo"
+      }
+    },
+    {
+      "id": "food-mashed-potatoes-baked-potato",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Mashed Potatoes",
+        "fr": "Purée",
+        "es": "Puré de patatas"
+      },
+      "undercover": {
+        "en": "Baked Potato",
+        "fr": "Pomme de terre au four",
+        "es": "Patata al horno"
+      }
+    },
+    {
+      "id": "food-grilled-cheese-panini",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Grilled Cheese",
+        "fr": "Croque fromage",
+        "es": "Sándwich de queso a la plancha"
+      },
+      "undercover": {
+        "en": "Panini",
+        "fr": "Panini",
+        "es": "Panini"
+      }
+    },
+    {
+      "id": "food-tomato-soup-chicken-soup",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Tomato Soup",
+        "fr": "Soupe à la tomate",
+        "es": "Sopa de tomate"
+      },
+      "undercover": {
+        "en": "Chicken Soup",
+        "fr": "Soupe au poulet",
+        "es": "Sopa de pollo"
+      }
+    },
+    {
+      "id": "food-avocado-toast-egg-toast",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Avocado Toast",
+        "fr": "Toast à l'avocat",
+        "es": "Tostada de aguacate"
+      },
+      "undercover": {
+        "en": "Egg Toast",
+        "fr": "Toast à l'œuf",
+        "es": "Tostada con huevo"
+      }
+    },
+    {
+      "id": "food-cheesecake-tiramisu",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Cheesecake",
+        "fr": "Cheesecake",
+        "es": "Tarta de queso"
+      },
+      "undercover": {
+        "en": "Tiramisu",
+        "fr": "Tiramisu",
+        "es": "Tiramisú"
+      }
+    },
+    {
+      "id": "food-salsa-guacamole",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Salsa",
+        "fr": "Salsa",
+        "es": "Salsa"
+      },
+      "undercover": {
+        "en": "Guacamole",
+        "fr": "Guacamole",
+        "es": "Guacamole"
+      }
+    },
+    {
+      "id": "food-iced-coffee-cold-brew",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Iced Coffee",
+        "fr": "Café glacé",
+        "es": "Café con hielo"
+      },
+      "undercover": {
+        "en": "Cold Brew",
+        "fr": "Cold brew",
+        "es": "Cold brew"
+      }
+    },
+    {
+      "id": "food-lobster-shrimp",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Lobster",
+        "fr": "Homard",
+        "es": "Langosta"
+      },
+      "undercover": {
+        "en": "Shrimp",
+        "fr": "Crevette",
+        "es": "Gamba"
+      }
+    },
+    {
+      "id": "food-salmon-tuna",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Salmon",
+        "fr": "Saumon",
+        "es": "Salmón"
+      },
+      "undercover": {
+        "en": "Tuna",
+        "fr": "Thon",
+        "es": "Atún"
+      }
+    },
+    {
+      "id": "food-chicken-parmesan-veal-parmesan",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Chicken Parmesan",
+        "fr": "Poulet parmigiana",
+        "es": "Pollo parmesano"
+      },
+      "undercover": {
+        "en": "Veal Parmesan",
+        "fr": "Veau parmigiana",
+        "es": "Ternera parmesana"
+      }
+    },
+    {
+      "id": "food-lasagna-ravioli",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Lasagna",
+        "fr": "Lasagnes",
+        "es": "Lasaña"
+      },
+      "undercover": {
+        "en": "Ravioli",
+        "fr": "Raviolis",
+        "es": "Raviolis"
+      }
+    },
+    {
+      "id": "food-spaghetti-fettuccine",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Spaghetti",
+        "fr": "Spaghetti",
+        "es": "Espaguetis"
+      },
+      "undercover": {
+        "en": "Fettuccine",
+        "fr": "Fettuccine",
+        "es": "Fettuccine"
+      }
+    },
+    {
+      "id": "food-garlic-bread-breadsticks",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Garlic Bread",
+        "fr": "Pain à l'ail",
+        "es": "Pan de ajo"
+      },
+      "undercover": {
+        "en": "Breadsticks",
+        "fr": "Gressins",
+        "es": "Palitos de pan"
+      }
+    },
+    {
+      "id": "food-caesar-salad-greek-salad",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Caesar Salad",
+        "fr": "Salade César",
+        "es": "Ensalada César"
+      },
+      "undercover": {
+        "en": "Greek Salad",
+        "fr": "Salade grecque",
+        "es": "Ensalada griega"
+      }
+    },
+    {
+      "id": "food-caprese-salad-cobb-salad",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Caprese Salad",
+        "fr": "Salade Caprese",
+        "es": "Ensalada Caprese"
+      },
+      "undercover": {
+        "en": "Cobb Salad",
+        "fr": "Salade Cobb",
+        "es": "Ensalada Cobb"
+      }
+    },
+    {
+      "id": "food-beet-salad-spinach-salad",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Beet Salad",
+        "fr": "Salade de betteraves",
+        "es": "Ensalada de remolacha"
+      },
+      "undercover": {
+        "en": "Spinach Salad",
+        "fr": "Salade d'épinards",
+        "es": "Ensalada de espinacas"
+      }
+    },
+    {
+      "id": "food-tacos-enchiladas",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Tacos",
+        "fr": "Tacos",
+        "es": "Tacos"
+      },
+      "undercover": {
+        "en": "Enchiladas",
+        "fr": "Enchiladas",
+        "es": "Enchiladas"
+      }
+    },
+    {
+      "id": "food-chimichangas-flautas",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Chimichangas",
+        "fr": "Chimichangas",
+        "es": "Chimichangas"
+      },
+      "undercover": {
+        "en": "Flautas",
+        "fr": "Flautas",
+        "es": "Flautas"
+      }
+    },
+    {
+      "id": "food-churros-pretzel",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Churros",
+        "fr": "Churros",
+        "es": "Churros"
+      },
+      "undercover": {
+        "en": "Pretzel",
+        "fr": "Bretzel",
+        "es": "Pretzel"
+      }
+    },
+    {
+      "id": "food-tamales-arepas",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Tamales",
+        "fr": "Tamales",
+        "es": "Tamales"
+      },
+      "undercover": {
+        "en": "Arepas",
+        "fr": "Arepas",
+        "es": "Arepas"
+      }
+    },
+    {
+      "id": "food-fish-tacos-carne-asada-tacos",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Fish Tacos",
+        "fr": "Tacos au poisson",
+        "es": "Tacos de pescado"
+      },
+      "undercover": {
+        "en": "Carne Asada Tacos",
+        "fr": "Tacos carne asada",
+        "es": "Tacos de carne asada"
+      }
+    },
+    {
+      "id": "food-chow-mein-wonton-soup",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Chow Mein",
+        "fr": "Chow mein",
+        "es": "Chow mein"
+      },
+      "undercover": {
+        "en": "Wonton Soup",
+        "fr": "Soupe wonton",
+        "es": "Sopa wonton"
+      }
+    },
+    {
+      "id": "food-pad-thai-green-curry",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Pad Thai",
+        "fr": "Pad thaï",
+        "es": "Pad thai"
+      },
+      "undercover": {
+        "en": "Green Curry",
+        "fr": "Curry vert",
+        "es": "Curry verde"
+      }
+    },
+    {
+      "id": "food-tom-yum-massaman-curry",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Tom Yum",
+        "fr": "Tom yum",
+        "es": "Tom yum"
+      },
+      "undercover": {
+        "en": "Massaman Curry",
+        "fr": "Curry massaman",
+        "es": "Curry massaman"
+      }
+    },
+    {
+      "id": "food-satay-spring-roll",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Satay",
+        "fr": "Satay",
+        "es": "Satay"
+      },
+      "undercover": {
+        "en": "Spring Roll",
+        "fr": "Rouleau de printemps",
+        "es": "Rollito de primavera"
+      }
+    },
+    {
+      "id": "food-biryani-tandoori-chicken",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Biryani",
+        "fr": "Biryani",
+        "es": "Biryani"
+      },
+      "undercover": {
+        "en": "Tandoori Chicken",
+        "fr": "Poulet tandoori",
+        "es": "Pollo tandoori"
+      }
+    },
+    {
+      "id": "food-samosa-pakora",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Samosa",
+        "fr": "Samosa",
+        "es": "Samosa"
+      },
+      "undercover": {
+        "en": "Pakora",
+        "fr": "Pakora",
+        "es": "Pakora"
+      }
+    },
+    {
+      "id": "food-naan-roti",
+      "category": "food",
+      "difficulty": "medium",
+      "tags": [
+        "food"
+      ],
+      "common": {
+        "en": "Naan",
+        "fr": "Naan",
+        "es": "Naan"
+      },
+      "undercover": {
+        "en": "Roti",
+        "fr": "Roti",
+        "es": "Roti"
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+.scene {
+  position: absolute;
+  inset: 0.15rem 0.4rem 4.5rem;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.player {
+  width: min(13.5rem, 100%);
+  height: min(13.5rem, 100%);
+  filter: brightness(0) invert(1);
+}

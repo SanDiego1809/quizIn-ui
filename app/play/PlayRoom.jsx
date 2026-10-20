@@ -11,6 +11,7 @@ import QuizLobby from "@/components/quiz/QuizLobby";
 import ModeView from "@/components/quiz/modes/ModeView";
 import GeographyModeView from "@/components/quiz/modes/geography/GeographyModeView";
 import ClassicModeView from "@/components/quiz/modes/classic/ClassicModeView";
+import UndercoverModeView from "@/components/quiz/modes/undercover/UndercoverModeView";
 import { parsePlayModeParam } from "@/lib/quiz/playMode";
 import { useQuizRoom } from "@/hooks/useQuizRoom";
 import { usePlayerProfile } from "@/hooks/usePlayerProfile";
@@ -62,7 +63,18 @@ export default function PlayRoom() {
   const isClassicLobby = isClassicSession && room?.phase === "lobby";
   const useClassicShell = isClassicEntry || isClassicSession;
 
-  const useImmersiveLobby = isGeoEntry || isGeoLobby || isClassicEntry || isClassicLobby;
+  const isUndercoverEntry = !room && defaultMode === "undercover";
+  const isUndercoverSession = room?.mode === "undercover";
+  const isUndercoverLobby = isUndercoverSession && room?.phase === "lobby";
+  const useUndercoverShell = isUndercoverEntry || isUndercoverSession;
+
+  const useImmersiveLobby =
+    isGeoEntry ||
+    isGeoLobby ||
+    isClassicEntry ||
+    isClassicLobby ||
+    isUndercoverEntry ||
+    isUndercoverLobby;
   const hidePlayTitle =
     isPlaying || isFinalResults || useImmersiveLobby;
 
@@ -142,6 +154,24 @@ export default function PlayRoom() {
           defaultName={defaultName}
           defaultRoomCode={defaultRoomCode}
           defaultMode={defaultMode === "picture" ? "picture" : "classic"}
+          isSignedIn={Boolean(isSignedIn)}
+          lang={lang}
+        />
+      ) : useUndercoverShell ? (
+        <UndercoverModeView
+          room={room}
+          isHost={isHost}
+          onStart={startGame}
+          onReset={resetGame}
+          onRematch={rematchGame}
+          onAction={sendGameAction}
+          onUpdateConfig={updateRoomConfig}
+          onCreate={createRoom}
+          onJoin={joinRoom}
+          connected={connected}
+          connectionError={connectionError}
+          defaultName={defaultName}
+          defaultRoomCode={defaultRoomCode}
           isSignedIn={Boolean(isSignedIn)}
           lang={lang}
         />

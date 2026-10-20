@@ -179,7 +179,7 @@ function registerGameHandlers(socket, ctx) {
   });
 
   /** Restart immediately with current settings (final results → new match). */
-  socket.on("quiz:game_rematch", ({ roomCode }) => {
+  socket.on("quiz:game_rematch", ({ roomCode, settings }) => {
     const code = normalizeRoomCode(roomCode);
     const room = ctx.rooms.get(code);
     if (!room) return;
@@ -209,7 +209,7 @@ function registerGameHandlers(socket, ctx) {
     }
 
     const mode = getMode(room.mode);
-    room.settings = mode.sanitizeSettings(room.settings, {
+    room.settings = mode.sanitizeSettings(settings ?? room.settings, {
       premium: hostIsPremium(room),
     });
 

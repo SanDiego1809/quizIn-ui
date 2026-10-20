@@ -68,7 +68,9 @@ export default function HomeRecentGames() {
           const playHref =
             row.mode === "geography"
               ? `/play?mode=geography&lang=${lang}`
-              : `/play?mode=classic&lang=${lang}`;
+              : row.mode === "undercover"
+                ? `/play?mode=undercover&lang=${lang}`
+                : `/play?mode=classic&lang=${lang}`;
           return (
             <li key={row.id}>
               <Link href={playHref} className={classes.recentItem}>

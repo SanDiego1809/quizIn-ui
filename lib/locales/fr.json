@@ -203,6 +203,10 @@
       "lottieShowTime": {
         "name": "Icône show time (Ahmad Halawani)",
         "note": "Animation show time sur la carte quiz classique de l'accueil (licence Lottie Simple) — https://lottiefiles.com/free-animation/show-time-icon-1EUnXQJISy"
+      },
+      "lottieIspettorePrivacy": {
+        "name": "Ispettore Privacy (Armando Rinaldi)",
+        "note": "Animation privacy / espion sur la carte Undercover de l'accueil (licence Lottie Simple) — https://lottiefiles.com/free-animation/ispettore-privacy-5nQfuQ4eRe"
       }
     },
     "videos": {
@@ -241,6 +245,8 @@
     "modeLockedFromHome": "Configurez la variante et les règles dans la salle d'attente.",
     "geographyLabel": "Quiz de géographie",
     "classicLabel": "Quiz classique",
+    "pictureLabel": "Manche images",
+    "undercoverLabel": "Undercover",
     "connected": "Connecté au serveur de jeu",
     "connecting": "Connexion au serveur…",
     "yourName": "Votre nom",
@@ -449,7 +455,95 @@
     },
     "audioPack": {
       "label": "Effets sonores",
-      "info": "Sons de verrouillage / juste / faux (désactivés par défaut)."
+      "info": "Sons de verrouillage / juste / faux (désactivés par défaut).",
+      "hintUndercover": "Sons Undercover (tour, vote, élimination, blank)."
+    },
+    "undercoverCount": {
+      "label": "Undercovers",
+      "hint": "Joueurs qui reçoivent un mot proche mais différent."
+    },
+    "mrWhiteCount": {
+      "label": "Mr White",
+      "hint": "Joueurs sans mot. S'ils sont éliminés, ils peuvent deviner le mot des civils."
+    },
+    "foolCount": {
+      "label": "Fool",
+      "hint": "Voit le mot undercover mais marque avec les civils."
+    },
+    "detectiveCount": {
+      "label": "Détective",
+      "hint": "Une fois par manche, voit si un joueur est civil ou spécial."
+    },
+    "hideRoles": {
+      "label": "Cacher les rôles",
+      "hint": "Les joueurs ne voient que leur mot. Seul Mr White voit son rôle."
+    },
+    "blankRounds": {
+      "label": "Manches blank",
+      "hint": "Parfois personne n'a de mot.",
+      "options": { "off": "Off", "random": "Aléatoire (20%)" }
+    },
+    "discussionMode": {
+      "label": "Discussion",
+      "hint": "Parler entre indices et vote.",
+      "options": { "off": "Off", "timer": "Chrono", "ready": "Prêt à voter" }
+    },
+    "discussionTimeSeconds": { "label": "Temps de discussion (secondes)" },
+    "requireAccuse": {
+      "label": "Exiger une accusation",
+      "hint": "Une nomination doit être secondée avant le vote."
+    },
+    "accuseTimeSeconds": { "label": "Temps d'accusation (secondes)" },
+    "tieBehavior": {
+      "label": "En cas d'égalité",
+      "options": { "revote": "Re-vote", "skip": "Pas d'élimination" }
+    },
+    "banSecretWord": { "label": "Interdire le mot secret" },
+    "banDuplicateClue": { "label": "Interdire les indices en double" },
+    "clueOneWord": { "label": "Indices d'un seul mot" },
+    "clueMaxChars": { "label": "Max caractères d'indice", "hint": "0 = illimité" },
+    "speedResolve": {
+      "label": "Résolution rapide (un vote finit la manche)",
+      "hint": "Preset Speed — une élimination score la manche."
+    },
+    "wordSource": {
+      "label": "Source des mots",
+      "hint": "Les paires custom restent dans cette salle.",
+      "options": {
+        "bank": "Banque intégrée",
+        "custom": "Paires custom seulement",
+        "mixed": "Banque + custom"
+      }
+    },
+    "totalRounds": {
+      "label": "Manches"
+    },
+    "clueTimeSeconds": {
+      "label": "Temps d'indice (secondes)",
+      "hint": "0 = pas de chrono"
+    },
+    "voteTimeSeconds": {
+      "label": "Temps de vote (secondes)",
+      "hint": "0 = pas de chrono"
+    },
+    "wordCategory": {
+      "label": "Pack de mots",
+      "options": {
+        "all": "Tous les packs",
+        "easy": "Facile",
+        "family": "Famille",
+        "classic": "Classique",
+        "funny": "Funny",
+        "food": "Nourriture & boissons"
+      }
+    },
+    "wordLang": {
+      "label": "Langue des mots",
+      "options": {
+        "en": "English",
+        "fr": "Français",
+        "es": "Español"
+      }
     }
   },
   "modes": {
@@ -470,6 +564,96 @@
       "vibe": "Visuel",
       "description": "Identifiez ce qui est sur l'image — même plateau et buzzers que le classique.",
       "learnMore": "Jouer la manche images →"
+    },
+    "undercover": {
+      "name": "Undercover",
+      "vibe": "Déduire",
+      "description": "La plupart partagent un mot secret. Les undercovers ont un cousin proche. Indices et votes jusqu'à la victoire d'un camp — Mr White optionnel n'a aucun mot.",
+      "learnMore": "Jouer Undercover →"
+    }
+  },
+  "undercover": {
+    "phaseClue": "Indices",
+    "phaseDiscuss": "Discussion",
+    "phaseAccuse": "Accusation",
+    "phaseVote": "Vote",
+    "phaseMrWhite": "Devinette Mr White",
+    "phaseResults": "Résultat de la manche",
+    "phaseReveal": "Votre carte",
+    "roundMeta": "Manche {current} / {total}",
+    "yourSecret": "Votre secret",
+    "yourWord": "Votre mot",
+    "roleCivilian": "Civil",
+    "roleUndercover": "Undercover",
+    "roleMrWhite": "Mr White",
+    "roleFool": "Fool",
+    "roleDetective": "Détective",
+    "noWord": "Pas de mot",
+    "blankRoundBanner": "Manche blank — personne n'a de mot. Bluffez.",
+    "youAreOut": "Vous êtes éliminé pour cette manche — regardez la suite.",
+    "spectateHint": "Spectateur — indices et votes seulement.",
+    "turnOrder": "Ordre : {order}",
+    "yourTurn": "À vous — donnez un court indice.",
+    "waitingFor": "En attente de {name}…",
+    "cluePlaceholder": "Un court indice",
+    "submitClue": "Envoyer l'indice",
+    "discussHint": "Discutez, puis votez.",
+    "readyToVote": "Prêt à voter",
+    "readyCount": "Prêts {ready}/{need}",
+    "accuseHint": "Nommez quelqu'un. Un autre joueur doit seconder.",
+    "nominate": "Nommer",
+    "secondAccuse": "Seconder",
+    "nominated": "Nommé : {name}",
+    "waitingSecond": "En attente d'un second…",
+    "voteHint": "Votez pour celui qui semble louche.",
+    "submitVote": "Valider le vote",
+    "voteWaiting": "En attente des votes…",
+    "votedFor": "→ {name}",
+    "tieRevote": "Égalité — nouveau vote…",
+    "mrWhiteEliminated": "{name} est éliminé et peut deviner le mot des civils.",
+    "guessPlaceholder": "Mot des civils",
+    "submitGuess": "Deviner",
+    "waitingMrWhite": "En attente de la devinette de Mr White…",
+    "winnerCivilians": "Les civils gagnent la manche",
+    "winnerUndercover": "Les undercovers gagnent la manche",
+    "winnerMrWhite": "Mr White gagne la manche",
+    "eliminatedLine": "Éliminé : {name}",
+    "mrWhiteGuessLine": "Devinette : {guess} ({ok})",
+    "correct": "juste",
+    "wrong": "faux",
+    "wordsReveal": "Mots : {common} / {undercover}",
+    "foolReveal": "Fool : {names}",
+    "detectiveReveal": "Détective : {names}",
+    "scoreCivilians": "Civils",
+    "scoreUndercover": "Undercover",
+    "scoreMrWhite": "Mr White",
+    "nextRound": "Manche suivante",
+    "seeFinal": "Voir le classement final",
+    "waitingHost": "En attente de l'hôte…",
+    "ratePair": "Noter cette paire",
+    "peek": "Espionner",
+    "peekResultCivilian": "{name} semble civil",
+    "peekResultSpecial": "{name} semble spécial",
+    "presetsLabel": "Presets",
+    "customPairsLabel": "Paires custom",
+    "customPairsHint": "civil / undercover — restent dans cette salle",
+    "addPair": "Ajouter",
+    "commonPlaceholder": "Mot civil",
+    "undercoverPlaceholder": "Mot undercover",
+    "achievements": "Succès",
+    "achievement_perfect_civilian_table": "Table civile parfaite",
+    "achievement_mr_white_clutch": "Devinette clutch Mr White",
+    "achievement_fool_survived": "Fool a survécu",
+    "achievement_won_while_blind": "Victoire à l'aveugle",
+    "achievement_survived_blank_round": "Survie en manche blank",
+    "presets": {
+      "chill": "Chill",
+      "chaos": "Chaos",
+      "mrWhiteNight": "Nuit Mr White",
+      "quick": "Rapide",
+      "blindNight": "Nuit aveugle",
+      "fog": "Brouillard",
+      "speed": "Speed"
     }
   },
   "geoQuestion": {
