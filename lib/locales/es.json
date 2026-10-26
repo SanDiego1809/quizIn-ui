@@ -206,7 +206,23 @@
       },
       "lottieIspettorePrivacy": {
         "name": "Ispettore Privacy (Armando Rinaldi)",
-        "note": "Animación privacy / espía en la tarjeta Undercover del inicio (licencia Lottie Simple) — https://lottiefiles.com/free-animation/ispettore-privacy-5nQfuQ4eRe"
+        "note": "Animación privacy / espía en la tarjeta Undercover del inicio y el icono de rol Undercover (licencia Lottie Simple) — https://lottiefiles.com/free-animation/ispettore-privacy-5nQfuQ4eRe"
+      },
+      "lottieSearching": {
+        "name": "Searching (Clement Denis)",
+        "note": "Animación de lupa para el icono del rol Detective en Undercover (licencia Lottie Simple) — https://lottiefiles.com/free-animation/searching-6AoPeWdGR0"
+      },
+      "lottieLaughingClown": {
+        "name": "Laughing Clown Emoji (Samuel Osborne)",
+        "note": "Animación de payaso riendo para el icono del rol Fool en Undercover (licencia Lottie Simple) — https://lottiefiles.com/free-animation/laughing-clown-emoji-JitejIy1BH"
+      },
+      "lottieNeutral": {
+        "name": "NEUTRAL (Rosario Garrido)",
+        "note": "Animación de cara neutra para el icono del rol Civil en Undercover (licencia Lottie Simple) — https://lottiefiles.com/free-animation/neutral-nj1lcAFwhz"
+      },
+      "lottieEmptyGhost": {
+        "name": "empty ghost (naiandersonbruno)",
+        "note": "Animación de fantasma para el icono del rol Mr White en Undercover (licencia Lottie Simple) — https://lottiefiles.com/free-animation/empty-ghost-jefFBa5UsX"
       }
     },
     "videos": {
@@ -324,6 +340,7 @@
     "hostTag": "anfitrión",
     "premiumHostHint": "El anfitrión Premium desbloquea filtros por continente, modificadores de mapa, vidas y partidas más largas.",
     "premiumClassicHint": "El anfitrión Premium desbloquea dificultad, reglas de puntuación, carrera de buzzer, ritmo del anfitrión, estilos de atril, sonidos, categorías y partidas más largas.",
+    "premiumUndercoverHint": "El anfitrión Premium desbloquea Fool, Detective, rondas blank, resolución rápida, sonidos y hasta 10 rondas.",
     "upgradeLink": "Mejorar",
     "seatStatus": "{count} / {max} plazas · {premium} Premium (+1 cada uno)",
     "needPremiumSeat": "Hace falta otro Premium para una sala más grande",
@@ -458,20 +475,36 @@
       "info": "Sonidos de bloqueo / acierto / fallo (desactivados por defecto).",
       "hintUndercover": "Sonidos Undercover (turno, voto, elim, blank)."
     },
+    "roles": {
+      "label": "Roles"
+    },
+    "round": {
+      "label": "Ronda"
+    },
+    "flow": {
+      "label": "Voto"
+    },
+    "clues": {
+      "label": "Pistas"
+    },
     "undercoverCount": {
       "label": "Undercovers",
+      "short": "UC",
       "hint": "Jugadores que reciben una palabra parecida pero distinta."
     },
     "mrWhiteCount": {
       "label": "Mr White",
+      "short": "MW",
       "hint": "Jugadores sin palabra. Si los eliminan, pueden adivinar la palabra civil."
     },
     "foolCount": {
       "label": "Fool",
+      "short": "Fool",
       "hint": "Ve la palabra undercover pero puntúa con civiles."
     },
     "detectiveCount": {
       "label": "Detective",
+      "short": "Det",
       "hint": "Una vez por ronda, mira si un jugador es civil o especial."
     },
     "hideRoles": {
@@ -504,19 +537,11 @@
     "clueMaxChars": { "label": "Máx. caracteres de pista", "hint": "0 = sin límite" },
     "speedResolve": {
       "label": "Resolución rápida (un voto acaba la ronda)",
-      "hint": "Preset Speed — una eliminación puntúa la ronda."
-    },
-    "wordSource": {
-      "label": "Fuente de palabras",
-      "hint": "Los pares custom se quedan en esta sala.",
-      "options": {
-        "bank": "Banco integrado",
-        "custom": "Solo pares custom",
-        "mixed": "Banco + custom"
-      }
+      "hint": "Una eliminación puntúa la ronda."
     },
     "totalRounds": {
-      "label": "Rondas"
+      "label": "Rondas",
+      "premiumHint": "Anfitriones gratis: hasta 3. Premium: hasta 10."
     },
     "clueTimeSeconds": {
       "label": "Tiempo de pista (segundos)",
@@ -525,17 +550,6 @@
     "voteTimeSeconds": {
       "label": "Tiempo de voto (segundos)",
       "hint": "0 = sin temporizador"
-    },
-    "wordCategory": {
-      "label": "Pack de palabras",
-      "options": {
-        "all": "Todos los packs",
-        "easy": "Fácil",
-        "family": "Familia",
-        "classic": "Clásico",
-        "funny": "Funny",
-        "food": "Comida y bebidas"
-      }
     },
     "wordLang": {
       "label": "Idioma de las palabras",
@@ -602,10 +616,14 @@
     "readyCount": "Listos {ready}/{need}",
     "accuseHint": "Nomina a alguien. Otro jugador debe secundar.",
     "nominate": "Nombrar",
+    "nominateZone": "Nombrar",
+    "dragNominateHint": "Arrastra una carta aquí, o toca una carta y luego esta zona.",
     "secondAccuse": "Secundar",
     "nominated": "Nominado: {name}",
     "waitingSecond": "Esperando un segundo…",
     "voteHint": "Vota a quien parezca raro.",
+    "eliminateZone": "Eliminar",
+    "dragEliminateHint": "Arrastra una carta aquí, o toca una carta y luego esta zona.",
     "submitVote": "Confirmar voto",
     "voteWaiting": "Esperando los votos…",
     "votedFor": "→ {name}",
@@ -618,7 +636,11 @@
     "winnerUndercover": "Los undercovers ganan la ronda",
     "winnerMrWhite": "Mr White gana la ronda",
     "eliminatedLine": "Eliminado: {name}",
+    "eliminatedShort": "Fuera",
+    "caseBoard": "Tablero del caso",
+    "cluesDock": "Pistas",
     "mrWhiteGuessLine": "Adivinanza: {guess} ({ok})",
+    "guessShort": "Adivina",
     "correct": "correcta",
     "wrong": "incorrecta",
     "wordsReveal": "Palabras: {common} / {undercover}",
@@ -630,31 +652,34 @@
     "nextRound": "Siguiente ronda",
     "seeFinal": "Ver resultados finales",
     "waitingHost": "Esperando al anfitrión…",
-    "ratePair": "Valora este par",
     "peek": "Mirar",
     "peekResultCivilian": "{name} parece civil",
     "peekResultSpecial": "{name} parece especial",
-    "presetsLabel": "Presets",
-    "customPairsLabel": "Pares custom",
-    "customPairsHint": "civil / undercover — se quedan en esta sala",
-    "addPair": "Añadir",
-    "commonPlaceholder": "Palabra civil",
-    "undercoverPlaceholder": "Palabra undercover",
     "achievements": "Logros",
     "achievement_perfect_civilian_table": "Mesa civil perfecta",
     "achievement_mr_white_clutch": "Adivinanza clutch Mr White",
     "achievement_fool_survived": "Fool sobrevivió",
     "achievement_won_while_blind": "Victoria a ciegas",
     "achievement_survived_blank_round": "Sobrevivió ronda blank",
-    "presets": {
-      "chill": "Chill",
-      "chaos": "Chaos",
-      "mrWhiteNight": "Noche Mr White",
-      "quick": "Rápido",
-      "blindNight": "Noche ciega",
-      "fog": "Niebla",
-      "speed": "Speed"
-    }
+    "feedbackCaption": "¿Problema con este par de palabras?",
+    "feedbackReport": "Reportar error",
+    "feedbackReported": "Gracias — marcado para revisión.",
+    "feedbackReportedShort": "Reportado",
+    "feedbackError": "No se pudo guardar.",
+    "feedbackReportTitle": "Reportar un par incorrecto, confuso o roto",
+    "feedbackNoteLabel": "Nota opcional (¿qué falla?)",
+    "feedbackNotePlaceholder": "ej. Typo, mala traducción, demasiado parecidas / difíciles…",
+    "feedbackSendReport": "Enviar reporte",
+    "feedbackCancel": "Cancelar",
+    "yourTurnBanner": "Tu turno — da una pista corta.",
+    "watching": "Espectando",
+    "waitingNominate": "Esperando una nominación…",
+    "wordCivilian": "Palabra civil",
+    "wordUndercover": "Palabra undercover",
+    "scoreHint": "Puntos: voto correcto + sobrevivir (se actualizan al final de la ronda).",
+    "personalScores": "Puntuaciones",
+    "skipElimination": "Otra ronda de pistas",
+    "skipEliminationHint": "Cancelar este voto y jugar otra ronda de pistas con las mismas palabras."
   },
   "geoQuestion": {
     "progress": "País {current} / {total}",

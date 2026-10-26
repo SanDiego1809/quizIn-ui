@@ -1,0 +1,111 @@
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.sm {
+  font-size: 1.5rem;
+}
+
+.md {
+  font-size: 2.75rem;
+}
+
+.lg {
+  font-size: 5.5rem;
+}
+
+/* —— Role Lotties (square badges; ignore 1em SVG box) —— */
+.lottie,
+.undercover,
+.civilian,
+.mr_white,
+.fool,
+.detective {
+  width: auto;
+  height: auto;
+  overflow: visible;
+}
+
+.undercover {
+  color: #fff;
+}
+
+.civilian {
+  color: #86efac;
+}
+
+.mr_white {
+  color: #e2e8f0;
+}
+
+.fool {
+  color: #fbbf24;
+}
+
+.detective {
+  color: #60a5fa;
+}
+
+/* —— Mystery —— */
+.mystery {
+  color: #94a3b8;
+}
+
+.mystery .q {
+  transform-origin: 32px 40px;
+  transform-box: fill-box;
+  animation: mysteryBob 2.2s ease-in-out infinite;
+  filter: drop-shadow(0 2px 6px rgba(2, 6, 23, 0.55));
+}
+
+.mystery:hover .q,
+.mystery:focus-visible .q {
+  animation: mysteryWiggle 0.55s ease;
+  fill: #fde68a;
+}
+
+@keyframes mysteryBob {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.06);
+  }
+}
+
+@keyframes mysteryWiggle {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  20% {
+    transform: translateY(-6px) rotate(-14deg) scale(1.18);
+  }
+  45% {
+    transform: translateY(-2px) rotate(12deg) scale(1.22);
+  }
+  70% {
+    transform: translateY(-5px) rotate(-8deg) scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mystery .q,
+  .mystery:hover .q,
+  .mystery:focus-visible .q {
+    animation: none;
+  }
+}

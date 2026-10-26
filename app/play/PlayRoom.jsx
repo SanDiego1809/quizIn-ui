@@ -166,6 +166,7 @@ export default function PlayRoom() {
           onRematch={rematchGame}
           onAction={sendGameAction}
           onUpdateConfig={updateRoomConfig}
+          onQuestionFeedback={sendQuestionFeedback}
           onCreate={createRoom}
           onJoin={joinRoom}
           connected={connected}

@@ -10,9 +10,13 @@ const rand = (min, max) => Math.random() * (max - min) + min;
 /**
  * Night city photo background with animated rain / window droplets on top.
  */
-export default function NightCityBackground({ className = "" }) {
+export default function NightCityBackground({
+  className = "",
+  intensity = "full",
+}) {
   const mountRef = useRef(null);
   const canvasRef = useRef(null);
+  const playMode = intensity === "play";
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -31,11 +35,13 @@ export default function NightCityBackground({ className = "" }) {
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
+    const rainCount = playMode ? 70 : 160;
+    const dropCount = playMode ? 18 : 36;
 
     function createWeather() {
       rain = [];
       drops = [];
-      for (let i = 0; i < 160; i += 1) {
+      for (let i = 0; i < rainCount; i += 1) {
         rain.push({
           x: rand(0, w),
           y: rand(0, h),
@@ -45,7 +51,7 @@ export default function NightCityBackground({ className = "" }) {
           drift: rand(-1.1, -0.25),
         });
       }
-      for (let i = 0; i < 70; i += 1) {
+      for (let i = 0; i < dropCount; i += 1) {
         drops.push({
           x: rand(0, w),
           y: rand(0, h),
@@ -141,12 +147,14 @@ export default function NightCityBackground({ className = "" }) {
       window.removeEventListener("resize", onResize);
       ro?.disconnect();
     };
-  }, []);
+  }, [playMode]);
 
   return (
     <div
       ref={mountRef}
-      className={`${classes.root}${className ? ` ${className}` : ""}`}
+      className={`${classes.root}${playMode ? ` ${classes.rootPlay}` : ""}${
+        className ? ` ${className}` : ""
+      }`}
       aria-hidden="true"
     >
       <img

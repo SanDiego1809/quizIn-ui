@@ -8,6 +8,7 @@ export default function QuestionFeedbackBar({
   disabled = false,
   onFeedback,
   labels = {},
+  reportOnly = false,
 }) {
   const [yourVote, setYourVote] = useState(null);
   const [reported, setReported] = useState(false);
@@ -53,46 +54,62 @@ export default function QuestionFeedbackBar({
     }
   };
 
+  const reportTitle = labels.reportTitle || "Report error";
+  const reportLabel = reported
+    ? labels.reportedShort || "Reported"
+    : labels.report || "Report";
+
   return (
-    <div className={classes.bar} role="group" aria-label={labels.group || "Question feedback"}>
-      <span className={classes.caption}>
-        {labels.caption || "Rate difficulty"}
-      </span>
+    <div
+      className={`${classes.bar}${reportOnly ? ` ${classes.barCompact}` : ""}`}
+      role="group"
+      aria-label={labels.group || "Question feedback"}
+    >
+      {!reportOnly ? (
+        <span className={classes.caption}>
+          {labels.caption || "Rate difficulty"}
+        </span>
+      ) : null}
       <div className={classes.buttons}>
-        <button
-          type="button"
-          className={`${classes.btn} ${classes.up} ${
-            yourVote === 1 ? classes.active : ""
-          }`}
-          disabled={disabled || busy}
-          aria-pressed={yourVote === 1}
-          title={labels.upTitle || "Hard"}
-          onClick={() => send("up")}
-        >
-          <span aria-hidden="true">▲</span>
-          <span className={classes.btnLabel}>{labels.up || "Hard"}</span>
-        </button>
-        <button
-          type="button"
-          className={`${classes.btn} ${classes.down} ${
-            yourVote === -1 ? classes.active : ""
-          }`}
-          disabled={disabled || busy}
-          aria-pressed={yourVote === -1}
-          title={labels.downTitle || "Easy"}
-          onClick={() => send("down")}
-        >
-          <span aria-hidden="true">▼</span>
-          <span className={classes.btnLabel}>{labels.down || "Easy"}</span>
-        </button>
+        {!reportOnly ? (
+          <>
+            <button
+              type="button"
+              className={`${classes.btn} ${classes.up} ${
+                yourVote === 1 ? classes.active : ""
+              }`}
+              disabled={disabled || busy}
+              aria-pressed={yourVote === 1}
+              title={labels.upTitle || "Hard"}
+              onClick={() => send("up")}
+            >
+              <span aria-hidden="true">▲</span>
+              <span className={classes.btnLabel}>{labels.up || "Hard"}</span>
+            </button>
+            <button
+              type="button"
+              className={`${classes.btn} ${classes.down} ${
+                yourVote === -1 ? classes.active : ""
+              }`}
+              disabled={disabled || busy}
+              aria-pressed={yourVote === -1}
+              title={labels.downTitle || "Easy"}
+              onClick={() => send("down")}
+            >
+              <span aria-hidden="true">▼</span>
+              <span className={classes.btnLabel}>{labels.down || "Easy"}</span>
+            </button>
+          </>
+        ) : null}
         <button
           type="button"
           className={`${classes.btn} ${classes.report} ${
             reported ? classes.reportDone : ""
-          }`}
+          }${reportOnly ? ` ${classes.iconOnly}` : ""}`}
           disabled={disabled || busy || reported}
           aria-pressed={reported || reportOpen}
-          title={labels.reportTitle || "Report error"}
+          aria-label={reportLabel}
+          title={reportTitle}
           onClick={() => {
             if (reported) return;
             setReportOpen((open) => !open);
@@ -101,11 +118,9 @@ export default function QuestionFeedbackBar({
           <span className={classes.dangerIcon} aria-hidden="true">
             ⚠
           </span>
-          <span className={classes.btnLabel}>
-            {reported
-              ? labels.reportedShort || "Reported"
-              : labels.report || "Report"}
-          </span>
+          {!reportOnly ? (
+            <span className={classes.btnLabel}>{reportLabel}</span>
+          ) : null}
         </button>
       </div>
 

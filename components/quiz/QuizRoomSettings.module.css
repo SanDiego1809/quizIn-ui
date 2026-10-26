@@ -109,6 +109,168 @@
   font-weight: 600;
 }
 
+.undercoverForm {
+  gap: 0.35rem;
+  overflow: visible;
+}
+
+.settingsGroups {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.1rem 0 0.2rem;
+}
+
+.settingsGroups > * {
+  animation: settingsGroupIn 0.36s ease both;
+}
+
+.settingsGroups > *:nth-child(1) {
+  animation-delay: 0.04s;
+}
+
+.settingsGroups > *:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.settingsGroups > *:nth-child(3) {
+  animation-delay: 0.16s;
+}
+
+.settingsGroups > *:nth-child(4) {
+  animation-delay: 0.22s;
+}
+
+.groupFields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  width: 100%;
+}
+
+.groupFields > * {
+  animation: groupFieldIn 0.28s ease both;
+}
+
+.groupFields > *:nth-child(1) {
+  animation-delay: 0.04s;
+}
+
+.groupFields > *:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.groupFields > *:nth-child(3) {
+  animation-delay: 0.12s;
+}
+
+.groupFields > *:nth-child(4) {
+  animation-delay: 0.16s;
+}
+
+.groupFields > *:nth-child(5) {
+  animation-delay: 0.2s;
+}
+
+.groupFields > *:nth-child(6) {
+  animation-delay: 0.24s;
+}
+
+.groupFields .field {
+  width: 100%;
+  max-width: none;
+  align-items: stretch;
+  text-align: left;
+  gap: 0.2rem;
+}
+
+.groupFields .select {
+  width: 100%;
+  transition:
+    border-color 0.16s ease,
+    box-shadow 0.16s ease,
+    transform 0.12s ease;
+}
+
+.groupFields .select:focus {
+  border-color: rgba(94, 234, 212, 0.55);
+  box-shadow: 0 0 0 2px rgba(94, 234, 212, 0.18);
+}
+
+.groupFields .select:active {
+  transform: scale(0.985);
+}
+
+.groupFields .checkRow {
+  padding: 0.3rem 0.2rem;
+  border-radius: 0.45rem;
+  transition:
+    background 0.16s ease,
+    transform 0.12s ease;
+}
+
+.groupFields .checkRow:active {
+  transform: scale(0.98);
+  background: rgba(94, 234, 212, 0.1);
+}
+
+.groupFields .field :global(button),
+.groupFields .field :global([class*="step"]) {
+  transition: transform 0.12s ease;
+}
+
+.groupFields .field :global(button:active) {
+  transform: scale(0.92);
+}
+
+.groupFields .hint {
+  font-size: 0.75rem;
+}
+
+@keyframes settingsGroupIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.4rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes groupFieldIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .settingsGroups > *,
+  .groupFields > * {
+    animation: none;
+  }
+
+  .groupFields .select,
+  .groupFields .checkRow,
+  .groupFields .field :global(button) {
+    transition: none;
+  }
+
+  .groupFields .select:active,
+  .groupFields .checkRow:active,
+  .groupFields .field :global(button:active) {
+    transform: none;
+  }
+}
+
 .geoSteppers {
   flex: 0 0 auto;
   display: flex;

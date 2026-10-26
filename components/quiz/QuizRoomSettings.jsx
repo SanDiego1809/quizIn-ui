@@ -11,9 +11,18 @@ import { getTranslations } from "@/lib/i18n";
 import { CONTINENT_OPTIONS } from "@/lib/quiz/continents";
 import NumberStepper from "@/components/stepper/NumberStepper";
 import ExpandableMultiSelect from "@/components/ui/ExpandableMultiSelect";
+import ExpandablePanel from "@/components/ui/ExpandablePanel";
 import SettingInfoTip from "@/components/ui/SettingInfoTip";
 import CategoryCardPicker from "@/components/quiz/CategoryCardPicker";
 import { CLASSIC_CATEGORIES, formatCategoryLabel } from "@/lib/quiz/classicCategories";
+import SettingsGroupIcon from "@/components/quiz/modes/undercover/settingsGroupIcons";
+
+const UNDERCOVER_SETTING_GROUPS = [
+  { id: "roles", fallbackLabel: "Roles" },
+  { id: "round", fallbackLabel: "Round" },
+  { id: "flow", fallbackLabel: "Voting" },
+  { id: "clues", fallbackLabel: "Clues" },
+];
 
 function settingsSyncKey(settings) {
   if (!settings || typeof settings !== "object") return "";
@@ -140,8 +149,8 @@ function renderNumberField({
     fieldCopy?.hint ??
     (locked
       ? field.hint
-      : field.premiumHint && !hostPremium
-        ? field.premiumHint
+      : !hostPremium && (fieldCopy?.premiumHint || field.premiumHint)
+        ? fieldCopy?.premiumHint ?? field.premiumHint
         : field.hint);
   const fieldId = `${baseId}-${field.key}`;
   const labelId = `${fieldId}-label`;
@@ -193,6 +202,7 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
   });
   const lastSyncedSettingsKey = useRef(settingsSyncKey(room.settings));
   const pendingContinentsRef = useRef(null);
+  const [openSettingsGroup, setOpenSettingsGroup] = useState(null);
 
   useEffect(() => {
     const next = room.settings ?? activeMode?.defaultSettings ?? {};
@@ -564,59 +574,200 @@ export default function QuizRoomSettings({ room, isHost, onUpdateConfig, lang = 
   }
 
   if (isUndercover) {
-    const numberFields = visibleFields.filter((field) => field.type === "number");
-    const selectFields = visibleFields.filter((field) => field.type === "select");
+    const groups = UNDERCOVER_SETTING_GROUPS.map((group) => ({
+      ...group,
+      fields: visibleFields.filter((field) => field.group === group.id),
+    })).filter((group) => group.fields.length > 0);
+
+    const groupSummary = (groupId, fields) => {
+      if (groupId === "roles") {
+        return fields
+          .filter((field) => field.type === "number")
+          .map((field) => {
+            const fieldCopy = all.settings_fields?.[field.key];
+            const short =
+              fieldCopy?.short ?? fieldCopy?.label ?? field.label ?? field.key;
+            const value =
+              draftSettings[field.key] ??
+              activeMode.defaultSettings?.[field.key] ??
+              0;
+            return `${value} ${short}`;
+          })
+          .join(" · ");
+      }
+      if (groupId === "round") {
+        const rounds =
+          draftSettings.totalRounds ??
+          activeMode.defaultSettings?.totalRounds ??
+          3;
+        const clue =
+          draftSettings.clueTimeSeconds ??
+          activeMode.defaultSettings?.clueTimeSeconds ??
+          0;
+        const vote =
+          draftSettings.voteTimeSeconds ??
+          activeMode.defaultSettings?.voteTimeSeconds ??
+          0;
+        return `${rounds} rounds · clue ${clue ? `${clue}s` : "—"} · vote ${
+          vote ? `${vote}s` : "—"
+        }`;
+      }
+      if (groupId === "flow") {
+        return (
+          optionLabel(
+            "discussionMode",
+            draftSettings.discussionMode ??
+              activeMode.defaultSettings?.discussionMode ??
+              "off",
+            all,
+            "Off"
+          ) ?? "Off"
+        );
+      }
+      if (groupId === "clues") {
+        const on = fields.filter(
+          (field) =>
+            field.type === "checkbox" && Boolean(draftSettings[field.key])
+        ).length;
+        return on ? `${on} on` : "defaults";
+      }
+      return null;
+    };
+
+    const renderGroupedField = (field) => {
+      if (field.type === "number") {
+        return renderNumberField({
+          field,
+          draftSettings,
+          hostPremium,
+          baseId,
+          all,
+          onSettingChange,
+          hintAsTip: true,
+        });
+      }
+
+      if (field.type === "select") {
+        const locked = Boolean(field.premium) && !hostPremium;
+        const fieldCopy = all.settings_fields?.[field.key];
+        const label = fieldCopy?.label ?? field.label;
+        const tip = fieldCopy?.info ?? fieldCopy?.hint ?? field.hint;
+        const fieldId = `${baseId}-${field.key}`;
+
+        return (
+          <label
+            key={field.key}
+            className={`${classes.field} ${locked ? classes.checkRowLocked : ""}`}
+          >
+            <span className={classes.fieldLabel}>
+              {label}
+              {field.premium ? (
+                <span className={classes.badge}>Premium</span>
+              ) : null}
+              {tip ? <SettingInfoTip text={tip} /> : null}
+            </span>
+            <select
+              id={fieldId}
+              className={classes.select}
+              value={
+                draftSettings[field.key] ??
+                activeMode.defaultSettings?.[field.key] ??
+                ""
+              }
+              disabled={locked}
+              onChange={(e) => onSettingChange(field.key, e.target.value)}
+            >
+              {(field.options || []).map((option) => (
+                <option key={option.value || "all"} value={option.value}>
+                  {optionLabel(field.key, option.value, all, option.label)}
+                </option>
+              ))}
+            </select>
+          </label>
+        );
+      }
+
+      if (field.type === "checkbox") {
+        const locked = Boolean(field.premium) && !hostPremium;
+        const fieldCopy = all.settings_fields?.[field.key];
+        const label = fieldCopy?.label ?? field.label;
+        const tip =
+          fieldCopy?.info ?? fieldCopy?.hint ?? field.info ?? field.hint;
+        const fieldId = `${baseId}-${field.key}`;
+        const checked = Boolean(draftSettings[field.key]);
+
+        return (
+          <label
+            key={field.key}
+            className={`${classes.checkRow} ${
+              locked ? classes.checkRowLocked : ""
+            }`}
+            htmlFor={fieldId}
+          >
+            <input
+              id={fieldId}
+              type="checkbox"
+              className={classes.checkbox}
+              checked={checked}
+              disabled={locked}
+              onChange={(event) =>
+                onSettingChange(field.key, event.target.checked)
+              }
+            />
+            <span className={classes.checkTitle}>
+              <span className={classes.checkLabel}>{label}</span>
+              {field.premium ? (
+                <span className={classes.badge}>Premium</span>
+              ) : null}
+              {tip ? <SettingInfoTip text={tip} /> : null}
+            </span>
+          </label>
+        );
+      }
+
+      return null;
+    };
 
     return (
-      <div className={`${classes.form} ${classes.geoForm}`}>
+      <div className={`${classes.form} ${classes.geoForm} ${classes.undercoverForm}`}>
         <p className={classes.formLabel}>{t.gameSetup ?? "Game setup"}</p>
         <h3 className={classes.geoTitle}>{modeName}</h3>
 
-        {selectFields.map((field) => {
-          const fieldCopy = all.settings_fields?.[field.key];
-          const label = fieldCopy?.label ?? field.label;
-          const tip = fieldCopy?.info ?? fieldCopy?.hint ?? field.hint;
-          const fieldId = `${baseId}-${field.key}`;
+        <div className={classes.settingsGroups}>
+          {groups.map((group) => {
+            const groupCopy = all.settings_fields?.[group.id];
+            const title = groupCopy?.label ?? group.fallbackLabel;
+            const summary = groupSummary(group.id, group.fields);
+            const open = openSettingsGroup === group.id;
 
-          return (
-            <label key={field.key} className={classes.field}>
-              <span className={classes.fieldLabel}>
-                {label}
-                {tip ? <SettingInfoTip text={tip} /> : null}
-              </span>
-              <select
-                id={fieldId}
-                className={classes.select}
-                value={
-                  draftSettings[field.key] ??
-                  activeMode.defaultSettings?.[field.key] ??
-                  ""
+            return (
+              <ExpandablePanel
+                key={group.id}
+                title={title}
+                summary={summary}
+                icon={<SettingsGroupIcon groupId={group.id} />}
+                open={open}
+                onOpenChange={(next) =>
+                  setOpenSettingsGroup(next ? group.id : null)
                 }
-                onChange={(e) => onSettingChange(field.key, e.target.value)}
               >
-                {(field.options || []).map((option) => (
-                  <option key={option.value || "all"} value={option.value}>
-                    {optionLabel(field.key, option.value, all, option.label)}
-                  </option>
-                ))}
-              </select>
-            </label>
-          );
-        })}
-
-        <div className={classes.geoSteppers}>
-          {numberFields.map((field) =>
-            renderNumberField({
-              field,
-              draftSettings,
-              hostPremium,
-              baseId,
-              all,
-              onSettingChange,
-              hintAsTip: true,
-            })
-          )}
+                <div className={classes.groupFields}>
+                  {group.fields.map((field) => renderGroupedField(field))}
+                </div>
+              </ExpandablePanel>
+            );
+          })}
         </div>
+
+        {!hostPremium ? (
+          <p className={classes.premiumHint}>
+            {t.premiumUndercoverHint ??
+              "Premium host unlocks Fool, Detective, blank rounds, speed resolve, sound effects, and up to 10 rounds."}{" "}
+            <Link href={`/profile?lang=${lang}`} className={classes.premiumLink}>
+              {t.upgradeLink ?? "Upgrade"}
+            </Link>
+          </p>
+        ) : null}
       </div>
     );
   }

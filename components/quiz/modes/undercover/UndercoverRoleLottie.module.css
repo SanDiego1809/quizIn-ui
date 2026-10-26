@@ -1,0 +1,29 @@
+.wrap {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  line-height: 0;
+  background: transparent;
+  overflow: hidden;
+  max-width: 100%;
+  max-height: 100%;
+  box-sizing: border-box;
+}
+
+.player {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  background: transparent !important;
+}
+
+.player :global(canvas) {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  background: transparent !important;
+}

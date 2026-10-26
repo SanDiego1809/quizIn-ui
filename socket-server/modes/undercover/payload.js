@@ -64,11 +64,15 @@ function buildPayload(room, playerId) {
     currentRound: state.currentRound || 0,
     totalRounds: settings.totalRounds || 0,
     scores: state.scores || { civilians: 0, undercover: 0, mr_white: 0 },
+    playerScores: state.playerScores || {},
     clues: inPlay ? state.clues || {} : {},
     votes: showVotes ? state.votes || {} : {},
     roundResult: inPlay ? state.roundResult : null,
     result: room.phase === "final_results" ? state.result : null,
     alivePlayerIds: inPlay ? aliveIds : [],
+    revealedRolesByPlayerId: inPlay
+      ? state.revealedRolesByPlayerId || {}
+      : {},
     youAlive: inPlay ? youAlive : true,
     clueOrder: subPhase === "clue" ? state.clueOrder || [] : [],
     clueTurnIndex: subPhase === "clue" ? state.clueTurnIndex : null,
@@ -80,6 +84,7 @@ function buildPayload(room, playerId) {
         ? state.playerWords[playerId]
         : null
       : null,
+    wordPairId: inPlay ? state.wordPairId || null : null,
     isBlankRound: inPlay ? Boolean(state.isBlankRound) : false,
     hideRoles,
     discussionMode: settings.discussionMode || "off",
@@ -98,9 +103,6 @@ function buildPayload(room, playerId) {
     canDetectivePeek,
     detectivePeekUsed: isDetective ? Boolean(state.detectivePeekUsed) : false,
     detectivePeekResult,
-    yourPairRating: inPlay ? state.pairRatings?.[playerId] || null : null,
-    youRatedPair: Boolean(state.pairRatings?.[playerId]),
-    wordPairId: inPlay ? state.wordPairId : null,
     sfxEvent: state.sfxEvent || null,
     achievements:
       room.phase === "final_results"

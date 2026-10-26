@@ -7,6 +7,24 @@
   background: #05080c;
 }
 
+.rootPlay .photo {
+  filter: saturate(0.95) contrast(1.02) brightness(0.55);
+}
+
+.rootPlay .grade {
+  background: linear-gradient(
+    180deg,
+    rgba(5, 10, 16, 0.55) 0%,
+    rgba(5, 10, 16, 0.42) 40%,
+    rgba(5, 10, 16, 0.62) 75%,
+    rgba(5, 10, 16, 0.78) 100%
+  );
+}
+
+.rootPlay .canvas {
+  opacity: 0.55;
+}
+
 .photo {
   position: absolute;
   inset: 0;

@@ -1,24 +1,13 @@
 const WORD_BANK = require("./wordPairs.json");
 const { clearRoomTimer } = require("../../lib/timers");
-const { PRESETS } = require("./presets");
-const { recordPairRating, normalizeRating } = require("./pairRatings");
+const { FREE_UNDERCOVER_MAX_ROUNDS } = require("../../lib/hostLimits");
 
 const WORD_LANGS = new Set(["en", "fr", "es"]);
-const WORD_CATEGORIES = new Set([
-  "all",
-  "easy",
-  "family",
-  "classic",
-  "funny",
-  "food",
-]);
 const BLANK_MODES = new Set(["off", "random"]);
 const DISCUSSION_MODES = new Set(["off", "timer", "ready"]);
 const TIE_BEHAVIORS = new Set(["revote", "skip"]);
-const WORD_SOURCES = new Set(["bank", "custom", "mixed"]);
 const FORBIDDEN_CLUE = /waiting\s+for/i;
 const BLANK_ROUND_CHANCE = 0.2;
-const MAX_CUSTOM_PAIRS = 50;
 const MAX_REVOTES = 2;
 const CIVILIAN_SIDE_ROLES = new Set(["civilian", "fool", "detective"]);
 /** Fool reads as special for detective peek only. */
@@ -76,50 +65,8 @@ function normalizeClueText(text) {
     .replace(/\s+/g, " ");
 }
 
-function sanitizeCustomWordPairs(input) {
-  if (!Array.isArray(input)) return [];
-  const out = [];
-  for (const raw of input) {
-    if (!raw || typeof raw !== "object") continue;
-    const common = String(raw.common || "").trim().slice(0, 80);
-    const undercover = String(raw.undercover || "").trim().slice(0, 80);
-    if (!common || !undercover) continue;
-    if (normalizeClueText(common) === normalizeClueText(undercover)) continue;
-    out.push({ common, undercover });
-    if (out.length >= MAX_CUSTOM_PAIRS) break;
-  }
-  return out;
-}
-
-function bankPairsForCategory(category) {
-  const pool = (WORD_BANK.pairs || []).filter((pair) =>
-    category === "all" ? true : pair.category === category
-  );
-  return pool.length ? pool : WORD_BANK.pairs || [];
-}
-
-function customPairsAsBankEntries(customPairs) {
-  return (customPairs || []).map((pair, index) => ({
-    id: `custom-${index}-${normalizeClueText(pair.common)}-${normalizeClueText(pair.undercover)}`,
-    category: "custom",
-    common: pair.common,
-    undercover: pair.undercover,
-  }));
-}
-
-function pickWordPair(settings) {
-  const category = settings.wordCategory || "all";
-  const source = settings.wordSource || "bank";
-  const custom = customPairsAsBankEntries(settings.customWordPairs || []);
-  const bank = bankPairsForCategory(category);
-
-  let pool = bank;
-  if (source === "custom") {
-    pool = custom.length ? custom : bank;
-  } else if (source === "mixed") {
-    pool = custom.length ? [...bank, ...custom] : bank;
-  }
-
+function pickWordPair(_settings) {
+  const pool = WORD_BANK.pairs || [];
   if (!pool.length) return null;
   return pool[Math.floor(Math.random() * pool.length)];
 }
@@ -156,28 +103,30 @@ function createInitialState() {
     detectivePeekUsed: false,
     detectivePeekTarget: null,
     detectivePeekResultByPlayerId: {},
-    pairRatings: {},
     achievementsUnlocked: [],
     revealDone: false,
     roundEliminatedRoles: [],
+    revealedRolesByPlayerId: {},
     sfxEvent: null,
   };
 }
 
-function sanitizeSettings(input = {}, defaults = {}, _options = {}) {
+function sanitizeSettings(input = {}, defaults = {}, options = {}) {
+  const premium = Boolean(options.premium);
+  const maxRounds = premium ? 10 : FREE_UNDERCOVER_MAX_ROUNDS;
+
   const wordLang = WORD_LANGS.has(String(input.wordLang || "").toLowerCase())
     ? String(input.wordLang).toLowerCase()
     : defaults.wordLang || "en";
-  const wordCategory = WORD_CATEGORIES.has(
-    String(input.wordCategory || "").toLowerCase()
-  )
-    ? String(input.wordCategory).toLowerCase()
-    : defaults.wordCategory || "all";
 
   const blankRaw = String(
     input.blankRounds ?? defaults.blankRounds ?? "off"
   ).toLowerCase();
-  const blankRounds = BLANK_MODES.has(blankRaw) ? blankRaw : "off";
+  const blankRounds = premium
+    ? BLANK_MODES.has(blankRaw)
+      ? blankRaw
+      : "off"
+    : "off";
 
   const discussRaw = String(
     input.discussionMode ?? defaults.discussionMode ?? "off"
@@ -188,11 +137,6 @@ function sanitizeSettings(input = {}, defaults = {}, _options = {}) {
     input.tieBehavior ?? defaults.tieBehavior ?? "revote"
   ).toLowerCase();
   const tieBehavior = TIE_BEHAVIORS.has(tieRaw) ? tieRaw : "revote";
-
-  const sourceRaw = String(
-    input.wordSource ?? defaults.wordSource ?? "bank"
-  ).toLowerCase();
-  const wordSource = WORD_SOURCES.has(sourceRaw) ? sourceRaw : "bank";
 
   return {
     clueTimeSeconds: toBoundedNumber(
@@ -211,7 +155,7 @@ function sanitizeSettings(input = {}, defaults = {}, _options = {}) {
       input.totalRounds,
       defaults.totalRounds ?? 3,
       1,
-      10
+      maxRounds
     ),
     undercoverCount: toBoundedNumber(
       input.undercoverCount,
@@ -225,19 +169,17 @@ function sanitizeSettings(input = {}, defaults = {}, _options = {}) {
       0,
       2
     ),
-    foolCount: toBoundedNumber(
-      input.foolCount,
-      defaults.foolCount ?? 0,
-      0,
-      1
-    ),
-    detectiveCount: toBoundedNumber(
-      input.detectiveCount,
-      defaults.detectiveCount ?? 0,
-      0,
-      1
-    ),
-    wordCategory,
+    foolCount: premium
+      ? toBoundedNumber(input.foolCount, defaults.foolCount ?? 0, 0, 1)
+      : 0,
+    detectiveCount: premium
+      ? toBoundedNumber(
+          input.detectiveCount,
+          defaults.detectiveCount ?? 0,
+          0,
+          1
+        )
+      : 0,
     wordLang,
     hideRoles: toBool(input.hideRoles, defaults.hideRoles ?? false),
     blankRounds,
@@ -274,12 +216,12 @@ function sanitizeSettings(input = {}, defaults = {}, _options = {}) {
       120
     ),
     clueOneWord: toBool(input.clueOneWord, defaults.clueOneWord ?? false),
-    speedResolve: toBool(input.speedResolve, defaults.speedResolve ?? false),
-    wordSource,
-    customWordPairs: sanitizeCustomWordPairs(
-      input.customWordPairs ?? defaults.customWordPairs
-    ),
-    audioPack: sanitizeAudioPack(input.audioPack, defaults.audioPack ?? false),
+    speedResolve: premium
+      ? toBool(input.speedResolve, defaults.speedResolve ?? false)
+      : false,
+    audioPack: premium
+      ? sanitizeAudioPack(input.audioPack, defaults.audioPack ?? false)
+      : false,
   };
 }
 
@@ -303,15 +245,6 @@ function validateStart(room) {
     return {
       ok: false,
       message: "Leave at least one civilian seat.",
-    };
-  }
-  if (
-    settings.wordSource === "custom" &&
-    !(settings.customWordPairs || []).length
-  ) {
-    return {
-      ok: false,
-      message: "Add custom word pairs or switch word source to bank.",
     };
   }
   return { ok: true };
@@ -490,18 +423,49 @@ function advanceClueTurn(room, ctx) {
   }
 }
 
-function awardRoundWin(room, winner) {
+function bumpPlayerScore(state, playerId, amount = 1) {
+  if (!playerId) return;
+  state.playerScores[playerId] = (state.playerScores[playerId] || 0) + amount;
+}
+
+/**
+ * Faction narrative +1 for the winning side.
+ * Personal points: correct hunt/frame (vote), survive, Mr White clutch.
+ */
+function awardRoundWin(room, winner, extra = {}) {
   const state = room.state;
-  state.scores[winner] = (state.scores[winner] || 0) + 1;
-  for (const player of room.players) {
-    const role = state.roleByPlayerId[player.id];
-    const onWinningSide =
-      (winner === "civilians" && isOnCivilianSide(role)) ||
-      (winner === "undercover" && role === "undercover") ||
-      (winner === "mr_white" && role === "mr_white");
-    if (onWinningSide) {
-      state.playerScores[player.id] = (state.playerScores[player.id] || 0) + 1;
+  if (winner && state.scores) {
+    state.scores[winner] = (state.scores[winner] || 0) + 1;
+  }
+
+  const eliminatedId = extra.eliminatedPlayerId || null;
+  const eliminatedRole = extra.eliminatedRole || null;
+  const votes = state.votes || {};
+  const alive = new Set(state.alivePlayerIds || []);
+
+  if (eliminatedId && eliminatedRole) {
+    for (const player of room.players) {
+      if (votes[player.id] !== eliminatedId) continue;
+      const role = state.roleByPlayerId[player.id];
+      if (!role || role === "mr_white") continue;
+
+      const hunt =
+        isOnCivilianSide(role) &&
+        (eliminatedRole === "undercover" || eliminatedRole === "mr_white");
+      const frame =
+        role === "undercover" && isOnCivilianSide(eliminatedRole);
+      if (hunt || frame) {
+        bumpPlayerScore(state, player.id, 1);
+      }
     }
+  }
+
+  for (const playerId of alive) {
+    bumpPlayerScore(state, playerId, 1);
+  }
+
+  if (extra.mrWhiteGuessCorrect && eliminatedId) {
+    bumpPlayerScore(state, eliminatedId, 1);
   }
 }
 
@@ -562,6 +526,7 @@ function buildRoundResult(room, extra = {}) {
     isBlankRound: Boolean(state.isBlankRound),
     wordPairId: state.wordPairId,
     scores: { ...state.scores },
+    playerScores: { ...(state.playerScores || {}) },
     achievements: extra.achievements || null,
   };
 }
@@ -569,7 +534,7 @@ function buildRoundResult(room, extra = {}) {
 function enterRoundResults(room, winner, extra = {}) {
   clearRoomTimer(room);
   room.phaseDeadline = null;
-  awardRoundWin(room, winner);
+  awardRoundWin(room, winner, extra);
   const achievements = computeRoundAchievements(room, winner, extra);
   mergeAchievements(room.state, achievements);
   room.state.subPhase = "round_results";
@@ -577,6 +542,7 @@ function enterRoundResults(room, winner, extra = {}) {
     winner,
     ...extra,
     achievements,
+    playerScores: { ...(room.state.playerScores || {}) },
   });
 }
 
@@ -625,6 +591,12 @@ function markEliminated(room, eliminatedId, eliminatedRole) {
       state.roundEliminatedRoles = [];
     }
     state.roundEliminatedRoles.push(eliminatedRole);
+  }
+  if (eliminatedId && eliminatedRole) {
+    if (!state.revealedRolesByPlayerId) {
+      state.revealedRolesByPlayerId = {};
+    }
+    state.revealedRolesByPlayerId[eliminatedId] = eliminatedRole;
   }
 }
 
@@ -840,9 +812,9 @@ function beginRound(room, roundNumber, ctx) {
   state.detectivePeekUsed = false;
   state.detectivePeekTarget = null;
   state.detectivePeekResultByPlayerId = {};
-  state.pairRatings = {};
   state.revealDone = false;
   state.roundEliminatedRoles = [];
+  state.revealedRolesByPlayerId = {};
   state.sfxEvent = blankRoll
     ? { id: "blank_round", at: Date.now() }
     : null;
@@ -1011,25 +983,6 @@ function handleAction(room, action, ctx) {
   const playerId = action.playerId;
   const state = room.state;
 
-  if (type === "apply_preset") {
-    if (room.phase !== "lobby") {
-      return { ok: false, message: "Presets can only be applied in the lobby." };
-    }
-    if (playerId !== room.hostId) {
-      return { ok: false, message: "Only the host can apply a preset." };
-    }
-    const key = String(action.preset || action.presetId || "").trim();
-    const patch = PRESETS[key];
-    if (!patch) {
-      return { ok: false, message: `Unknown preset: ${key}` };
-    }
-    room.settings = sanitizeSettings(
-      { ...room.settings, ...patch },
-      room.settings
-    );
-    return { ok: true };
-  }
-
   if (type === "rematch") {
     if (room.phase !== "final_results") {
       return {
@@ -1163,6 +1116,27 @@ function handleAction(room, action, ctx) {
     return { ok: true, peekResult: result };
   }
 
+  if (type === "skip_elimination" || type === "vote_another_round") {
+    if (room.phase !== "playing" || state.subPhase !== "vote") {
+      return { ok: false, message: "Only available during the vote." };
+    }
+    if (playerId !== room.hostId) {
+      return {
+        ok: false,
+        message: "Only the host can skip elimination.",
+      };
+    }
+    clearRoomTimer(room);
+    room.phaseDeadline = null;
+    state.votes = {};
+    state.accuseNomineeId = null;
+    state.accuseNominatorId = null;
+    state.accuseSecondedBy = null;
+    state.voteRevoteCount = 0;
+    beginCluePass(room, ctx);
+    return { ok: true };
+  }
+
   if (type === "vote_submit") {
     if (room.phase !== "playing" || state.subPhase !== "vote") {
       return { ok: false, message: "Not in vote phase." };
@@ -1206,21 +1180,6 @@ function handleAction(room, action, ctx) {
     return { ok: true };
   }
 
-  if (type === "pair_rate") {
-    if (room.phase !== "playing" || state.subPhase !== "round_results") {
-      return { ok: false, message: "Rate pairs after the round ends." };
-    }
-    const pairId = state.wordPairId || action.pairId;
-    const rating = action.rating ?? action.value ?? action.thumbs;
-    const result = recordPairRating(pairId, playerId, rating);
-    if (!result.ok) return result;
-    state.pairRatings[playerId] = {
-      rating: normalizeRating(rating),
-      pairId,
-    };
-    return { ok: true };
-  }
-
   if (type === "round_next") {
     if (room.phase !== "playing" || state.subPhase !== "round_results") {
       return { ok: false, message: "Round is not finished yet." };
@@ -1261,5 +1220,4 @@ module.exports = {
   specialRolesAmong,
   pickWordPair,
   WORD_BANK,
-  PRESETS,
 };

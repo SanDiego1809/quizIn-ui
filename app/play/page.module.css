@@ -1,14 +1,21 @@
 .error {
-  width: min(100%, 28rem);
+  position: fixed;
+  top: 0.85rem;
+  left: 50%;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  width: min(calc(100% - 1.5rem), 28rem);
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
   background: #450a0a;
   border: 1px solid #991b1b;
   color: #fecaca;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
+  box-shadow: 0 12px 32px rgba(2, 6, 23, 0.45);
+  transform: translateX(-50%);
+  animation: errorIn 0.24s ease both;
 }
 
 .error p {
@@ -22,6 +29,28 @@
   cursor: pointer;
   text-decoration: underline;
   font: inherit;
+  flex-shrink: 0;
+}
+
+.dismiss:hover {
+  color: #fff;
+}
+
+@keyframes errorIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .error {
+    animation: none;
+  }
 }
 
 .backLink {

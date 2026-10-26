@@ -147,14 +147,36 @@ function registerGameHandlers(socket, ctx) {
       return;
     }
 
-    const current = room.state?.questions?.[room.state.currentQuestionIndex];
     const questionId = String(payload.questionId || "");
-    if (!current || current.id !== questionId) {
-      socket.emit("quiz:question_feedback_result", {
-        ok: false,
-        message: "That question is not active.",
-      });
-      return;
+    const mode = room.mode || "classic";
+    let questionText = null;
+    let options = null;
+    let correctIndex = null;
+
+    if (mode === "undercover") {
+      const pairId = room.state?.wordPairId;
+      if (!pairId || pairId !== questionId) {
+        socket.emit("quiz:question_feedback_result", {
+          ok: false,
+          message: "That word pair is not active.",
+        });
+        return;
+      }
+      const common = room.state?.commonWord || "";
+      const undercover = room.state?.undercoverWord || "";
+      questionText = `${common} / ${undercover}`.trim();
+    } else {
+      const current = room.state?.questions?.[room.state.currentQuestionIndex];
+      if (!current || current.id !== questionId) {
+        socket.emit("quiz:question_feedback_result", {
+          ok: false,
+          message: "That question is not active.",
+        });
+        return;
+      }
+      questionText = current.text;
+      options = current.options;
+      correctIndex = current.correctIndex;
     }
 
     try {
@@ -162,10 +184,10 @@ function registerGameHandlers(socket, ctx) {
         questionId,
         playerKey: playerId,
         kind: payload.kind,
-        mode: room.mode || "classic",
-        questionText: current.text,
-        options: current.options,
-        correctIndex: current.correctIndex,
+        mode,
+        questionText,
+        options,
+        correctIndex,
         note: payload.note,
       });
       socket.emit("quiz:question_feedback_result", result);

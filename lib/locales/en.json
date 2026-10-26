@@ -181,7 +181,23 @@
       },
       "lottieIspettorePrivacy": {
         "name": "Ispettore Privacy (Armando Rinaldi)",
-        "note": "Privacy / spy animation on the home Undercover card (Lottie Simple License) — https://lottiefiles.com/free-animation/ispettore-privacy-5nQfuQ4eRe"
+        "note": "Privacy / spy animation on the home Undercover card and Undercover role icon (Lottie Simple License) — https://lottiefiles.com/free-animation/ispettore-privacy-5nQfuQ4eRe"
+      },
+      "lottieSearching": {
+        "name": "Searching (Clement Denis)",
+        "note": "Magnifying-glass animation for the Detective role icon in Undercover (Lottie Simple License) — https://lottiefiles.com/free-animation/searching-6AoPeWdGR0"
+      },
+      "lottieLaughingClown": {
+        "name": "Laughing Clown Emoji (Samuel Osborne)",
+        "note": "Laughing clown animation for the Fool role icon in Undercover (Lottie Simple License) — https://lottiefiles.com/free-animation/laughing-clown-emoji-JitejIy1BH"
+      },
+      "lottieNeutral": {
+        "name": "NEUTRAL (Rosario Garrido)",
+        "note": "Neutral face animation for the Civilian role icon in Undercover (Lottie Simple License) — https://lottiefiles.com/free-animation/neutral-nj1lcAFwhz"
+      },
+      "lottieEmptyGhost": {
+        "name": "empty ghost (naiandersonbruno)",
+        "note": "Ghost animation for the Mr White role icon in Undercover (Lottie Simple License) — https://lottiefiles.com/free-animation/empty-ghost-jefFBa5UsX"
       }
     },
     "videos": {
@@ -298,6 +314,7 @@
     "hostTag": "host",
     "premiumHostHint": "Premium host unlocks continent filters, map modifiers, lives, and longer games.",
     "premiumClassicHint": "Premium host unlocks difficulty, scoring rules, buzzer race, host pacing, pulpit styles, sound effects, categories, and longer games.",
+    "premiumUndercoverHint": "Premium host unlocks Fool, Detective, blank rounds, speed resolve, sound effects, and up to 10 rounds.",
     "upgradeLink": "Upgrade",
     "seatStatus": "{count} / {max} seats · {premium} Premium (+1 each)",
     "needPremiumSeat": "Need another Premium for a larger room",
@@ -402,20 +419,36 @@
       "info": "Play lock-in / correct / wrong stings (off by default).",
       "hintUndercover": "Play undercover stings (your turn, vote, elim, blank)."
     },
+    "roles": {
+      "label": "Roles"
+    },
+    "round": {
+      "label": "Round"
+    },
+    "flow": {
+      "label": "Voting"
+    },
+    "clues": {
+      "label": "Clues"
+    },
     "undercoverCount": {
       "label": "Undercovers",
+      "short": "UC",
       "hint": "Players who get a related but different word."
     },
     "mrWhiteCount": {
       "label": "Mr White",
+      "short": "MW",
       "hint": "Players with no word. If voted out, they can guess the civilian word."
     },
     "foolCount": {
       "label": "Fool",
+      "short": "Fool",
       "hint": "Sees the undercover word but scores with civilians."
     },
     "detectiveCount": {
       "label": "Detective",
+      "short": "Det",
       "hint": "Once per round, peek whether a player is civilian or special."
     },
     "hideRoles": {
@@ -471,19 +504,11 @@
     },
     "speedResolve": {
       "label": "Speed resolve (one vote ends round)",
-      "hint": "Used by the Speed preset — one elimination scores the round."
-    },
-    "wordSource": {
-      "label": "Word source",
-      "hint": "Custom pairs stay in this room.",
-      "options": {
-        "bank": "Built-in bank",
-        "custom": "Custom pairs only",
-        "mixed": "Bank + custom"
-      }
+      "hint": "One elimination scores the round."
     },
     "totalRounds": {
-      "label": "Rounds"
+      "label": "Rounds",
+      "premiumHint": "Free hosts: up to 3. Premium: up to 10."
     },
     "clueTimeSeconds": {
       "label": "Clue time (seconds)",
@@ -492,17 +517,6 @@
     "voteTimeSeconds": {
       "label": "Vote time (seconds)",
       "hint": "0 = no timer"
-    },
-    "wordCategory": {
-      "label": "Word pack",
-      "options": {
-        "all": "All packs",
-        "easy": "Easy",
-        "family": "Family",
-        "classic": "Classic",
-        "funny": "Funny",
-        "food": "Food & Drinks"
-      }
     },
     "wordLang": {
       "label": "Word language",
@@ -599,10 +613,14 @@
     "readyCount": "Ready {ready}/{need}",
     "accuseHint": "Nominate someone. Another player must second.",
     "nominate": "Nominate",
+    "nominateZone": "Nominate",
+    "dragNominateHint": "Drag a card here, or tap a card then this zone.",
     "secondAccuse": "Second",
     "nominated": "Nominated: {name}",
     "waitingSecond": "Waiting for a second…",
     "voteHint": "Vote for who seems off.",
+    "eliminateZone": "Eliminate",
+    "dragEliminateHint": "Drag a card here, or tap a card then this zone.",
     "submitVote": "Lock vote",
     "voteWaiting": "Waiting for everyone to vote…",
     "votedFor": "→ {name}",
@@ -615,7 +633,11 @@
     "winnerUndercover": "Undercover wins the round",
     "winnerMrWhite": "Mr White wins the round",
     "eliminatedLine": "Eliminated: {name}",
+    "eliminatedShort": "Out",
+    "caseBoard": "Case board",
+    "cluesDock": "Clues",
     "mrWhiteGuessLine": "Guess: {guess} ({ok})",
+    "guessShort": "Guess",
     "correct": "correct",
     "wrong": "wrong",
     "wordsReveal": "Words: {common} / {undercover}",
@@ -627,31 +649,34 @@
     "nextRound": "Next round",
     "seeFinal": "See final results",
     "waitingHost": "Waiting for the host…",
-    "ratePair": "Rate this word pair",
     "peek": "Peek",
     "peekResultCivilian": "{name} reads civilian",
     "peekResultSpecial": "{name} reads special",
-    "presetsLabel": "Presets",
-    "customPairsLabel": "Custom word pairs",
-    "customPairsHint": "common / undercover — stay in this room",
-    "addPair": "Add pair",
-    "commonPlaceholder": "Civilian word",
-    "undercoverPlaceholder": "Undercover word",
     "achievements": "Achievements",
     "achievement_perfect_civilian_table": "Perfect civilian table",
     "achievement_mr_white_clutch": "Mr White clutch guess",
     "achievement_fool_survived": "Fool survived",
     "achievement_won_while_blind": "Won while blind",
     "achievement_survived_blank_round": "Survived a blank round",
-    "presets": {
-      "chill": "Chill",
-      "chaos": "Chaos",
-      "mrWhiteNight": "Mr White night",
-      "quick": "Quick",
-      "blindNight": "Blind night",
-      "fog": "Fog",
-      "speed": "Speed"
-    }
+    "feedbackCaption": "Issue with this word pair?",
+    "feedbackReport": "Report error",
+    "feedbackReported": "Thanks — flagged for review.",
+    "feedbackReportedShort": "Reported",
+    "feedbackError": "Could not save.",
+    "feedbackReportTitle": "Report a wrong, unclear, or broken word pair",
+    "feedbackNoteLabel": "Optional note (what’s wrong?)",
+    "feedbackNotePlaceholder": "e.g. Typo, translation wrong, too similar / too hard…",
+    "feedbackSendReport": "Send report",
+    "feedbackCancel": "Cancel",
+    "yourTurnBanner": "Your turn — give a short clue.",
+    "watching": "Watching",
+    "waitingNominate": "Waiting for a nomination…",
+    "wordCivilian": "Civilian word",
+    "wordUndercover": "Undercover word",
+    "scoreHint": "Points: correct vote + surviving (updated at round end).",
+    "personalScores": "Player scores",
+    "skipElimination": "Another clue round",
+    "skipEliminationHint": "Cancel this vote and play another clue round with the same words."
   },
   "geoQuestion": {
     "progress": "Country {current} / {total}",

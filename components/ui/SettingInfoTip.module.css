@@ -30,12 +30,8 @@
   outline: none;
 }
 
-.tip {
-  position: absolute;
-  top: calc(100% + 0.35rem);
-  right: 0;
-  z-index: 5;
-  width: min(16rem, 70vw);
+.tip,
+.tipFixed {
   padding: 0.55rem 0.65rem;
   border: 1px solid rgba(148, 163, 184, 0.35);
   border-radius: 0.5rem;
@@ -47,4 +43,19 @@
   box-shadow: 0 10px 28px rgba(2, 6, 23, 0.55);
   text-align: left;
   white-space: normal;
+}
+
+.tip {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  right: 0;
+  z-index: 5;
+  width: min(16rem, 70vw);
+}
+
+.tipFixed {
+  position: fixed;
+  z-index: 80;
+  max-width: calc(100vw - 1rem);
+  pointer-events: auto;
 }

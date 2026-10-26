@@ -1,0 +1,187 @@
+.root {
+  width: 100%;
+  max-width: 16rem;
+}
+
+.rootOpen {
+  z-index: 6;
+  position: relative;
+}
+
+.rootOpen .shell {
+  border-color: rgba(94, 234, 212, 0.45);
+  box-shadow:
+    0 8px 22px rgba(2, 6, 23, 0.35),
+    0 0 0 1px rgba(94, 234, 212, 0.12),
+    0 0 18px rgba(94, 234, 212, 0.12);
+}
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.32);
+  background: rgba(15, 23, 42, 0.92);
+  box-shadow: 0 8px 22px rgba(2, 6, 23, 0.35);
+  overflow: hidden;
+  transition:
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.65rem 0.75rem;
+  border: 0;
+  background: transparent;
+  color: #f8fafc;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    transform 0.14s ease;
+}
+
+.trigger:hover {
+  background: rgba(30, 41, 59, 0.55);
+}
+
+.trigger:active {
+  transform: scale(0.97);
+}
+
+.trigger:focus-visible {
+  outline: 2px solid #5eead4;
+  outline-offset: -2px;
+}
+
+.iconSlot {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 0.45rem;
+  color: #5eead4;
+  background: rgba(94, 234, 212, 0.1);
+  border: 1px solid rgba(94, 234, 212, 0.22);
+  transition:
+    background 0.22s ease,
+    border-color 0.22s ease,
+    color 0.22s ease,
+    transform 0.28s ease;
+}
+
+.iconSlot svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.iconSlotOpen {
+  background: rgba(94, 234, 212, 0.18);
+  border-color: rgba(94, 234, 212, 0.45);
+  animation: iconBob 1.6s ease-in-out infinite;
+}
+
+.triggerText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.triggerTitle {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.triggerSummary {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #94a3b8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chevron {
+  flex-shrink: 0;
+  width: 0.95rem;
+  height: 0.95rem;
+  color: #94a3b8;
+  transition:
+    transform 0.22s ease,
+    color 0.22s ease;
+}
+
+.rootOpen .chevron {
+  color: #5eead4;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.28s ease;
+  pointer-events: none;
+}
+
+.panelOpen {
+  grid-template-rows: 1fr;
+  pointer-events: auto;
+}
+
+.panelInner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.panelContent {
+  max-height: min(42vh, 18rem);
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0 0.65rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  scrollbar-width: thin;
+}
+
+@keyframes iconBob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shell,
+  .trigger,
+  .iconSlot,
+  .chevron,
+  .panel {
+    transition: none;
+  }
+
+  .trigger:active {
+    transform: none;
+  }
+
+  .iconSlotOpen {
+    animation: none;
+  }
+}
