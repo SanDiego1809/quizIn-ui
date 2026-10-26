@@ -245,6 +245,8 @@
     "createRoom": "Create room",
     "divider": "or",
     "roomCode": "Room code",
+    "copyRoomCode": "Copy room code",
+    "roomCodeCopied": "Copied",
     "roomCodePlaceholder": "ABC123",
     "joinRoom": "Join room",
     "avatarFromProfile": "Your victory emote and skin come from your profile.",

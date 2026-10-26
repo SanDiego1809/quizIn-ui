@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import classes from "./QuizWaitingRoom.module.css";
 import Button from "@/components/button/Button";
@@ -19,6 +20,114 @@ import {
   resolveRoomMode,
 } from "@/lib/quiz/modes/registry";
 import { isTeamsVariant } from "@/lib/quiz/teams";
+
+function CopyIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+      <rect
+        x="8"
+        y="8"
+        width="12"
+        height="12"
+        rx="2"
+        stroke="currentColor"
+        strokeWidth="1.75"
+      />
+      <path
+        d="M6 16H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+      <path
+        d="M5 12.5 9.2 17 19 7"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function copyWithSelection(text) {
+  const area = document.createElement("textarea");
+  area.value = text;
+  area.setAttribute("readonly", "");
+  area.style.position = "fixed";
+  area.style.top = "0";
+  area.style.left = "0";
+  area.style.opacity = "0";
+  document.body.appendChild(area);
+  area.focus();
+  area.select();
+  const ok = document.execCommand("copy");
+  area.remove();
+  return ok;
+}
+
+async function writeClipboard(text) {
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+  } catch {
+    // The async clipboard API rejects when the page is not the focused
+    // document. A selection copy still works inside the click gesture.
+  }
+  if (!copyWithSelection(text)) throw new Error("copy failed");
+}
+
+function RoomCodeBlock({ code, label, copyLabel, copiedLabel }) {
+  const [copied, setCopied] = useState(false);
+  const resetTimer = useRef(null);
+  const value = String(code || "").trim();
+
+  useEffect(
+    () => () => {
+      if (resetTimer.current) clearTimeout(resetTimer.current);
+    },
+    []
+  );
+
+  async function copyCode() {
+    if (!value) return;
+    try {
+      await writeClipboard(value);
+    } catch {
+      return;
+    }
+    setCopied(true);
+    if (resetTimer.current) clearTimeout(resetTimer.current);
+    resetTimer.current = setTimeout(() => setCopied(false), 1600);
+  }
+
+  return (
+    <div className={classes.codeBlock}>
+      <span className={classes.codeLabel}>{label}</span>
+      <div className={classes.codeRow}>
+        <strong className={classes.code}>{code}</strong>
+        <button
+          type="button"
+          className={copied ? classes.copyButtonCopied : classes.copyButton}
+          onClick={copyCode}
+          disabled={!value}
+          aria-label={copied ? copiedLabel : copyLabel}
+        >
+          {copied ? <CheckIcon /> : <CopyIcon />}
+        </button>
+      </div>
+    </div>
+  );
+}
 
 function variantOptionLabel(value, all, fallbackLabel) {
   const options = all.settings_fields?.variant?.options;
@@ -83,10 +192,12 @@ export default function QuizWaitingRoom({
   const startBlocked = overCapacity || teamsNotReady;
 
   const roomCodeBlock = (
-    <div className={classes.codeBlock}>
-      <span className={classes.codeLabel}>{t.roomCode ?? "Room code"}</span>
-      <strong className={classes.code}>{room.roomCode}</strong>
-    </div>
+    <RoomCodeBlock
+      code={room.roomCode}
+      label={t.roomCode ?? "Room code"}
+      copyLabel={t.copyRoomCode ?? "Copy room code"}
+      copiedLabel={t.roomCodeCopied ?? "Copied"}
+    />
   );
 
   const heading = (

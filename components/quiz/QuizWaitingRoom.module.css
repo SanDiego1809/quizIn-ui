@@ -24,10 +24,61 @@
   color: #94a3b8;
 }
 
+.codeRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
 .code {
   font-size: 2rem;
   letter-spacing: 0.2em;
   color: #a5b4fc;
+}
+
+.copyButton,
+.copyButtonCopied {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border-radius: 0.55rem;
+  border: 1px solid rgba(165, 180, 252, 0.4);
+  background: rgba(165, 180, 252, 0.1);
+  color: #c7d2fe;
+  cursor: pointer;
+}
+
+.copyButton svg,
+.copyButtonCopied svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.copyButton:hover {
+  background: rgba(165, 180, 252, 0.2);
+  color: #eef2ff;
+}
+
+.copyButton:focus-visible,
+.copyButtonCopied:focus-visible {
+  outline: 2px solid #a5b4fc;
+  outline-offset: 2px;
+}
+
+.copyButton:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.copyButtonCopied {
+  border-color: rgba(110, 231, 183, 0.55);
+  background: rgba(16, 185, 129, 0.16);
+  color: #6ee7b7;
 }
 
 .heading {

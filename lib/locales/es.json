@@ -270,6 +270,8 @@
     "createRoom": "Crear sala",
     "divider": "o",
     "roomCode": "Código de sala",
+    "copyRoomCode": "Copiar código",
+    "roomCodeCopied": "Copiado",
     "roomCodePlaceholder": "ABC123",
     "joinRoom": "Unirse a la sala",
     "avatarFromProfile": "Tu emote de victoria y skin vienen de tu perfil.",
